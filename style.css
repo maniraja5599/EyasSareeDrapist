@@ -818,3 +818,62 @@ footer {
         transform: translateY(-10px);
     }
 }
+
+/* Styles Portfolio */
+.styles {
+    background: #150816;
+}
+
+.styles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .styles-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.style-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 300px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    transition: var(--transition);
+}
+
+.style-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-color);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
+}
+
+.style-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.style-card:hover img {
+    transform: scale(1.1);
+}
+
+.style-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0));
+    color: var(--text-light);
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    text-align: center;
+    letter-spacing: 1px;
+    border-bottom: 3px solid var(--accent-color);
+}
