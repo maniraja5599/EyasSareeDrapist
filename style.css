@@ -702,3 +702,119 @@ footer {
         font-size: 2.8rem;
     }
 }
+/* Pricing Section */
+.pricing {
+    background: var(--bg-dark);
+}
+
+.pricing-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    align-items: center; /* Integrate with featured card scale */
+}
+
+.pricing-card {
+    text-align: center;
+    padding: 3rem 2rem;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.featured {
+    border: 2px solid var(--accent-color);
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(0,0,0,0) 100%);
+    transform: scale(1.05);
+    z-index: 2;
+}
+
+.pricing-card:hover {
+    transform: translateY(-10px);
+}
+
+.featured:hover {
+    transform: scale(1.05) translateY(-10px);
+}
+
+.tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--accent-color);
+    color: var(--bg-dark);
+    padding: 5px 15px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.price-header h3 {
+    font-size: 1.5rem;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+}
+
+.price {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    font-family: 'Cinzel', serif;
+}
+
+.price span {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.price-sub {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 2rem;
+}
+
+.price-features {
+    margin-bottom: 2.5rem;
+    text-align: left;
+    padding-left: 1rem;
+}
+
+.price-features li {
+    margin-bottom: 1rem;
+    color: #e0e0e0;
+}
+
+.price-features i {
+    color: var(--accent-color);
+    margin-right: 10px;
+}
+
+.pricing-note {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+    opacity: 0.6;
+}
+
+@media (max-width: 900px) {
+    .pricing-container {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .featured {
+        transform: scale(1);
+    }
+    
+    .featured:hover {
+        transform: translateY(-10px);
+    }
+}
