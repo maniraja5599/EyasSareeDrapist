@@ -12,18 +12,23 @@ const TrackingPage = () => {
         e.preventDefault();
         setLoading(true);
 
-        // Simulate API call - Replace with actual Firebase query
+        // Fetch fresh data from localStorage
+        const savedOrders = localStorage.getItem('eyas_orders');
+        const allOrders = savedOrders ? JSON.parse(savedOrders) : [];
+        const foundOrder = allOrders.find(o => o.id.toLowerCase() === bookingId.toLowerCase());
+
         setTimeout(() => {
-            setBooking({
-                id: bookingId,
-                customerName: 'Demo User',
-                service: 'Pre-Pleating',
-                status: 'in_progress',
-                date: '2026-01-20',
-                slot: '2:00 PM'
-            });
+            if (foundOrder) {
+                setBooking({
+                    ...foundOrder,
+                    slot: foundOrder.slotTime // Map slotTime to slot for UI compatibility
+                });
+            } else {
+                alert('Booking not found! Please check the ID.');
+                setBooking(null);
+            }
             setLoading(false);
-        }, 1000);
+        }, 800);
     };
 
     const statuses = [
@@ -116,8 +121,8 @@ const TrackingPage = () => {
                                         )}
 
                                         <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${isActive
-                                                ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg'
-                                                : 'bg-gray-200 text-gray-400'
+                                            ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg'
+                                            : 'bg-gray-200 text-gray-400'
                                             }`}>
                                             <Icon className="w-6 h-6" />
                                         </div>
