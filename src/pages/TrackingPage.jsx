@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Search, Package, CheckCircle, Clock, Loader2 } from 'lucide-react';
 
 const TrackingPage = () => {
@@ -7,6 +7,8 @@ const TrackingPage = () => {
     const [bookingId, setBookingId] = useState(urlBookingId || '');
     const [loading, setLoading] = useState(false);
     const [booking, setBooking] = useState(null);
+    const [settings, setSettings] = useState(null);
+    const navigate = useNavigate();
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -16,6 +18,12 @@ const TrackingPage = () => {
         const savedOrders = localStorage.getItem('eyas_orders');
         const allOrders = savedOrders ? JSON.parse(savedOrders) : [];
         const foundOrder = allOrders.find(o => o.id.toLowerCase() === bookingId.toLowerCase());
+
+        // Fetch Settings
+        const savedSettings = localStorage.getItem('eyas_shop_settings');
+        if (savedSettings) {
+            setSettings(JSON.parse(savedSettings));
+        }
 
         setTimeout(() => {
             if (foundOrder) {
@@ -88,18 +96,24 @@ const TrackingPage = () => {
                     <div className="gradient-card animate-scale-in">
                         {/* Booking Info */}
                         <div className="mb-8 pb-8 border-b border-gray-200">
-                            <div className="grid md:grid-cols-3 gap-6">
+                            <div className="grid md:grid-cols-2 gap-6">
                                 <div>
                                     <p className="text-sm text-gray-500 mb-1">Booking ID</p>
                                     <p className="font-bold text-lg">{booking.id}</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-500 mb-1">Service</p>
-                                    <p className="font-bold text-lg">{booking.service}</p>
-                                </div>
-                                <div>
                                     <p className="text-sm text-gray-500 mb-1">Scheduled</p>
                                     <p className="font-bold text-lg">{booking.date} at {booking.slot}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-gray-500 mb-1">Customer Details</p>
+                                    <p className="font-bold text-lg">{booking.customerName}</p>
+                                    <p className="text-gray-600">{booking.customerMobile}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-gray-500 mb-1">Service & Address</p>
+                                    <p className="font-bold text-lg">{booking.service}</p>
+                                    {booking.address && <p className="text-sm text-gray-600 mt-1">{booking.address}</p>}
                                 </div>
                             </div>
                         </div>
@@ -145,9 +159,31 @@ const TrackingPage = () => {
                                 <p className="text-lg font-semibold text-green-900 mb-4">
                                     🎉 Your saree is ready for pickup!
                                 </p>
-                                <button className="btn-primary">
-                                    Make Payment
-                                </button>
+
+                                <div className="flex flex-col md:flex-row items-center gap-6">
+                                    <div className="bg-white p-2 rounded-xl border border-gray-200 shadow-sm">
+                                        {(() => {
+                                            const upiId = settings?.upiId || 'eyas@upi';
+                                            const name = encodeURIComponent(settings?.companyName || 'Eyas');
+                                            const note = encodeURIComponent(`Order ${booking.id}`);
+                                            // Exact legacy format as suggested by user with cu=INR
+                                            const upiUrl = `upi://pay?pa=${upiId}&pn=${name}&am=${booking.amount}&cu=INR&tn=${note}`;
+                                            return (
+                                                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(upiUrl)}`} alt="Payment QR" className="w-32 h-32" />
+                                            );
+                                        })()}
+                                    </div>
+                                    <div className="text-center md:text-left">
+                                        <p className="font-bold text-xl mb-2">Amount to Pay: ₹{booking.amount}</p>
+                                        <p className="text-sm text-gray-600 mb-4">Scan to pay instantly</p>
+                                        <button
+                                            onClick={() => navigate(`/pay/${booking.id}`)}
+                                            className="btn-primary"
+                                        >
+                                            View Payment Options
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         )}
                     </div>

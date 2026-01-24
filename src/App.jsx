@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { ToastProvider } from './contexts/ToastContext';
+import NotificationListener from './components/NotificationListener';
 import './index.css';
 
 // Customer Pages
@@ -7,6 +9,8 @@ import LandingPage from './pages/LandingPage';
 import BookingPage from './pages/BookingPage';
 import TrackingPage from './pages/TrackingPage';
 import PaymentPage from './pages/PaymentPage';
+import ClientLogin from './pages/ClientLogin';
+import ClientSignup from './pages/ClientSignup';
 
 // Admin Pages
 import AdminLogin from './pages/admin/AdminLogin';
@@ -26,86 +30,101 @@ import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   return (
     <AuthProvider>
-      <Router basename={import.meta.env.BASE_URL}>
-        <div className="min-h-screen bg-gradient-to-b from-cream-50 to-white">
-          <Routes>
-            {/* Customer Routes */}
-            <Route path="/" element={
-              <>
-                <Navbar />
-                <LandingPage />
-              </>
-            } />
-            <Route path="/book" element={
-              <>
-                <Navbar />
-                <BookingPage />
-              </>
-            } />
-            <Route path="/track" element={
-              <>
-                <Navbar />
-                <TrackingPage />
-              </>
-            } />
-            <Route path="/track/:bookingId" element={
-              <>
-                <Navbar />
-                <TrackingPage />
-              </>
-            } />
-            <Route path="/pay/:bookingId" element={
-              <>
-                <Navbar />
-                <PaymentPage />
-              </>
-            } />
+      <ToastProvider>
+        <NotificationListener />
+        <Router basename={import.meta.env.BASE_URL}>
+          <div className="min-h-screen bg-gradient-to-b from-cream-50 to-white">
+            <Routes>
+              {/* Customer Routes */}
+              <Route path="/" element={
+                <>
+                  <Navbar />
+                  <LandingPage />
+                </>
+              } />
+              <Route path="/book" element={
+                <>
+                  <Navbar />
+                  <BookingPage />
+                </>
+              } />
+              <Route path="/track" element={
+                <>
+                  <Navbar />
+                  <TrackingPage />
+                </>
+              } />
+              <Route path="/track/:bookingId" element={
+                <>
+                  <Navbar />
+                  <TrackingPage />
+                </>
+              } />
+              <Route path="/pay/:bookingId" element={
+                <>
+                  <Navbar />
+                  <PaymentPage />
+                </>
+              } />
+              <Route path="/login" element={
+                <>
+                  <Navbar />
+                  <ClientLogin />
+                </>
+              } />
+              <Route path="/signup" element={
+                <>
+                  <Navbar />
+                  <ClientSignup />
+                </>
+              } />
 
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin" element={
-              <ProtectedRoute>
-                <AdminDashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/reports" element={
-              <ProtectedRoute>
-                <AdminReports />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/orders" element={
-              <ProtectedRoute>
-                <AdminOrders />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/customers" element={
-              <ProtectedRoute>
-                <AdminCustomers />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/partners" element={
-              <ProtectedRoute>
-                <AdminPartners />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/payments" element={
-              <ProtectedRoute>
-                <AdminPayments />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/settings" element={
-              <ProtectedRoute>
-                <AdminSettings />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/recycle-bin" element={
-              <ProtectedRoute>
-                <AdminRecycleBin />
-              </ProtectedRoute>
-            } />
-          </Routes>
-        </div>
-      </Router>
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin" element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/reports" element={
+                <ProtectedRoute>
+                  <AdminReports />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/orders" element={
+                <ProtectedRoute>
+                  <AdminOrders />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/customers" element={
+                <ProtectedRoute>
+                  <AdminCustomers />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/partners" element={
+                <ProtectedRoute>
+                  <AdminPartners />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/payments" element={
+                <ProtectedRoute>
+                  <AdminPayments />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/settings" element={
+                <ProtectedRoute>
+                  <AdminSettings />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/recycle-bin" element={
+                <ProtectedRoute>
+                  <AdminRecycleBin />
+                </ProtectedRoute>
+              } />
+            </Routes>
+          </div>
+        </Router>
+      </ToastProvider>
     </AuthProvider>
   );
 }

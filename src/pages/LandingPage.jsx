@@ -76,12 +76,12 @@ const LandingPage = () => {
                         Premium Saree Draping
                     </div>
 
-                    <h1 className="text-6xl md:text-8xl font-serif font-bold text-white mb-6 leading-tight drop-shadow-2xl">
+                    <h1 className="text-4xl md:text-8xl font-serif font-bold text-white mb-6 leading-tight drop-shadow-2xl">
                         The Art of <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-200 via-primary-100 to-primary-300 italic">Elegance</span>
                     </h1>
 
-                    <p className="text-lg md:text-2xl text-gray-200 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+                    <p className="text-lg md:text-2xl text-gray-200 max-w-2xl mx-auto mb-10 font-light leading-relaxed px-4">
                         Experience the perfect pleats. Wherever you go, carry the grace of tradition with a modern touch.
                     </p>
 

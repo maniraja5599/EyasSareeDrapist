@@ -3,25 +3,40 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Calendar, Clock, User, Phone, MapPin, ArrowRight, CheckCircle } from 'lucide-react';
 
 import { useDataStore } from '../hooks/useDataStore';
+import { useAuth } from '../contexts/AuthContext';
 
 const BookingPage = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const preselectedService = searchParams.get('service') || '';
     const { webpageSettings, actions } = useDataStore();
+    const { user } = useAuth();
 
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         service: preselectedService,
         date: '',
         slot: '',
-        name: '',
-        mobile: '',
-        whatsapp: '',
+        name: user?.name || '',
+        mobile: user?.mobile || '',
+        whatsapp: user?.whatsapp || user?.mobile || '',
         pickupRequired: false,
-        address: '',
+        address: user?.address || '',
         notes: ''
     });
+
+    // Update form if user logs in after page load
+    React.useEffect(() => {
+        if (user) {
+            setFormData(prev => ({
+                ...prev,
+                name: user.name || prev.name,
+                mobile: user.mobile || prev.mobile,
+                whatsapp: user.whatsapp || user.mobile || prev.whatsapp,
+                address: user.address || prev.address
+            }));
+        }
+    }, [user]);
 
     // Use dynamic services from store, fallback to default if empty (rare)
     const services = webpageSettings?.services || [
@@ -307,6 +322,7 @@ const BookingPage = () => {
                                     onClick={() => {
                                         const selectedServiceObj = services.find(s => s.id === formData.service);
                                         const newOrder = actions.addOrder({
+                                            customerId: user?.id, // Link to logged-in user
                                             customerName: formData.name,
                                             customerMobile: formData.mobile,
                                             service: selectedServiceObj ? selectedServiceObj.name : formData.service,

@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Calendar, Home, Search } from 'lucide-react';
+import { Calendar, Home, Search, Menu, X } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const Navbar = () => {
     const location = useLocation();
+    const { user, logout } = useAuth();
 
     const isActive = (path) => location.pathname === path;
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    // Close menu when route changes
+    React.useEffect(() => {
+        setIsOpen(false);
+    }, [location.pathname]);
 
     return (
         <nav className="sticky top-0 z-50 bg-primary-50/95 backdrop-blur-xl border-b border-gray-200/50 shadow-lg">
@@ -14,7 +23,7 @@ const Navbar = () => {
                     {/* Logo */}
                     <Link to="/" className="flex items-center space-x-3 group">
                         <img src={`${import.meta.env.BASE_URL}images/logo.png`} alt="Eyas Drapist Logo" className="w-12 h-12 rounded-2xl shadow-lg shadow-primary-500/30 group-hover:shadow-xl group-hover:shadow-primary-500/40 transition-all duration-300 group-hover:scale-105 object-contain bg-white/10 backdrop-blur-sm" />
-                        <div className="hidden sm:block">
+                        <div className="block">
                             <div className="text-xl font-serif font-bold text-gradient-primary">
                                 Eyas Drapist
                             </div>
@@ -22,50 +31,105 @@ const Navbar = () => {
                         </div>
                     </Link>
 
-                    {/* Navigation Links */}
-                    <div className="flex items-center space-x-2">
-                        <Link
-                            to="/"
-                            className={`px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${isActive('/')
-                                ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg'
-                                : 'text-gray-700 hover:bg-gray-100'
-                                }`}
-                        >
+                    {/* Desktop Navigation */}
+                    <div className="hidden md:flex items-center space-x-2">
+                        <Link to="/" className={`px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${isActive('/') ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100'}`}>
                             <Home className="w-5 h-5 inline mr-2" />
-                            <span className="hidden sm:inline">Home</span>
+                            <span>Home</span>
                         </Link>
-
-                        <Link
-                            to="/book"
-                            className={`px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${isActive('/book')
-                                ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg'
-                                : 'text-gray-700 hover:bg-gray-100'
-                                }`}
-                        >
+                        <Link to="/book" className={`px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${isActive('/book') ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100'}`}>
                             <Calendar className="w-5 h-5 inline mr-2" />
-                            <span className="hidden sm:inline">Book</span>
+                            <span>Book</span>
                         </Link>
-
-                        <Link
-                            to="/track"
-                            className={`px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${isActive('/track')
-                                ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg'
-                                : 'text-gray-700 hover:bg-gray-100'
-                                }`}
-                        >
+                        <Link to="/track" className={`px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${isActive('/track') ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100'}`}>
                             <Search className="w-5 h-5 inline mr-2" />
-                            <span className="hidden sm:inline">Track</span>
+                            <span>Track</span>
                         </Link>
 
-                        <Link
-                            to="/admin/login"
-                            className="px-3 py-2 rounded-lg text-sm text-gray-500 hover:text-gray-900 font-medium transition-colors opacity-70 hover:opacity-100"
+                        {user ? (
+                            <div className="flex items-center gap-2 ml-2 pl-2 border-l border-gray-200">
+                                <span className="text-sm font-semibold text-primary-700">
+                                    {user.name || user.username}
+                                </span>
+                                <button onClick={logout} className="px-3 py-2 rounded-lg text-sm text-red-500 hover:bg-red-50 font-medium transition-colors">
+                                    Logout
+                                </button>
+                                {user.role === 'admin' && (
+                                    <Link to="/admin" className="px-3 py-2 rounded-lg text-sm bg-gray-900 text-white hover:bg-black font-medium transition-colors">
+                                        Dashboard
+                                    </Link>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="flex items-center gap-2 ml-2 pl-2 border-l border-gray-200">
+                                <Link to="/login" className="px-4 py-2 rounded-xl text-primary-600 hover:bg-primary-50 font-semibold transition-all">
+                                    Log In
+                                </Link>
+                                <Link to="/signup" className="px-4 py-2 rounded-xl bg-gray-900 text-white hover:bg-black font-semibold shadow-lg hover:shadow-xl transition-all">
+                                    Sign Up
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Mobile Menu Button */}
+                    <div className="md:hidden flex items-center">
+                        <button
+                            onClick={() => setIsOpen(!isOpen)}
+                            className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors focus:outline-none"
                         >
-                            Admin
-                        </Link>
+                            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                        </button>
                     </div>
                 </div>
             </div>
+
+            {/* Mobile Menu Dropdown */}
+            {isOpen && (
+                <div className="md:hidden absolute top-20 left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-xl animate-slide-down">
+                    <div className="px-4 pt-2 pb-6 space-y-2">
+                        <Link to="/" className={`block px-4 py-3 rounded-xl font-semibold transition-all ${isActive('/') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50'}`}>
+                            <Home className="w-5 h-5 inline mr-3" />
+                            Home
+                        </Link>
+                        <Link to="/book" className={`block px-4 py-3 rounded-xl font-semibold transition-all ${isActive('/book') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50'}`}>
+                            <Calendar className="w-5 h-5 inline mr-3" />
+                            Book Appointment
+                        </Link>
+                        <Link to="/track" className={`block px-4 py-3 rounded-xl font-semibold transition-all ${isActive('/track') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50'}`}>
+                            <Search className="w-5 h-5 inline mr-3" />
+                            Track Order
+                        </Link>
+
+                        <div className="border-t border-gray-100 my-2 pt-2">
+                            {user ? (
+                                <>
+                                    <div className="px-4 py-2 text-sm text-gray-500 font-medium">
+                                        Signed in as <span className="text-primary-600 font-bold">{user.name || user.username}</span>
+                                    </div>
+                                    {user.role === 'admin' && (
+                                        <Link to="/admin" className="block px-4 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50">
+                                            Admin Dashboard
+                                        </Link>
+                                    )}
+                                    <button onClick={logout} className="w-full text-left px-4 py-3 rounded-xl font-semibold text-red-500 hover:bg-red-50">
+                                        Logout
+                                    </button>
+                                </>
+                            ) : (
+                                <div className="grid grid-cols-2 gap-4 px-2 mt-2">
+                                    <Link to="/login" className="text-center px-4 py-3 rounded-xl border border-primary-200 text-primary-700 font-bold hover:bg-primary-50">
+                                        Log In
+                                    </Link>
+                                    <Link to="/signup" className="text-center px-4 py-3 rounded-xl bg-primary-600 text-white font-bold hover:bg-primary-700 shadow-lg">
+                                        Sign Up
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </nav>
     );
 };

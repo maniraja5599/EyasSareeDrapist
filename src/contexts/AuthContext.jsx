@@ -14,17 +14,49 @@ export const AuthProvider = ({ children }) => {
     });
     const [loading, setLoading] = useState(false);
 
-    // Mock login
+    // Mock admin login
     const login = async (username, password) => {
+        setLoading(true);
         // Simulate network delay
         await new Promise(resolve => setTimeout(resolve, 500));
+
         if (username === 'eyas' && password === 'namakkal') {
             const mockUser = { uid: 'admin-001', username: 'eyas', email: 'manirajankg@gmail.com', role: 'admin' };
             setUser(mockUser);
             localStorage.setItem('eyas_admin_user', JSON.stringify(mockUser));
+            setLoading(false);
             return mockUser;
         }
+        setLoading(false);
         throw new Error('Invalid username or password');
+    };
+
+    // Client Login
+    const clientLogin = async (mobile, password) => {
+        setLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        const savedCustomers = localStorage.getItem('eyas_customers');
+        const customers = savedCustomers ? JSON.parse(savedCustomers) : [];
+
+        const foundCustomer = customers.find(c => c.mobile === mobile && c.password === password);
+
+        if (foundCustomer) {
+            const clientUser = { ...foundCustomer, role: 'client' };
+            setUser(clientUser);
+            localStorage.setItem('eyas_admin_user', JSON.stringify(clientUser));
+            setLoading(false);
+            return clientUser;
+        }
+
+        setLoading(false);
+        throw new Error('Invalid Mobile Number or Password');
+    };
+
+    const setClientUser = (customerData) => {
+        const clientUser = { ...customerData, role: 'client' };
+        setUser(clientUser);
+        localStorage.setItem('eyas_admin_user', JSON.stringify(clientUser));
     };
 
     const logout = async () => {
@@ -36,6 +68,8 @@ export const AuthProvider = ({ children }) => {
         user,
         loading,
         login,
+        clientLogin,
+        setClientUser,
         logout,
     };
 
