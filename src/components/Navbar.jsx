@@ -13,7 +13,7 @@ const Navbar = () => {
                 <div className="flex justify-between items-center h-20">
                     {/* Logo */}
                     <Link to="/" className="flex items-center space-x-3 group">
-                        <img src="/images/logo.png" alt="Eyas Drapist Logo" className="w-12 h-12 rounded-2xl shadow-lg shadow-primary-500/30 group-hover:shadow-xl group-hover:shadow-primary-500/40 transition-all duration-300 group-hover:scale-105 object-contain bg-white/10 backdrop-blur-sm" />
+                        <img src={`${import.meta.env.BASE_URL}images/logo.png`} alt="Eyas Drapist Logo" className="w-12 h-12 rounded-2xl shadow-lg shadow-primary-500/30 group-hover:shadow-xl group-hover:shadow-primary-500/40 transition-all duration-300 group-hover:scale-105 object-contain bg-white/10 backdrop-blur-sm" />
                         <div className="hidden sm:block">
                             <div className="text-xl font-serif font-bold text-gradient-primary">
                                 Eyas Drapist

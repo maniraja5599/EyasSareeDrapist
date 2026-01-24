@@ -38,7 +38,7 @@ const Hero = () => {
           min-height: 90vh;
           display: flex;
           align-items: center;
-          background-image: url('/images/hero_bg_v3.png');
+          background-image: url('${import.meta.env.BASE_URL}images/hero_bg_v3.png');
           /* background-color: black; */
           background-size: cover;
           background-position: center;

@@ -17,20 +17,21 @@ const LandingPage = () => {
 
     // Helper to merge dynamic settings with static assets (icons/images)
     const getServices = () => {
+        const baseUrl = import.meta.env.BASE_URL;
         const staticAssets = {
             'prepleat': {
                 icon: <Sparkles className="w-8 h-8" />,
-                image: '/images/new_prepleat.png',
+                image: `${baseUrl}images/new_prepleat.png`,
                 defaultDesc: 'Perfectly pressed pleats that stay intact for days.'
             },
             'draping': {
                 icon: <Scissors className="w-8 h-8" />,
-                image: '/images/new_draping_v2.png',
+                image: `${baseUrl}images/new_draping_v2.png`,
                 defaultDesc: 'Expert styling for weddings and special occasions.'
             },
             'both': {
                 icon: <Star className="w-8 h-8" />,
-                image: '/images/new_luxury.png',
+                image: `${baseUrl}images/new_luxury.png`,
                 defaultDesc: 'The ultimate package: Pre-pleating + Professional Draping.'
             }
         };
@@ -47,7 +48,7 @@ const LandingPage = () => {
             price: `₹${s.price}`,
             description: staticAssets[s.id]?.defaultDesc || 'Professional Service',
             icon: staticAssets[s.id]?.icon || <Star className="w-8 h-8" />,
-            image: staticAssets[s.id]?.image || '/images/hero_bg_v3.png'
+            image: staticAssets[s.id]?.image || `${baseUrl}images/hero_bg_v3.png`
         }));
     };
 
@@ -61,7 +62,7 @@ const LandingPage = () => {
                 {/* Background Image with Parallax-like fix */}
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="/images/feature-detail.jpg"
+                        src={`${import.meta.env.BASE_URL}images/feature-detail.jpg`}
                         alt="Saree Texture"
                         className="w-full h-full object-cover opacity-90 scale-105 animate-pulse-slow"
                     />
@@ -201,8 +202,8 @@ const LandingPage = () => {
 
                     <div className="relative">
                         <div className="relative z-10 grid grid-cols-2 gap-4">
-                            <img src="/images/new_prepleat.png" className="rounded-2xl w-full h-64 object-cover transform translate-y-8" alt="Saree Detail" />
-                            <img src="/images/new_luxury.png" className="rounded-2xl w-full h-64 object-cover shadow-2xl" alt="Draping" />
+                            <img src={`${import.meta.env.BASE_URL}images/new_prepleat.png`} className="rounded-2xl w-full h-64 object-cover transform translate-y-8" alt="Saree Detail" />
+                            <img src={`${import.meta.env.BASE_URL}images/new_luxury.png`} className="rounded-2xl w-full h-64 object-cover shadow-2xl" alt="Draping" />
                         </div>
                     </div>
                 </div>
@@ -238,7 +239,7 @@ const LandingPage = () => {
                 <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
                     <div className="col-span-2">
                         <div className="flex items-center gap-3 mb-6">
-                            <img src="/images/logo.png" alt="Eyas Drapist" className="w-12 h-12 object-contain" />
+                            <img src={`${import.meta.env.BASE_URL}images/logo.png`} alt="Eyas Drapist" className="w-12 h-12 object-contain" />
                             <span className="text-2xl font-serif font-bold text-secondary-900">Eyas Drapist</span>
                         </div>
                         <p className="text-gray-500 max-w-sm">
