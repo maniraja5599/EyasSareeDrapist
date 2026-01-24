@@ -2,14 +2,16 @@ import { useState } from 'react'; // Ensure useState is imported
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotifications } from '../hooks/useNotifications';
-import { LayoutDashboard, ShoppingBag, Users, CreditCard, Settings, LogOut, Trash2, Briefcase, BarChart2, Bell, AlertCircle, CheckCircle } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Users, CreditCard, Settings, LogOut, Trash2, Briefcase, BarChart2, Bell, AlertCircle, CheckCircle, Menu } from 'lucide-react';
 
 const AdminLayout = ({ children }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const { user, logout } = useAuth();
     const { notifications, unreadCount } = useNotifications();
+    const { notifications, unreadCount } = useNotifications();
     const [isNotifOpen, setIsNotifOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Mobile sidebar state
 
     const menuItems = [
         { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
@@ -29,8 +31,17 @@ const AdminLayout = ({ children }) => {
 
     return (
         <div className="min-h-screen bg-cream-100 flex">
+            {/* Mobile Sidebar Backdrop */}
+            {isSidebarOpen && (
+                <div
+                    className="fixed inset-0 bg-black/50 z-20 md:hidden glass-backdrop"
+                    onClick={() => setIsSidebarOpen(false)}
+                />
+            )}
+
             {/* Sidebar */}
-            <aside className="w-64 bg-gradient-to-b from-secondary-900 to-secondary-800 text-white fixed h-screen z-10 transition-all duration-300 flex flex-col shadow-2xl">
+            <aside className={`w-64 bg-gradient-to-b from-secondary-900 to-secondary-800 text-white fixed h-screen z-30 transition-transform duration-300 shadow-2xl ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+                }`}>
                 <div className="p-6 flex-1">
                     <div className="flex items-center gap-3 mb-8">
                         <img src={`${import.meta.env.BASE_URL}images/logo.png`} alt="Eyas Admin" className="w-10 h-10 rounded-2xl bg-white/10 p-1 shadow-lg" />
@@ -72,14 +83,22 @@ const AdminLayout = ({ children }) => {
             </aside >
 
             {/* Main Content Wrapper */}
-            < div className="ml-64 flex-1 flex flex-col min-h-screen" >
+            <div className="flex-1 flex flex-col min-h-screen md:ml-64 transition-all duration-300">
                 {/* Top Header */}
-                < header className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-20 px-8 py-4 flex justify-between items-center shadow-sm" >
-                    <div>
-                        <h1 className="text-2xl font-serif font-bold text-secondary-900">
-                            {menuItems.find(item => item.path === location.pathname)?.label || 'Dashboard'}
-                        </h1>
-                        <p className="text-sm text-gray-500">Welcome back, {user?.username || 'Admin'}</p>
+                <header className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-20 px-4 md:px-8 py-4 flex justify-between items-center shadow-sm">
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={() => setIsSidebarOpen(true)}
+                            className="md:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+                        >
+                            <Menu className="w-6 h-6" />
+                        </button>
+                        <div>
+                            <h1 className="text-xl md:text-2xl font-serif font-bold text-secondary-900">
+                                {menuItems.find(item => item.path === location.pathname)?.label || 'Dashboard'}
+                            </h1>
+                            <p className="hidden md:block text-sm text-gray-500">Welcome back, {user?.username || 'Admin'}</p>
+                        </div>
                     </div>
 
                     <div className="flex items-center gap-6">

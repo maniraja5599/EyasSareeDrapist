@@ -35,12 +35,12 @@ const AdminDashboard = () => {
     return (
         <AdminLayout>
             <div className="animate-slide-up">
-                <div className="mb-8 flex justify-between items-end">
+                <div className="mb-8 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
                     <div>
-                        <h1 className="text-4xl font-serif font-bold text-gray-900 mb-2">Dashboard</h1>
+                        <h1 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-2">Dashboard</h1>
                         <p className="text-gray-600">Welcome back! Here's what's happening today.</p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-left md:text-right">
                         <p className="text-sm text-gray-500 font-medium">{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
                     </div>
                 </div>
