@@ -17,55 +17,57 @@ const Navbar = () => {
     }, [location.pathname]);
 
     return (
-        <nav className="sticky top-0 z-50 bg-primary-50/95 backdrop-blur-xl border-b border-gray-200/50 shadow-lg">
+        <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-xl shadow-sm border-b border-white/50 transition-all duration-300 supports-[backdrop-filter]:bg-white/60">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-20">
+                <div className="flex justify-between items-center h-24">
                     {/* Logo */}
-                    <Link to="/" className="flex items-center space-x-3 group">
-                        <img src={`${import.meta.env.BASE_URL}images/logo.png`} alt="Eyas Drapist Logo" className="w-12 h-12 rounded-2xl shadow-lg shadow-primary-500/30 group-hover:shadow-xl group-hover:shadow-primary-500/40 transition-all duration-300 group-hover:scale-105 object-contain bg-white/10 backdrop-blur-sm" />
+                    <Link to="/" className="flex items-center space-x-4 group">
+                        <div className="p-2 bg-white/40 rounded-2xl border border-white/50 transition-transform group-hover:scale-105 shadow-inner">
+                            <img src={`${import.meta.env.BASE_URL}images/logo.png`} alt="Eyas Drapist Logo" className="w-14 h-14 object-contain drop-shadow-sm" />
+                        </div>
                         <div className="block">
-                            <div className="text-xl font-serif font-bold text-gradient-primary">
+                            <div className="text-2xl font-serif font-bold text-secondary-900 tracking-wide group-hover:text-primary-600 transition-colors">
                                 Eyas Drapist
                             </div>
-                            <div className="text-xs text-gray-500">Namakkal</div>
+                            <div className="text-sm text-secondary-600 font-medium tracking-widest uppercase opacity-90">Namakkal</div>
                         </div>
                     </Link>
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center space-x-2">
-                        <Link to="/" className={`px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${isActive('/') ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100'}`}>
+                        <Link to="/" className={`px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${isActive('/') ? 'bg-secondary-900 text-white shadow-lg' : 'text-secondary-800 hover:bg-white/50 hover:text-primary-600'}`}>
                             <Home className="w-5 h-5 inline mr-2" />
                             <span>Home</span>
                         </Link>
-                        <Link to="/book" className={`px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${isActive('/book') ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100'}`}>
+                        <Link to="/book" className={`px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${isActive('/book') ? 'bg-secondary-900 text-white shadow-lg' : 'text-secondary-800 hover:bg-white/50 hover:text-primary-600'}`}>
                             <Calendar className="w-5 h-5 inline mr-2" />
                             <span>Book</span>
                         </Link>
-                        <Link to="/track" className={`px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${isActive('/track') ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100'}`}>
+                        <Link to="/track" className={`px-4 py-2 rounded-xl font-semibold transition-all duration-300 ${isActive('/track') ? 'bg-secondary-900 text-white shadow-lg' : 'text-secondary-800 hover:bg-white/50 hover:text-primary-600'}`}>
                             <Search className="w-5 h-5 inline mr-2" />
                             <span>Track</span>
                         </Link>
 
                         {user ? (
-                            <div className="flex items-center gap-2 ml-2 pl-2 border-l border-gray-200">
-                                <span className="text-sm font-semibold text-primary-700">
+                            <div className="flex items-center gap-2 ml-4 pl-4 border-l border-secondary-200">
+                                <span className="text-sm font-bold text-secondary-900 bg-white/50 px-3 py-1 rounded-full border border-white">
                                     {user.name || user.username}
                                 </span>
                                 <button onClick={logout} className="px-3 py-2 rounded-lg text-sm text-red-500 hover:bg-red-50 font-medium transition-colors">
                                     Logout
                                 </button>
                                 {user.role === 'admin' && (
-                                    <Link to="/admin" className="px-3 py-2 rounded-lg text-sm bg-gray-900 text-white hover:bg-black font-medium transition-colors">
+                                    <Link to="/admin" className="px-3 py-2 rounded-lg text-sm bg-primary-600 text-white hover:bg-primary-700 font-medium transition-colors shadow-md">
                                         Dashboard
                                     </Link>
                                 )}
                             </div>
                         ) : (
-                            <div className="flex items-center gap-2 ml-2 pl-2 border-l border-gray-200">
-                                <Link to="/login" className="px-4 py-2 rounded-xl text-primary-600 hover:bg-primary-50 font-semibold transition-all">
+                            <div className="flex items-center gap-2 ml-4 pl-4 border-l border-secondary-200">
+                                <Link to="/login" className="px-4 py-2 rounded-xl text-secondary-800 hover:bg-white/50 font-semibold transition-all">
                                     Log In
                                 </Link>
-                                <Link to="/signup" className="px-4 py-2 rounded-xl bg-gray-900 text-white hover:bg-black font-semibold shadow-lg hover:shadow-xl transition-all">
+                                <Link to="/signup" className="px-4 py-2 rounded-xl bg-secondary-900 text-white hover:bg-black font-semibold shadow-lg hover:shadow-xl transition-all">
                                     Sign Up
                                 </Link>
                             </div>
@@ -76,7 +78,7 @@ const Navbar = () => {
                     <div className="md:hidden flex items-center">
                         <button
                             onClick={() => setIsOpen(!isOpen)}
-                            className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors focus:outline-none"
+                            className="p-2 rounded-lg text-secondary-900 hover:bg-white/50 transition-colors focus:outline-none"
                         >
                             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                         </button>
@@ -86,7 +88,7 @@ const Navbar = () => {
 
             {/* Mobile Menu Dropdown */}
             {isOpen && (
-                <div className="md:hidden absolute top-20 left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-xl animate-slide-down">
+                <div className="md:hidden absolute top-20 left-0 w-full bg-white border-b border-gray-200 shadow-2xl animate-slide-down rounded-b-2xl">
                     <div className="px-4 pt-2 pb-6 space-y-2">
                         <Link to="/" className={`block px-4 py-3 rounded-xl font-semibold transition-all ${isActive('/') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50'}`}>
                             <Home className="w-5 h-5 inline mr-3" />
