@@ -36,6 +36,9 @@ const AdminOrders = () => {
             setIsNewOrderModalOpen(true);
             // Clear state to prevent reopening on refresh
             window.history.replaceState({}, document.title);
+        } else if (location.state?.openNewOrder) {
+            setIsNewOrderModalOpen(true);
+            window.history.replaceState({}, document.title);
         }
     }, [location.state]);
     const [searchTerm, setSearchTerm] = useState('');

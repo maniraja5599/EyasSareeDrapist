@@ -8,7 +8,7 @@ const BookingPage = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const preselectedService = searchParams.get('service') || '';
-    const { webpageSettings } = useDataStore();
+    const { webpageSettings, actions } = useDataStore();
 
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
@@ -304,7 +304,20 @@ const BookingPage = () => {
                                     Back
                                 </button>
                                 <button
-                                    onClick={() => alert('Booking submitted! (Connect to Firebase next)')}
+                                    onClick={() => {
+                                        const selectedServiceObj = services.find(s => s.id === formData.service);
+                                        const newOrder = actions.addOrder({
+                                            customerName: formData.name,
+                                            customerMobile: formData.mobile,
+                                            service: selectedServiceObj ? selectedServiceObj.name : formData.service,
+                                            amount: selectedServiceObj ? selectedServiceObj.price : 0,
+                                            date: formData.date,
+                                            slotTime: formData.slot,
+                                            address: formData.address,
+                                            notes: `Pick/Drop: ${formData.pickupRequired ? 'Yes' : 'No'} | WA: ${formData.whatsapp}`
+                                        });
+                                        navigate(`/track/${newOrder.id}`);
+                                    }}
                                     disabled={!formData.name || !formData.mobile}
                                     className="btn-primary flex-1 disabled:opacity-50"
                                 >

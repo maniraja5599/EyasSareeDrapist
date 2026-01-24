@@ -34,7 +34,7 @@ const AdminLogin = () => {
         <div className="min-h-screen bg-gradient-to-br from-secondary-900 via-secondary-800 to-secondary-900 flex items-center justify-center px-4">
             <div className="max-w-md w-full">
                 <div className="text-center mb-8 animate-fade-in">
-                    <img src="/images/logo.png" alt="Eyas Drapist" className="w-24 h-24 mx-auto mb-4 object-contain drop-shadow-2xl" />
+                    <img src={`${import.meta.env.BASE_URL}images/logo.png`} alt="Eyas Drapist" className="w-24 h-24 mx-auto mb-4 object-contain drop-shadow-2xl" />
                     <h1 className="text-4xl font-serif font-bold text-white mb-2">Admin Login</h1>
                     <p className="text-gray-300">Access your dashboard</p>
                 </div>

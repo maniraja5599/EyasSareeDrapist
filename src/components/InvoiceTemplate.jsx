@@ -21,7 +21,7 @@ const InvoiceTemplate = forwardRef(({ order, customer }, ref) => {
                 <div className="flex gap-4">
                     {/* Logo Section */}
                     <img
-                        src="/images/logo.png"
+                        src={`${import.meta.env.BASE_URL}images/logo.png`}
                         alt="Logo"
                         className="w-24 h-24 object-contain rounded-xl border border-gray-100"
                     />
