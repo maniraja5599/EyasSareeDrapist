@@ -1,282 +1,335 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Sparkles, Scissors, CheckCircle, Instagram, Phone, MapPin, ArrowRight, Star, Clock, Heart } from 'lucide-react';
+import { Calendar, Sparkles, Scissors, Clock, Heart, Star, ArrowRight, CheckCircle, Smartphone, Camera, Truck } from 'lucide-react';
 import { useDataStore } from '../hooks/useDataStore';
 
 const LandingPage = () => {
-    const [scrolled, setScrolled] = useState(false);
     const { webpageSettings } = useDataStore();
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    // Service Data with Images
+    const services = [
+        {
+            id: 'prepleat',
+            title: 'Pre-Pleating Service',
+            price: '₹250',
+            description: 'The secret to a perfect 5-minute drape. We iron and fold your pleats to perfection.',
+            image: `${import.meta.env.BASE_URL}images/new_prepleat.png`,
+            icon: <Sparkles className="w-6 h-6" />
+        },
+        {
+            id: 'draping',
+            title: 'Professional Draping',
+            price: '₹300',
+            description: 'Events, Weddings, or Parties. Look stunning with our expert draping styles.',
+            image: `${import.meta.env.BASE_URL}images/new_draping_v2.png`,
+            icon: <Scissors className="w-6 h-6" />
+        },
+        {
+            id: 'bridal',
+            title: 'Bridal Styling',
+            price: '₹500+',
+            description: 'Complete luxury styling for your big day. Box folding, ironing, and draping included.',
+            image: `${import.meta.env.BASE_URL}images/new_luxury.png`,
+            icon: <Heart className="w-6 h-6" />
+        }
+    ];
 
-    // Helper to merge dynamic settings with static assets (icons/images)
-    const getServices = () => {
-        const baseUrl = import.meta.env.BASE_URL;
-        const staticAssets = {
-            'prepleat': {
-                icon: <Sparkles className="w-8 h-8" />,
-                image: `${baseUrl}images/new_prepleat.png`,
-                defaultDesc: 'Perfectly pressed pleats that stay intact for days.'
-            },
-            'draping': {
-                icon: <Scissors className="w-8 h-8" />,
-                image: `${baseUrl}images/new_draping_v2.png`,
-                defaultDesc: 'Expert styling for weddings and special occasions.'
-            },
-            'both': {
-                icon: <Star className="w-8 h-8" />,
-                image: `${baseUrl}images/new_luxury.png`,
-                defaultDesc: 'The ultimate package: Pre-pleating + Professional Draping.'
-            }
-        };
-
-        const servicesFromStore = webpageSettings?.services || [
-            { id: 'prepleat', name: 'Pre-Pleating', price: 250 },
-            { id: 'draping', name: 'Saree Draping', price: 300 },
-            { id: 'both', name: 'Complete Luxury', price: 500 }
-        ];
-
-        return servicesFromStore.map(s => ({
-            id: s.id,
-            title: s.name, // Mapping 'name' from store to 'title' for this view
-            price: `₹${s.price}`,
-            description: staticAssets[s.id]?.defaultDesc || 'Professional Service',
-            icon: staticAssets[s.id]?.icon || <Star className="w-8 h-8" />,
-            image: staticAssets[s.id]?.image || `${baseUrl}images/hero_bg_v3.png`
-        }));
-    };
-
-    const services = getServices();
+    const reviews = [
+        { name: "Priya S.", text: "Saved me hours! The pleats were so sharp.", stars: 5 },
+        { name: "Anitha R.", text: "Felt so confident at my reception. Thank you!", stars: 5 },
+        { name: "Deepa K.", text: "Best draping service in Namakkal.", stars: 5 }
+    ];
 
     return (
-        <div className="min-h-screen bg-cream-50 font-sans selection:bg-primary-200">
+        <div className="min-h-screen bg-gradient-to-b from-cream-50 to-white font-sans overflow-x-hidden">
 
-            {/* HERO SECTION */}
-            <header className="relative h-screen flex items-center justify-center overflow-hidden">
-                {/* Background Image with Parallax-like fix */}
-                <div className="absolute inset-0 z-0">
-                    <img
-                        src={`${import.meta.env.BASE_URL}images/feature-detail.jpg`}
-                        alt="Saree Texture"
-                        className="w-full h-full object-cover opacity-90 scale-105 animate-pulse-slow"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-secondary-900/50 to-secondary-900/90 mix-blend-multiply" />
-                </div>
+            {/* --- HERO SECTION --- */}
+            <header className="relative min-h-[90vh] flex items-center justify-center px-4 overflow-hidden pt-20">
+                {/* Decorative Background Elements */}
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-100/40 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 animate-float-delayed pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-secondary-100/40 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2 animate-float pointer-events-none" />
 
-                {/* Hero Content */}
-                <div className="relative z-10 text-center px-4 max-w-5xl mx-auto animate-fade-in-up">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-cream-100 text-sm font-medium tracking-widest uppercase mb-6 animate-slide-up">
-                        <Sparkles className="w-4 h-4 text-primary-300" />
-                        Premium Saree Draping
+                <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center relative z-10 w-full">
+                    {/* Left: Text Content */}
+                    <div className="text-center lg:text-left space-y-8 animate-fade-in-up">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-primary-200 shadow-sm text-primary-800 text-sm font-bold tracking-widest uppercase">
+                            <Sparkles className="w-4 h-4 text-primary-500" />
+                            Namakkal's Premium Drapist
+                        </div>
+
+                        <h1 className="text-5xl lg:text-7xl font-serif font-bold text-gray-900 leading-[1.1]">
+                            Wear Your Saree with <br />
+                            <span className="text-gradient-gold italic">Confidence</span>
+                        </h1>
+
+                        <p className="text-lg lg:text-xl text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                            Say goodbye to messy pleats. Experience the elegance of professional pre-pleating and draping services designed for the modern woman.
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                            <Link to="/book" className="group relative px-8 py-4 bg-secondary-900 text-white rounded-full font-semibold text-lg hover:shadow-2xl hover:shadow-secondary-900/40 transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+                                <span className="relative z-10 flex items-center gap-3">
+                                    Book Now <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                </span>
+                            </Link>
+                            <Link to="/track" className="px-8 py-4 bg-white text-gray-800 border border-gray-200 rounded-full font-semibold text-lg hover:bg-gray-50 transition-all shadow-sm flex items-center justify-center gap-2">
+                                Track Order
+                            </Link>
+                        </div>
+
+                        {/* Social Proof */}
+                        <div className="pt-4 flex items-center justify-center lg:justify-start gap-4">
+                            <div className="flex -space-x-3">
+                                {[1, 2, 3].map(i => (
+                                    <div key={i} className="w-10 h-10 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs font-bold text-gray-500">
+                                        Use{i}
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="text-sm font-medium text-gray-500">
+                                Trusted by <span className="text-gray-900 font-bold">100+ Women</span> this month
+                            </div>
+                        </div>
                     </div>
 
-                    <h1 className="text-4xl md:text-8xl font-serif font-bold text-white mb-6 leading-tight drop-shadow-2xl">
-                        The Art of <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-200 via-primary-100 to-primary-300 italic">Elegance</span>
-                    </h1>
+                    {/* Right: Hero Image Composition */}
+                    <div className="relative hidden lg:block h-[600px]">
+                        <div className="absolute inset-0 bg-gradient-to-tr from-primary-100 to-transparent rounded-[3rem] transform rotate-3 scale-95" />
+                        <img
+                            src={`${import.meta.env.BASE_URL}images/hero_bg_v3.png`}
+                            alt="Elegant Saree"
+                            className="absolute inset-0 w-full h-full object-cover rounded-[3rem] shadow-2xl transform -rotate-2 hover:rotate-0 transition-all duration-700"
+                        />
 
-                    <p className="text-lg md:text-2xl text-gray-200 max-w-2xl mx-auto mb-10 font-light leading-relaxed px-4">
-                        Experience the perfect pleats. Wherever you go, carry the grace of tradition with a modern touch.
-                    </p>
+                        {/* Floating Cards */}
+                        <div className="absolute top-10 -left-10 bg-white p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-float">
+                            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <Clock className="w-5 h-5 text-green-600" />
+                            </div>
+                            <div>
+                                <p className="text-xs text-gray-500 font-bold uppercase">Ready in</p>
+                                <p className="font-bold text-gray-900">5 Minutes</p>
+                            </div>
+                        </div>
 
-                    <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
-                        <Link
-                            to="/book"
-                            className="group relative px-8 py-4 bg-white text-secondary-900 rounded-full font-bold text-lg overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.5)]"
-                        >
-                            <span className="relative z-10 flex items-center gap-2">
-                                Book Appointment <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </span>
-                        </Link>
-
-                        <Link
-                            to="/track"
-                            className="px-8 py-4 rounded-full border border-white/30 text-white font-medium hover:bg-white/10 backdrop-blur-sm transition-all flex items-center gap-2"
-                        >
-                            Track Order <Clock className="w-4 h-4" />
-                        </Link>
-                    </div>
-                </div>
-
-                {/* Scroll Indicator */}
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-white/50">
-                    <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center p-2">
-                        <div className="w-1 h-2 bg-white rounded-full" />
+                        <div className="absolute bottom-20 -right-5 bg-white p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-float-delayed">
+                            <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                                <Heart className="w-5 h-5 text-primary-600" />
+                            </div>
+                            <div>
+                                <p className="text-xs text-gray-500 font-bold uppercase">Fabric Safe</p>
+                                <p className="font-bold text-gray-900">Ironing</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
 
-            {/* MARQUEE STRIP */}
-            <div className="bg-primary-900 text-primary-100 py-4 overflow-hidden relative z-20">
-                <div className="flex animate-marquee whitespace-nowrap gap-12 text-sm font-bold tracking-[0.2em] uppercase">
-                    {[...Array(10)].map((_, i) => (
-                        <span key={i} className="flex items-center gap-4 opacity-70">
-                            <Star className="w-3 h-3 text-primary-400" />
-                            Premium Pre-Pleating
-                            <Star className="w-3 h-3 text-primary-400" />
-                            Professional Draping
-                        </span>
-                    ))}
+            {/* --- SERVICES STRIP --- */}
+            <div className="bg-secondary-900 text-white py-12 overflow-hidden mx-4 rounded-3xl shadow-2xl relative z-20 mt-[-50px]">
+                <div className="max-w-7xl mx-auto px-6 flex flex-wrap justify-around gap-8 text-center md:text-left">
+                    <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
+                            <Truck className="w-6 h-6 text-primary-300" />
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-lg">Doorstep Pickup</h4>
+                            <p className="text-sm text-gray-300">Available in Namakkal</p>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
+                            <Smartphone className="w-6 h-6 text-primary-300" />
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-lg">Instant Booking</h4>
+                            <p className="text-sm text-gray-300">Book slot via App</p>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
+                            <Camera className="w-6 h-6 text-primary-300" />
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-lg">Video Updates</h4>
+                            <p className="text-sm text-gray-300">See your saree packing</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            {/* SERVICES SHOWCASE */}
-            <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
-                <div className="text-center mb-16">
-                    <span className="text-primary-600 font-bold tracking-widest uppercase text-sm mb-2 block">Our Expertise</span>
-                    <h2 className="text-4xl md:text-5xl font-serif font-bold text-secondary-900">Curated Services</h2>
-                </div>
+            {/* --- ELEGANT SERVICES GRID --- */}
+            <section className="py-24 px-4">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-16 space-y-4">
+                        <span className="text-primary-600 font-serif italic text-xl">Our Expertise</span>
+                        <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-900">Curated for You</h2>
+                        <p className="text-gray-500 max-w-xl mx-auto">Select from our range of premium drape services designed to make you look your best.</p>
+                    </div>
 
-                <div className="grid md:grid-cols-3 gap-8">
-                    {services.map((service) => (
-                        <div key={service.id} className="group relative rounded-[2rem] overflow-hidden bg-white shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                            {/* Image Background */}
-                            <div className="h-96 relative overflow-hidden">
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
-                                <img
-                                    src={service.image}
-                                    alt={service.title}
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                />
-                                <div className="absolute top-6 right-6 z-20 bg-white/20 backdrop-blur-md p-3 rounded-full border border-white/30 text-white">
-                                    {service.icon}
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {services.map((service, index) => (
+                            <div key={service.id} className="group cursor-pointer">
+                                <div className="relative h-[400px] mb-6 overflow-hidden rounded-[2rem]">
+                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors z-10" />
+                                    <img
+                                        src={service.image}
+                                        alt={service.title}
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    />
+                                    <div className="absolute top-6 right-6 z-20 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
+                                        {service.icon}
+                                    </div>
                                 </div>
-                            </div>
-
-                            {/* Content */}
-                            <div className="absolute bottom-0 left-0 right-0 p-8 z-20">
-                                <h3 className="text-3xl font-serif font-bold text-white mb-2">{service.title}</h3>
-                                <p className="text-gray-300 mb-6 line-clamp-2">{service.description}</p>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-2xl font-bold text-primary-300">{service.price}</span>
-                                    <Link
-                                        to={`/book?service=${service.id}`}
-                                        className="bg-white text-secondary-900 p-3 rounded-full hover:bg-primary-400 transition-colors"
-                                    >
-                                        <ArrowRight className="w-6 h-6" />
+                                <div className="space-y-2 text-center md:text-left">
+                                    <h3 className="text-2xl font-serif font-bold text-gray-900 group-hover:text-primary-600 transition-colors">{service.title}</h3>
+                                    <p className="text-lg font-bold text-primary-600">{service.price}</p>
+                                    <p className="text-gray-500 leading-relaxed">{service.description}</p>
+                                    <Link to={`/book?service=${service.id}`} className="inline-flex items-center gap-2 text-secondary-900 font-bold mt-2 hover:gap-4 transition-all">
+                                        Book This <ArrowRight className="w-4 h-4" />
                                     </Link>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </section>
 
-            {/* FEATURES GRID */}
-            <section className="bg-secondary-900 text-white py-24 px-6 relative overflow-hidden">
-                <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-primary-600/20 rounded-full blur-3xl"></div>
-
-                <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-                    <div>
-                        <h2 className="text-4xl md:text-5xl font-serif font-bold mb-8 leading-tight">
-                            Why Choose <br />
-                            <span className="text-primary-400">Eyas Drapist?</span>
-                        </h2>
-                        <div className="space-y-8">
-                            <div className="flex gap-6">
-                                <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-primary-400">
-                                    <Clock className="w-8 h-8" />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-bold mb-2">Time-Saving Elegance</h3>
-                                    <p className="text-gray-400 leading-relaxed">Get ready in under 5 minutes with our perfectly pre-pleated sarees. We save your time without compromising on style.</p>
-                                </div>
-                            </div>
-                            <div className="flex gap-6">
-                                <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-primary-400">
-                                    <Heart className="w-8 h-8" />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-bold mb-2">Fabric Care</h3>
-                                    <p className="text-gray-400 leading-relaxed">We use gentle steam pressing techniques that ensure your expensive silks and fabrics are treated with utmost care.</p>
-                                </div>
-                            </div>
-                        </div>
+            {/* --- HOW IT WORKS (Visual Timeline) --- */}
+            <section className="py-24 bg-white relative overflow-hidden">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="text-center mb-16">
+                        <span className="text-primary-600 font-serif italic text-xl">The Process</span>
+                        <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-900">How It Works</h2>
                     </div>
 
                     <div className="relative">
-                        <div className="relative z-10 grid grid-cols-2 gap-4">
-                            <img src={`${import.meta.env.BASE_URL}images/new_prepleat.png`} className="rounded-2xl w-full h-64 object-cover transform translate-y-8" alt="Saree Detail" />
-                            <img src={`${import.meta.env.BASE_URL}images/new_luxury.png`} className="rounded-2xl w-full h-64 object-cover shadow-2xl" alt="Draping" />
+                        {/* Connecting Line (Desktop) */}
+                        <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-primary-100 -translate-y-1/2 z-0" />
+
+                        <div className="grid md:grid-cols-4 gap-8 relative z-10">
+                            {[
+                                { step: 1, title: 'Book Online', desc: 'Select your service & date', icon: <Calendar className="w-6 h-6" /> },
+                                { step: 2, title: 'We Pickup', desc: 'We collect from your door', icon: <Truck className="w-6 h-6" /> },
+                                { step: 3, title: 'Magic', desc: 'We pleat, iron & pack', icon: <Sparkles className="w-6 h-6" /> },
+                                { step: 4, title: 'Delivery', desc: 'Ready to wear in 5 mins', icon: <CheckCircle className="w-6 h-6" /> }
+                            ].map((item, i) => (
+                                <div key={i} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-lg text-center group hover:-translate-y-2 transition-transform duration-300">
+                                    <div className="w-16 h-16 mx-auto bg-primary-50 rounded-full flex items-center justify-center text-primary-600 mb-4 group-hover:bg-primary-600 group-hover:text-white transition-colors shadow-inner">
+                                        {item.icon}
+                                    </div>
+                                    <h3 className="font-bold text-xl text-gray-900 mb-2">{item.title}</h3>
+                                    <p className="text-gray-500 text-sm">{item.desc}</p>
+                                    <div className="mt-4 inline-block px-3 py-1 bg-gray-100 rounded-full text-xs font-bold text-gray-500">
+                                        Step 0{item.step}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* CALL TO ACTION */}
-            <section className="py-24 px-4 text-center">
-                <div className="max-w-4xl mx-auto relative">
-                    <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
-                        <h2 className="text-[12rem] font-serif font-bold text-secondary-900">BOOK</h2>
+            {/* --- GALLERY (Masonry Lookbook) --- */}
+            <section className="py-24 px-4 bg-cream-50">
+                <div className="max-w-7xl mx-auto">
+                    <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                        <div>
+                            <span className="text-primary-600 font-serif italic text-xl">Lookbook</span>
+                            <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-900">Real Drapes, Real Elegeance</h2>
+                        </div>
+                        <a href="https://instagram.com" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-secondary-900 font-bold border-b-2 border-secondary-900 pb-1 hover:text-primary-600 hover:border-primary-600 transition-colors">
+                            View Instagram <ArrowRight className="w-4 h-4" />
+                        </a>
                     </div>
 
-                    <div className="relative z-10">
-                        <h2 className="text-4xl md:text-6xl font-serif font-bold text-secondary-900 mb-6">
-                            Ready to Transform?
-                        </h2>
-                        <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-                            Don't stress about the drapes. Let us handle the pleats so you can shine at your event.
-                        </p>
-                        <Link
-                            to="/book"
-                            className="inline-flex items-center gap-3 bg-secondary-900 text-white px-10 py-5 rounded-full text-lg font-bold hover:bg-primary-600 transition-colors shadow-2xl shadow-secondary-900/30"
-                        >
-                            <Calendar className="w-6 h-6" />
-                            Book Your Slot Now
+                    <div className="columns-1 md:columns-3 gap-8 space-y-8">
+                        {[
+                            `${import.meta.env.BASE_URL}images/new_draping_v2.png`,
+                            `${import.meta.env.BASE_URL}images/new_luxury.png`,
+                            `${import.meta.env.BASE_URL}images/new_prepleat.png`,
+                            `${import.meta.env.BASE_URL}images/hero_bg_v3.png`,
+                        ].map((src, i) => (
+                            <div key={i} className="break-inside-avoid relative group rounded-2xl overflow-hidden shadow-md">
+                                <img src={src} alt="Gallery" className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" />
+                                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <Heart className="w-8 h-8 text-white fill-current animate-bounce" />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* --- FAQ SECTION --- */}
+            <section className="py-24 px-4 bg-white">
+                <div className="max-w-3xl mx-auto">
+                    <div className="text-center mb-16">
+                        <span className="text-primary-600 font-serif italic text-xl">Doubts?</span>
+                        <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-900">Common Questions</h2>
+                    </div>
+
+                    <div className="space-y-4">
+                        {[
+                            { q: "How long does pre-pleating take?", a: "Typically 1-2 days. We also offer express 24h service." },
+                            { q: "Do you provide box folding?", a: "Yes! All pre-pleated sarees are box folded and ironed perfectly." },
+                            { q: "Can I book for weddings?", a: "Absolutely. We specialize in bridal draping for huge events." },
+                            { q: "Is pickup free?", a: "Pickup is free within 5km of Namakkal town center." }
+                        ].map((faq, i) => (
+                            <details key={i} className="group bg-gray-50 rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer open:bg-primary-50 transition-colors">
+                                <summary className="flex items-center justify-between font-bold text-lg text-gray-900 group-hover:text-primary-700">
+                                    {faq.q}
+                                    <span className="transition group-open:rotate-180">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                        </svg>
+                                    </span>
+                                </summary>
+                                <p className="text-gray-600 mt-4 leading-relaxed animate-fade-in">
+                                    {faq.a}
+                                </p>
+                            </details>
+                        ))}
+                    </div>
+                </div>
+
+            </section>
+
+            {/* --- TESTIMONIALS (Floral bg) --- */}
+            <section className="py-24 bg-primary-50 relative overflow-hidden">
+                <div className="max-w-7xl mx-auto px-4 relative z-10 text-center">
+                    <h2 className="text-4xl font-serif font-bold text-gray-900 mb-12">Client Love</h2>
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {reviews.map((r, i) => (
+                            <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-primary-100 text-left">
+                                <div className="flex gap-1 text-primary-500 mb-4">
+                                    {[...Array(r.stars)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}
+                                </div>
+                                <p className="text-gray-600 italic mb-6">"{r.text}"</p>
+                                <div className="font-bold text-gray-900 font-serif">- {r.name}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* --- FINAL CTA --- */}
+            <section className="py-24 text-center px-4">
+                <div className="max-w-3xl mx-auto bg-secondary-900 rounded-[3rem] p-12 md:p-20 text-white relative overflow-hidden shadow-2xl">
+                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                    <div className="relative z-10 space-y-8">
+                        <h2 className="text-4xl md:text-6xl font-serif font-bold">Ready to Dazzle?</h2>
+                        <p className="text-primary-200 text-lg">Your perfect saree look is just a click away.</p>
+                        <Link to="/book" className="inline-block bg-white text-secondary-900 px-10 py-4 rounded-full font-bold text-lg hover:bg-primary-50 transition-colors hover:scale-105">
+                            Book Appointment Now
                         </Link>
                     </div>
                 </div>
             </section>
 
-            {/* FOOTER */}
-            <footer className="bg-white border-t border-gray-100 py-12 px-6">
-                <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
-                    <div className="col-span-2">
-                        <div className="flex items-center gap-3 mb-6">
-                            <img src={`${import.meta.env.BASE_URL}images/logo.png`} alt="Eyas Drapist" className="w-12 h-12 object-contain" />
-                            <span className="text-2xl font-serif font-bold text-secondary-900">Eyas Drapist</span>
-                        </div>
-                        <p className="text-gray-500 max-w-sm">
-                            Bringing the timeless elegance of sarees to the modern woman with professional pleating and draping services.
-                        </p>
-                    </div>
-
-                    <div>
-                        <h4 className="font-bold text-gray-900 mb-6">Quick Links</h4>
-                        <ul className="space-y-4 text-gray-600">
-                            <li><Link to="/" className="hover:text-primary-600">Home</Link></li>
-                            <li><Link to="/book" className="hover:text-primary-600">Book Appointment</Link></li>
-                            <li><Link to="/track" className="hover:text-primary-600">Track Order</Link></li>
-                            <li><Link to="/admin/login" className="hover:text-primary-600 text-sm opacity-50">Admin Login</Link></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h4 className="font-bold text-gray-900 mb-6">Contact</h4>
-                        <ul className="space-y-4 text-gray-600">
-                            <li className="flex items-center gap-2">
-                                <Phone className="w-4 h-4 text-primary-600" />
-                                <a href="tel:+917502551633" className="hover:text-primary-600 transition-colors">+91 75025 51633</a>
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <Instagram className="w-4 h-4 text-primary-600" />
-                                <a href="https://www.instagram.com/eyas_sareedrapist_namakkal" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 transition-colors">@eyas_sareedrapist_namakkal</a>
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <MapPin className="w-4 h-4 text-primary-600" /> Namakkal, TN
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="border-t border-gray-100 mt-12 pt-8 text-center text-gray-400 text-sm">
-                    © 2026 Eyas Saree Drapist. All rights reserved.
-                </div>
+            {/* Footer */}
+            <footer className="bg-white py-12 text-center text-gray-500 text-sm border-t border-gray-100">
+                <p>&copy; 2026 Eyas Saree Drapist. Designed with elegance.</p>
             </footer>
         </div>
     );

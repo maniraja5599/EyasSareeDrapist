@@ -9,8 +9,8 @@ const AdminLayout = ({ children }) => {
     const location = useLocation();
     const { user, logout } = useAuth();
     const { notifications, unreadCount } = useNotifications();
-    const { notifications, unreadCount } = useNotifications();
     const [isNotifOpen, setIsNotifOpen] = useState(false);
+
     const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Mobile sidebar state
 
     const menuItems = [
