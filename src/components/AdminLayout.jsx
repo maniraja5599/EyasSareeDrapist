@@ -33,7 +33,7 @@ const AdminLayout = ({ children }) => {
             <aside className="w-64 bg-gradient-to-b from-secondary-900 to-secondary-800 text-white fixed h-screen z-10 transition-all duration-300 flex flex-col">
                 <div className="p-6 flex-1">
                     <div className="flex items-center gap-3 mb-8">
-                        <img src="/images/logo.png" alt="Eyas Admin" className="w-12 h-12 rounded-2xl bg-white/10 p-1 shadow-lg" />
+                        <img src={`${import.meta.env.BASE_URL}images/logo.png`} alt="Eyas Admin" className="w-12 h-12 rounded-2xl bg-white/10 p-1 shadow-lg" />
                         <div>
                             <h2 className="font-serif font-bold text-xl tracking-wide">Eyas Admin</h2>
                             <p className="text-xs text-gray-400 truncate max-w-[150px]">{user?.username || 'Admin'}</p>
