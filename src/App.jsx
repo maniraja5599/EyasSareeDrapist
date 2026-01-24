@@ -26,7 +26,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename={import.meta.env.BASE_URL}>
         <div className="min-h-screen bg-gradient-to-b from-cream-50 to-white">
           <Routes>
             {/* Customer Routes */}
