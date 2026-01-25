@@ -211,6 +211,22 @@
   .animate-border-uneven {
     animation: borderUneven 4s ease-in-out infinite;
   }
+
+  /* Nivedhidha Badge Animation: Reveal from behind then float */
+  .animate-nivedhidha-badge {
+    animation: revealFromBehind 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards, gentleFloat 4s ease-in-out 1.2s infinite;
+  }
+
+  /* Cycling animation: Name shows, then hides */
+  .animate-cycle-name-phone {
+    animation: cycleNamePhone 6s ease-in-out 2s infinite;
+  }
+
+  /* Cycling animation: Phone hidden, then shows */
+  .animate-cycle-phone-name {
+    opacity: 0;
+    animation: cyclePhoneName 6s ease-in-out 2s infinite;
+  }
 }
 
 @keyframes float {
@@ -475,5 +491,79 @@ html {
   75% {
     border-radius: 9999px 40px 9999px 9999px;
     box-shadow: 0 0 30px rgba(212, 175, 55, 0.6), 0 0 50px rgba(212, 175, 55, 0.15);
+  }
+}
+
+/* Nivedhidha Badge Specific Keyframes */
+@keyframes revealFromBehind {
+  0% {
+    opacity: 0;
+    transform: translateX(30px) scale(0.8);
+    filter: blur(8px);
+  }
+
+  60% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes gentleFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Cycling: Name visible, then hides, then reappears */
+@keyframes cycleNamePhone {
+
+  0%,
+  45% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  50%,
+  95% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Cycling: Phone hidden, then appears, then hides */
+@keyframes cyclePhoneName {
+
+  0%,
+  45% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  50%,
+  95% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(100%);
   }
 }

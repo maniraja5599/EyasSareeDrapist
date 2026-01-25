@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Sparkles, Scissors, Clock, Heart, Star, ArrowRight, CheckCircle, Smartphone, Camera, Truck, MapPin, User, Zap } from 'lucide-react';
+import { Calendar, Sparkles, Scissors, Clock, Heart, Star, ArrowRight, CheckCircle, Smartphone, Camera, Truck, MapPin, User, Zap, Crown, Phone } from 'lucide-react';
 import { useDataStore } from '../hooks/useDataStore';
 
 const LandingPage = () => {
@@ -9,7 +9,10 @@ const LandingPage = () => {
     const observerRef = React.useRef(null);
 
     React.useEffect(() => {
-        observerRef.current = new IntersectionObserver((entries) => {
+        // Push state to create a "stay" buffer for mobile back button
+        window.history.pushState(null, '', window.location.pathname);
+
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
@@ -18,6 +21,8 @@ const LandingPage = () => {
                 }
             });
         }, { threshold: 0.1 });
+
+        observerRef.current = observer;
 
         return () => {
             if (observerRef.current) observerRef.current.disconnect();
@@ -103,6 +108,7 @@ const LandingPage = () => {
                         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2 max-w-md mx-auto">
                             <Link to="/book" className="group relative px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-500 text-black rounded-full font-bold text-sm sm:text-base hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] transition-all duration-300 hover:scale-105">
                                 <span className="relative z-10 flex items-center justify-center gap-2">
+                                    <Crown className="w-5 h-5 text-black fill-black/20 animate-pulse" />
                                     Wear Your Confidence <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                 </span>
                             </Link>
@@ -129,14 +135,22 @@ const LandingPage = () => {
                             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-40" />
                         </div>
 
-                        {/* Floating Badge */}
-                        <div className="absolute top-6 right-6 z-30 bg-black/60 backdrop-blur-md px-4 py-3 rounded-2xl border border-primary-500/40 shadow-lg animate-fade-in-up">
-                            <div className="flex items-center gap-2 text-primary-400">
-                                <User className="w-4 h-4" />
-                                <span className="text-xs font-bold uppercase tracking-wider">NIVEDHIDHA</span>
+                        {/* Floating Badge - Cycling Name/CTA */}
+                        <a href="tel:+917502551633" className="absolute top-6 right-6 z-30 bg-black/60 backdrop-blur-md px-4 py-3 rounded-2xl border border-primary-500/40 shadow-lg animate-nivedhidha-badge cursor-pointer hover:bg-primary-900/40 transition-colors group">
+                            <div className="relative h-5 overflow-hidden">
+                                {/* Name - visible initially, then hides */}
+                                <div className="flex items-center gap-2 text-primary-400 animate-cycle-name-phone">
+                                    <User className="w-4 h-4" />
+                                    <span className="text-xs font-bold uppercase tracking-wider">NIVEDHIDHA</span>
+                                </div>
+                                {/* CTA - hidden initially, then appears */}
+                                <div className="absolute inset-0 flex items-center gap-2 text-primary-400 animate-cycle-phone-name">
+                                    <Phone className="w-4 h-4" />
+                                    <span className="text-xs font-bold uppercase tracking-wider">CLICK TO CALL</span>
+                                </div>
                             </div>
-                            <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-0.5">Your Personal Stylist</p>
-                        </div>
+                            <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-0.5 group-hover:text-primary-300 transition-colors">Your Personal Stylist</p>
+                        </a>
 
                         {/* Rating Badge */}
                         <div className="absolute bottom-6 left-6 z-30 bg-black/60 backdrop-blur-md px-4 py-3 rounded-2xl border border-primary-500/40 shadow-lg animate-fade-in-up">
