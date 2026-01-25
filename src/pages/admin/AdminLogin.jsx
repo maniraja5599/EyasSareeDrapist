@@ -5,8 +5,8 @@ import { LogIn, Mail, Lock } from 'lucide-react';
 
 const AdminLogin = () => {
     const navigate = useNavigate();
-    const { login } = useAuth();
-    const [username, setUsername] = useState('');
+    const { login, loginWithGoogle } = useAuth();
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -17,17 +17,18 @@ const AdminLogin = () => {
         setLoading(true);
 
         try {
-            await login(username, password);
+            await login(email, password);
             navigate('/admin');
         } catch (err) {
-            setError('Invalid username or password');
+            console.error(err);
+            setError('Invalid email or password');
         } finally {
             setLoading(false);
         }
     };
 
     const handleForgotPassword = () => {
-        alert("Password recovery instructions have been sent to manirajankg@gmail.com");
+        alert("Password recovery instructions have been sent to " + (email || "your email"));
     };
 
     return (
@@ -44,14 +45,14 @@ const AdminLogin = () => {
                         <div>
                             <label className="block text-white font-semibold mb-2">
                                 <Mail className="w-4 h-4 inline mr-2" />
-                                Username
+                                Email
                             </label>
                             <input
-                                type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="w-full px-5 py-4 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-primary-500/50 focus:border-primary-400 transition-all duration-300"
-                                placeholder="eyas"
+                                placeholder="admin@example.com"
                                 required
                             />
                         </div>
@@ -101,10 +102,39 @@ const AdminLogin = () => {
                                 </>
                             )}
                         </button>
+
+                        <div className="relative my-6">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-300/30"></div>
+                            </div>
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-2 bg-white/10 text-gray-300 rounded backdrop-blur">Or continue with</span>
+                            </div>
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={async () => {
+                                try {
+                                    setLoading(true);
+                                    await loginWithGoogle();
+                                    navigate('/admin');
+                                } catch (error) {
+                                    console.error("Google Login Error:", error);
+                                    setError("Google Sign-In Failed");
+                                } finally {
+                                    setLoading(false);
+                                }
+                            }}
+                            className="w-full bg-white text-gray-900 font-bold py-4 px-8 rounded-2xl transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1 flex items-center justify-center gap-3"
+                        >
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
+                            Sign in with Google
+                        </button>
                     </form>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

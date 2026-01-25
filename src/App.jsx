@@ -11,6 +11,7 @@ import TrackingPage from './pages/TrackingPage';
 import PaymentPage from './pages/PaymentPage';
 import ClientLogin from './pages/ClientLogin';
 import ClientSignup from './pages/ClientSignup';
+import ClientProfile from './pages/ClientProfile';
 
 // Admin Pages
 import AdminLogin from './pages/admin/AdminLogin';
@@ -76,6 +77,12 @@ function App() {
                 <>
                   <Navbar />
                   <ClientSignup />
+                </>
+              } />
+              <Route path="/profile" element={
+                <>
+                  <Navbar />
+                  <ClientProfile />
                 </>
               } />
 

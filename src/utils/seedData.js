@@ -19,9 +19,9 @@ export const seedDatabase = async () => {
             upiId: 'eyas@upi',
             address: '123, Fashion Street, Chennai, Tamil Nadu',
             services: [
-                { id: 'prepleat', name: 'Pre-Pleating', price: 250, duration: '30-45 mins' },
-                { id: 'draping', name: 'Draping', price: 300, duration: '15-20 mins' },
-                { id: 'both', name: 'Complete Package', price: 500, duration: 'Best Value' }
+                { id: 'prepleat', name: 'Only Pre-Pleating', price: 300, duration: '30-45 mins' },
+                { id: 'draping', name: 'Only Draping', price: 600, duration: '15-20 mins' },
+                { id: 'both', name: 'Complete Package', price: 800, duration: 'Best Value' }
             ],
             slots: ['10:00 AM', '11:00 AM', '2:00 PM', '4:00 PM', '6:00 PM'],
             updatedAt: new Date().toISOString()

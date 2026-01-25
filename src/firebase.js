@@ -4,14 +4,16 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
-// TODO: Replace the following with your app's Firebase project configuration
+// Firebase project configuration
+// For production: Use environment variables (create .env file from .env.example)
+// For quick setup: Replace the values below directly
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "eyas-drapist.firebaseapp.com",
-    projectId: "eyas-drapist",
-    storageBucket: "eyas-drapist.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyAO9X3tvqNFAJ9uRTdOJrAr6dNLYGkwihQ",
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "eyas-saree-drapist.firebaseapp.com",
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "eyas-saree-drapist",
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "eyas-saree-drapist.firebasestorage.app",
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "419876090748",
+    appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:419876090748:web:c643b6042dce59220c2af9"
 };
 
 // Initialize Firebase

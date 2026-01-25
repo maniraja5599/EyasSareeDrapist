@@ -5,7 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 const ClientLogin = () => {
     const navigate = useNavigate();
-    const { clientLogin } = useAuth();
+    const { clientLogin, loginWithGoogle } = useAuth();
 
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -96,6 +96,35 @@ const ClientLogin = () => {
                                     <ArrowRight className="w-5 h-5 inline ml-2" />
                                 </>
                             )}
+                        </button>
+
+                        <div className="relative my-6">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-200"></div>
+                            </div>
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                            </div>
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={async () => {
+                                try {
+                                    setLoading(true);
+                                    await loginWithGoogle();
+                                    navigate('/');
+                                } catch (error) {
+                                    console.error("Google Login Error:", error);
+                                    setError("Google Sign-In Failed");
+                                } finally {
+                                    setLoading(false);
+                                }
+                            }}
+                            className="w-full bg-white text-gray-900 border border-gray-300 font-bold py-3 px-4 rounded-xl transition-all duration-300 hover:bg-gray-50 hover:shadow-md flex items-center justify-center gap-3"
+                        >
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
+                            Sign in with Google
                         </button>
                     </form>
 
