@@ -79,6 +79,12 @@ function App() {
                     <PaymentPage />
                   </>
                 } />
+                <Route path="/payment/:bookingId" element={
+                  <>
+                    <Navbar />
+                    <PaymentPage />
+                  </>
+                } />
                 <Route path="/login" element={
                   <>
                     <Navbar />
