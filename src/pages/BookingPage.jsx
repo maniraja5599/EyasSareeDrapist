@@ -704,13 +704,18 @@ const BookingPage = () => {
                                             }
 
                                             const selectedServiceObj = services.find(s => s.id === formData.service);
+                                            const basePrice = selectedServiceObj ? selectedServiceObj.price : 0;
+                                            const totalAmount = basePrice * formData.sareeCount;
+
                                             const newOrder = await actions.addOrder({
                                                 customerId: customerId,
                                                 customerName: formData.name,
                                                 customerMobile: formData.mobile,
                                                 customerEmail: customerEmail,
+                                                customerWhatsapp: formData.whatsapp,
                                                 service: selectedServiceObj ? selectedServiceObj.name : formData.service,
-                                                amount: selectedServiceObj ? selectedServiceObj.price : 0,
+                                                amount: totalAmount,
+                                                sareeCount: formData.sareeCount,
                                                 date: formData.date,
                                                 slotTime: formData.slot,
                                                 address: formData.address,
@@ -721,7 +726,15 @@ const BookingPage = () => {
                                                 paymentStatus: formData.paidAmount > 0 ? 'Partial' : 'Pending'
                                             });
 
-                                            navigate(`/track/${newOrder.id}`);
+
+                                            // Redirect based on payment method
+                                            if (formData.paymentMethod === 'online' || formData.paymentMethod === 'advance') {
+                                                // Go to payment page for online/advance payments
+                                                navigate(`/payment/${newOrder.id}`);
+                                            } else {
+                                                // Go to tracking for cash on delivery
+                                                navigate(`/track/${newOrder.id}`);
+                                            }
                                         } catch (err) {
                                             console.error("Booking Failed:", err);
                                             setError(err.message || "Booking failed. Please try again.");

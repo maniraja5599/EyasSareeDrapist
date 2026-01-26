@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { CreditCard, Smartphone, ArrowLeft, Loader2, IndianRupee } from 'lucide-react';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useDataStore } from '../hooks/useDataStore';
 
@@ -11,6 +11,7 @@ const PaymentPage = () => {
     const { shopSettings } = useDataStore();
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [paymentMethod, setPaymentMethod] = useState('online'); // online, advance, cash
 
     useEffect(() => {
         const fetchOrder = async () => {
@@ -19,7 +20,9 @@ const PaymentPage = () => {
                 const docRef = doc(db, 'bookings', bookingId);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
-                    setOrder({ id: docSnap.id, ...docSnap.data() });
+                    const orderData = { id: docSnap.id, ...docSnap.data() };
+                    setOrder(orderData);
+                    setPaymentMethod(orderData.paymentMethod || 'online');
                 }
             } catch (error) {
                 console.error("Error fetching order for payment:", error);
@@ -30,6 +33,29 @@ const PaymentPage = () => {
 
         fetchOrder();
     }, [bookingId]);
+
+    const handlePaymentMethodChange = async (method) => {
+        setPaymentMethod(method);
+
+        // Update booking document
+        try {
+            const docRef = doc(db, 'bookings', bookingId);
+            await updateDoc(docRef, {
+                paymentMethod: method
+            });
+
+            setOrder(prev => ({ ...prev, paymentMethod: method }));
+
+            // If changed to cash, redirect to tracking
+            if (method === 'cash') {
+                setTimeout(() => {
+                    navigate(`/track/${bookingId}`);
+                }, 1000);
+            }
+        } catch (error) {
+            console.error("Error updating payment method:", error);
+        }
+    };
 
     const handleUPIPayment = (app) => {
         const upiId = shopSettings?.upiId || '7502551633@ybl';
@@ -91,6 +117,51 @@ const PaymentPage = () => {
                         <span className="w-1 h-1 rounded-full bg-gray-600"></span>
                         <p className="text-sm">{order.service}</p>
                     </div>
+                </div>
+
+                {/* Payment Method Switcher */}
+                <div className="mb-8 bg-zinc-900/50 backdrop-blur-xl rounded-3xl border border-white/5 p-2">
+                    <div className="grid grid-cols-3 gap-2">
+                        <button
+                            onClick={() => handlePaymentMethodChange('online')}
+                            className={`py-3 px-4 rounded-2xl font-bold text-sm transition-all ${paymentMethod === 'online'
+                                    ? 'bg-primary-600 text-black shadow-lg'
+                                    : 'bg-transparent text-gray-400 hover:bg-white/5'
+                                }`}
+                        >
+                            💳 Pay Now
+                        </button>
+                        <button
+                            onClick={() => handlePaymentMethodChange('advance')}
+                            className={`py-3 px-4 rounded-2xl font-bold text-sm transition-all ${paymentMethod === 'advance'
+                                    ? 'bg-primary-600 text-black shadow-lg'
+                                    : 'bg-transparent text-gray-400 hover:bg-white/5'
+                                }`}
+                        >
+                            📊 Advance
+                        </button>
+                        <button
+                            onClick={() => handlePaymentMethodChange('cash')}
+                            className={`py-3 px-4 rounded-2xl font-bold text-sm transition-all ${paymentMethod === 'cash'
+                                    ? 'bg-primary-600 text-black shadow-lg'
+                                    : 'bg-transparent text-gray-400 hover:bg-white/5'
+                                }`}
+                        >
+                            💵 COD
+                        </button>
+                    </div>
+
+                    {/* Cash on Delivery Message */}
+                    {paymentMethod === 'cash' && (
+                        <div className="mt-4 p-4 bg-black/60 rounded-2xl border border-white/5 text-center">
+                            <p className="text-gray-400 text-sm">
+                                ✅ Payment method changed to Cash on Delivery
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                                Redirecting to tracking page...
+                            </p>
+                        </div>
+                    )}
                 </div>
 
                 <div className="gradient-card border-primary-500/20 bg-zinc-900/50 backdrop-blur-xl animate-slide-up">
