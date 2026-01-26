@@ -57,21 +57,24 @@ const PaymentPage = () => {
         }
     };
 
-    const handleUPIPayment = (app) => {
+    // Scroll to top on mount
+    React.useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
+
+    const handleUPIPayment = () => {
         const upiId = shopSettings?.upiId || '7502551633@ybl';
-        const name = shopSettings?.companyName || 'Eyas Saree Drapist';
         const amount = order?.amount || 0;
-        const note = encodeURIComponent(`Order ${bookingId}`);
+        const note = encodeURIComponent(`Order-${bookingId}`);
 
-        // UPI Deep Links for mobile apps
-        // upi://pay?pa=address@bank&pn=Payee%20Name&am=1.00&cu=INR&tn=Note
-        const upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${note}`;
+        // Simplified UPI Deep Link - removed pn (payee name) to avoid fraud detection
+        // Format: upi://pay?pa=UPI_ID&am=AMOUNT&cu=INR&tn=NOTE
+        const upiUrl = `upi://pay?pa=${upiId}&am=${amount}&cu=INR&tn=${note}`;
 
-        // In a real mobile environment, this would trigger the app selector
+        console.log('[PAYMENT] UPI Link:', upiUrl);
+
+        // Redirect to UPI app
         window.location.href = upiUrl;
-
-        // For web simulation/debugging
-        console.log(`Initiating ${app} payment via:`, upiUrl);
     };
 
     if (loading) {
@@ -125,8 +128,8 @@ const PaymentPage = () => {
                         <button
                             onClick={() => handlePaymentMethodChange('online')}
                             className={`py-3 px-4 rounded-2xl font-bold text-sm transition-all ${paymentMethod === 'online'
-                                    ? 'bg-primary-600 text-black shadow-lg'
-                                    : 'bg-transparent text-gray-400 hover:bg-white/5'
+                                ? 'bg-primary-600 text-black shadow-lg'
+                                : 'bg-transparent text-gray-400 hover:bg-white/5'
                                 }`}
                         >
                             💳 Pay Now
@@ -134,8 +137,8 @@ const PaymentPage = () => {
                         <button
                             onClick={() => handlePaymentMethodChange('advance')}
                             className={`py-3 px-4 rounded-2xl font-bold text-sm transition-all ${paymentMethod === 'advance'
-                                    ? 'bg-primary-600 text-black shadow-lg'
-                                    : 'bg-transparent text-gray-400 hover:bg-white/5'
+                                ? 'bg-primary-600 text-black shadow-lg'
+                                : 'bg-transparent text-gray-400 hover:bg-white/5'
                                 }`}
                         >
                             📊 Advance
@@ -143,8 +146,8 @@ const PaymentPage = () => {
                         <button
                             onClick={() => handlePaymentMethodChange('cash')}
                             className={`py-3 px-4 rounded-2xl font-bold text-sm transition-all ${paymentMethod === 'cash'
-                                    ? 'bg-primary-600 text-black shadow-lg'
-                                    : 'bg-transparent text-gray-400 hover:bg-white/5'
+                                ? 'bg-primary-600 text-black shadow-lg'
+                                : 'bg-transparent text-gray-400 hover:bg-white/5'
                                 }`}
                         >
                             💵 COD
@@ -165,52 +168,27 @@ const PaymentPage = () => {
                 </div>
 
                 <div className="gradient-card border-primary-500/20 bg-zinc-900/50 backdrop-blur-xl animate-slide-up">
-                    <div className="text-center mb-10">
-                        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary-900/20 border border-primary-500/30 mb-4">
-                            <IndianRupee className="w-10 h-10 text-primary-400" />
+                    <div className="text-center mb-8">
+                        <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-primary-900/20 border border-primary-500/30 mb-4">
+                            <IndianRupee className="w-8 h-8 sm:w-10 sm:h-10 text-primary-400" />
                         </div>
-                        <p className="text-5xl font-bold text-white mb-2 tracking-tight">₹{order.amount}</p>
+                        <p className="text-3xl sm:text-5xl font-bold text-white mb-2 tracking-tight">₹{order.amount}</p>
                         <p className="text-gray-400 uppercase tracking-widest text-xs font-semibold">Total Amount Due</p>
                     </div>
 
-                    <div className="space-y-4 mb-10">
+                    {/* Single UPI Payment Button */}
+                    <div className="mb-8">
                         <button
-                            onClick={() => handleUPIPayment('Google Pay')}
-                            className="w-full p-5 bg-white/5 border border-white/10 rounded-2xl hover:border-primary-500/50 hover:bg-white/10 transition-all duration-300 flex items-center justify-between group"
+                            onClick={handleUPIPayment}
+                            className="w-full p-6 bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all duration-300 flex flex-col items-center justify-center gap-4 group"
                         >
-                            <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 bg-primary-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                                    <Smartphone className="w-5 h-5 text-primary-400" />
-                                </div>
-                                <span className="font-bold text-lg">Google Pay</span>
+                            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <svg className="w-10 h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M3 7h18v2H3V7zm0 4h18v2H3v-2zm0 4h18v2H3v-2z" />
+                                </svg>
                             </div>
-                            <div className="h-2 w-2 rounded-full bg-primary-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        </button>
-
-                        <button
-                            onClick={() => handleUPIPayment('PhonePe')}
-                            className="w-full p-5 bg-white/5 border border-white/10 rounded-2xl hover:border-primary-500/50 hover:bg-white/10 transition-all duration-300 flex items-center justify-between group"
-                        >
-                            <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 bg-primary-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                                    <Smartphone className="w-5 h-5 text-primary-400" />
-                                </div>
-                                <span className="font-bold text-lg">PhonePe</span>
-                            </div>
-                            <div className="h-2 w-2 rounded-full bg-primary-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        </button>
-
-                        <button
-                            onClick={() => handleUPIPayment('Paytm')}
-                            className="w-full p-5 bg-white/5 border border-white/10 rounded-2xl hover:border-primary-500/50 hover:bg-white/10 transition-all duration-300 flex items-center justify-between group"
-                        >
-                            <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 bg-primary-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                                    <CreditCard className="w-5 h-5 text-primary-400" />
-                                </div>
-                                <span className="font-bold text-lg">Paytm / Others</span>
-                            </div>
-                            <div className="h-2 w-2 rounded-full bg-primary-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <span className="font-black text-xl text-white">Pay via UPI</span>
+                            <span className="text-xs text-white/80">Google Pay • PhonePe • Paytm • Others</span>
                         </button>
                     </div>
 
