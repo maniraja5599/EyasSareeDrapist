@@ -154,6 +154,16 @@
     animation: slideInRight 0.8s ease-out forwards;
   }
 
+  /* Pulse with glow for CTA buttons */
+  .animate-pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+
+  /* Arrow bounce animation */
+  .animate-arrow-bounce {
+    animation: arrowBounce 1.5s ease-in-out infinite;
+  }
+
   /* Scale in animation */
   .animate-scale-in {
     animation: scaleIn 0.5s ease-out forwards;
@@ -544,6 +554,34 @@ html {
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Pulse Glow Animation for CTA Buttons */
+@keyframes pulseGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.2);
+    transform: scale(1);
+  }
+
+  50% {
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.6), 0 0 60px rgba(212, 175, 55, 0.3);
+    transform: scale(1.02);
+  }
+}
+
+/* Arrow Bounce Animation */
+@keyframes arrowBounce {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(5px);
   }
 }
 
