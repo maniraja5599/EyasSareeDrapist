@@ -40,7 +40,7 @@ const Navbar = () => {
                     <div className={`flex justify-between items-center gap-4 md:gap-8 transition-all duration-700 ease-in-out ${isScrolled ? 'h-16 md:h-20' : 'h-20 md:h-24'}`}>
                         {/* Logo & Branding */}
                         <div className="flex items-center space-x-3 md:space-x-6 group shrink-0">
-                            <Link to="/" onClick={() => window.scrollTo(0, 0)} className={`block bg-primary-900/20 rounded-2xl border border-primary-500/30 transition-all duration-700 ease-in-out group-hover:scale-105 shadow-[0_0_15px_rgba(212,175,55,0.1)] animate-pulse ${isScrolled ? 'p-1' : 'p-1 md:p-2'}`}>
+                            <Link to="/" onClick={() => window.scrollTo(0, 0)} className={`block bg-primary-900/20 rounded-2xl border border-primary-500/30 transition-all duration-700 ease-in-out group-hover:scale-105 shadow-[0_0_15px_rgba(212,175,55,0.1)] ${isScrolled ? 'p-1' : 'p-1 md:p-2'}`}>
                                 <img src={`${import.meta.env.BASE_URL}images/logo.png`} alt="Eyas Drapist Logo" className={`object-contain drop-shadow-md brightness-110 transition-all duration-700 ease-in-out ${isScrolled ? 'w-10 h-10 md:w-12 md:h-12' : 'w-12 h-12 md:w-16 md:h-16'}`} />
                             </Link>
 
