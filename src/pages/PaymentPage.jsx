@@ -45,13 +45,6 @@ const PaymentPage = () => {
             });
 
             setOrder(prev => ({ ...prev, paymentMethod: method }));
-
-            // If changed to cash, redirect to tracking
-            if (method === 'cash') {
-                setTimeout(() => {
-                    navigate(`/track/${bookingId}`);
-                }, 1000);
-            }
         } catch (error) {
             console.error("Error updating payment method:", error);
         }
@@ -156,13 +149,29 @@ const PaymentPage = () => {
 
                     {/* Cash on Delivery Message */}
                     {paymentMethod === 'cash' && (
-                        <div className="mt-4 p-4 bg-black/60 rounded-2xl border border-white/5 text-center">
-                            <p className="text-gray-400 text-sm">
-                                ✅ Payment method changed to Cash on Delivery
-                            </p>
-                            <p className="text-xs text-gray-500 mt-1">
-                                Redirecting to tracking page...
-                            </p>
+                        <div className="mt-4 p-6 bg-green-900/20 rounded-2xl border-2 border-green-500/30 text-center">
+                            <div className="mb-4">
+                                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500/20 mb-3">
+                                    <svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <p className="text-green-400 font-bold text-lg mb-2">
+                                    Cash on Delivery Selected
+                                </p>
+                                <p className="text-sm text-gray-400 mb-4">
+                                    You will pay ₹{order.amount} when your order is ready for delivery
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => {
+                                    console.log('[PAYMENT] Confirming COD booking');
+                                    navigate(`/track/${bookingId}`);
+                                }}
+                                className="w-full py-4 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-green-500/20"
+                            >
+                                Confirm Booking
+                            </button>
                         </div>
                     )}
                 </div>
