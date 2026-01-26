@@ -112,16 +112,34 @@ const ClientLogin = () => {
                             onClick={async () => {
                                 try {
                                     setLoading(true);
+                                    setError('');
                                     await loginWithGoogle();
                                     navigate('/');
                                 } catch (error) {
                                     console.error("Google Login Error:", error);
-                                    setError("Google Sign-In Failed");
+
+                                    // Provide specific error messages
+                                    let errorMessage = "Google Sign-In Failed";
+
+                                    if (error.code === 'auth/popup-closed-by-user') {
+                                        errorMessage = "Sign-in popup was closed. Please try again.";
+                                    } else if (error.code === 'auth/popup-blocked') {
+                                        errorMessage = "Pop-up blocked by browser. Please allow pop-ups and try again.";
+                                    } else if (error.code === 'auth/cancelled-popup-request') {
+                                        errorMessage = "Sign-in cancelled. Please try again.";
+                                    } else if (error.code === 'auth/network-request-failed') {
+                                        errorMessage = "Network error. Please check your connection.";
+                                    } else if (error.message) {
+                                        errorMessage = error.message;
+                                    }
+
+                                    setError(errorMessage);
                                 } finally {
                                     setLoading(false);
                                 }
                             }}
-                            className="w-full bg-white text-gray-900 border border-gray-300 font-bold py-3 px-4 rounded-xl transition-all duration-300 hover:bg-gray-50 hover:shadow-md flex items-center justify-center gap-3"
+                            disabled={loading}
+                            className="w-full bg-white text-gray-900 border border-gray-300 font-bold py-3 px-4 rounded-xl transition-all duration-300 hover:bg-gray-50 hover:shadow-md flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
                             Sign in with Google
