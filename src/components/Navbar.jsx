@@ -49,14 +49,14 @@ const Navbar = () => {
                                     Eyas Drapist
                                 </Link>
                                 <div className={`flex items-center z-10 relative transition-all duration-300 ${isScrolled ? 'gap-2 mt-0.5' : 'gap-2 mt-1'}`}>
-                                    <a href="tel:+917502551633" title="Click to Call" className={`flex items-center justify-center rounded-lg border border-primary-500/30 hover:border-primary-500/70 bg-primary-900/10 hover:bg-primary-900/30 transition-all duration-300 group/phone shadow-sm hover:shadow-primary-500/20 animate-pulse-glow ${isScrolled ? 'px-2 py-1' : 'gap-1 px-2 py-1'}`}>
+                                    <a href="tel:+917502551633" title="Click to Call" className={`flex items-center justify-center rounded-lg border border-primary-500/30 hover:border-primary-500/70 bg-primary-900/10 hover:bg-primary-900/30 transition-all duration-300 group/phone shadow-sm hover:shadow-primary-500/20 ${isScrolled ? 'px-2 py-1' : 'gap-1 px-2 py-1'}`}>
                                         <Phone className={`text-primary-400 transition-transform group-hover/phone:scale-125 group-hover/phone:rotate-12 ${isScrolled ? 'w-3 h-3 md:w-3.5 md:h-3.5' : 'w-3 h-3 md:w-4 md:h-4'}`} fill="currentColor" />
                                         <span className={`font-bold tracking-wide text-primary-200 group-hover/phone:text-primary-400 uppercase font-serif transition-colors ${isScrolled ? 'text-[8px] md:text-[9px]' : 'text-[9px] md:text-xs'}`}>
                                             Nivedhidha
                                         </span>
                                     </a>
 
-                                    <a href="https://maps.app.goo.gl/gSMHQpU9iGgsXWBB6" target="_blank" rel="noopener noreferrer" title="Location" className={`flex items-center justify-center rounded-lg border border-primary-500/30 hover:border-primary-500/70 bg-primary-900/10 hover:bg-primary-900/30 transition-all duration-300 group/map shadow-sm hover:shadow-primary-500/20 animate-pulse-glow ${isScrolled ? 'px-2 py-1' : 'gap-1 px-2 py-1'}`}>
+                                    <a href="https://maps.app.goo.gl/gSMHQpU9iGgsXWBB6" target="_blank" rel="noopener noreferrer" title="Location" className={`flex items-center justify-center rounded-lg border border-primary-500/30 hover:border-primary-500/70 bg-primary-900/10 hover:bg-primary-900/30 transition-all duration-300 group/map shadow-sm hover:shadow-primary-500/20 ${isScrolled ? 'px-2 py-1' : 'gap-1 px-2 py-1'}`}>
                                         <MapPin className={`text-primary-400 transition-transform group-hover/map:scale-125 group-hover/map:-translate-y-0.5 ${isScrolled ? 'w-3 h-3 md:w-3.5 md:h-3.5' : 'w-3 h-3 md:w-4 md:h-4'}`} fill="currentColor" />
                                         <span className={`font-bold tracking-wide text-primary-200 group-hover/map:text-primary-400 uppercase font-serif transition-colors ${isScrolled ? 'text-[8px] md:text-[9px]' : 'text-[9px] md:text-xs'}`}>
                                             Namakkal
