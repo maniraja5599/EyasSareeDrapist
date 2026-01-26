@@ -70,8 +70,8 @@ const Navbar = () => {
                             </div>
                         </div>
 
-                        {/* Navigation */}
-                        <div className="flex items-center space-x-1 md:space-x-2">
+                        {/* Navigation - Desktop Only */}
+                        <div className="hidden md:flex items-center space-x-2">
                             <Link to="/" onClick={() => window.scrollTo(0, 0)} className={`rounded-xl font-semibold transition-all duration-700 ease-in-out ${isScrolled ? 'px-2 py-1.5 md:px-3 md:py-2 text-xs md:text-sm' : 'px-3 py-2 md:px-4 md:py-2'} ${isActive('/') ? 'bg-primary-600 text-black shadow-[0_0_20px_rgba(212,175,55,0.4)]' : 'text-gray-300 hover:bg-primary-900/20 hover:text-primary-400'}`}>
                                 <Home className={`inline md:mr-2 transition-all duration-700 ease-in-out ${isScrolled ? 'w-3.5 h-3.5 md:w-4 md:h-4' : 'w-4 h-4 md:w-5 md:h-5'}`} />
                                 <span className="hidden md:inline">Home</span>
@@ -84,6 +84,10 @@ const Navbar = () => {
                                 <Search className={`inline md:mr-2 transition-all duration-700 ease-in-out ${isScrolled ? 'w-3.5 h-3.5 md:w-4 md:h-4' : 'w-4 h-4 md:w-5 md:h-5'}`} />
                                 <span className="hidden md:inline">Track</span>
                             </Link>
+                        </div>
+
+                        {/* Login/User Section - Always Visible */}
+                        <div className="flex items-center">
 
                             {user ? (
                                 <div className="flex items-center gap-1 md:gap-2 ml-2 md:ml-4 pl-2 md:pl-4 border-l border-primary-900">

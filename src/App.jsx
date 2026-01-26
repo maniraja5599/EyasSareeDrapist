@@ -27,6 +27,7 @@ import AdminRecycleBin from './pages/admin/AdminRecycleBin';
 
 // Components
 import Navbar from './components/Navbar';
+import BottomNav from './components/BottomNav';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoadingScreen from './components/LoadingScreen';
 
@@ -45,7 +46,7 @@ function App() {
         <ToastProvider>
           <NotificationListener />
           <Router basename={import.meta.env.BASE_URL}>
-            <div className="min-h-screen bg-gradient-to-b from-cream-50 to-white">
+            <div className="min-h-screen bg-gradient-to-b from-cream-50 to-white pb-16 md:pb-0">
               <Routes>
                 {/* Customer Routes */}
                 <Route path="/" element={
@@ -140,6 +141,7 @@ function App() {
                   </ProtectedRoute>
                 } />
               </Routes>
+              <BottomNav />
             </div>
           </Router>
         </ToastProvider>
