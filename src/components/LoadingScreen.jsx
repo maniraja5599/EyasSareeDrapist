@@ -4,14 +4,14 @@ const LoadingScreen = ({ onLoadComplete }) => {
     const [fadeOut, setFadeOut] = useState(false);
 
     useEffect(() => {
-        // Start fade out after 2 seconds
+        // Start fade out after 3.5 seconds
         const timer = setTimeout(() => {
             setFadeOut(true);
             // Call onLoadComplete after fade animation completes
             setTimeout(() => {
                 if (onLoadComplete) onLoadComplete();
             }, 500);
-        }, 2000);
+        }, 3500);
 
         return () => clearTimeout(timer);
     }, [onLoadComplete]);
@@ -55,7 +55,7 @@ const LoadingScreen = ({ onLoadComplete }) => {
                     {/* Logo Container */}
                     <div className="relative w-40 h-40 bg-gradient-to-br from-primary-500/20 to-primary-600/10 rounded-full flex items-center justify-center border-2 border-primary-500/30 shadow-2xl shadow-primary-500/20 animate-pulse">
                         {/* Actual Company Logo */}
-                        <div className="w-28 h-28 bg-white rounded-full flex items-center justify-center p-2 shadow-lg">
+                        <div className="w-28 h-28 bg-black/80 rounded-full flex items-center justify-center p-2 shadow-lg border border-primary-500/20">
                             <img
                                 src={`${import.meta.env.BASE_URL}images/logo.png`}
                                 alt="Eyas Drapist"
