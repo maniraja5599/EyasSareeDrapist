@@ -668,6 +668,10 @@ const BookingPage = () => {
                                 </button>
                                 <button
                                     onClick={async () => {
+                                        console.log('[BOOKING] Button clicked');
+                                        console.log('[BOOKING] Form data:', formData);
+                                        console.log('[BOOKING] User:', user);
+
                                         setLoading(true);
                                         setError('');
                                         try {
@@ -707,6 +711,7 @@ const BookingPage = () => {
                                             const basePrice = selectedServiceObj ? selectedServiceObj.price : 0;
                                             const totalAmount = basePrice * formData.sareeCount;
 
+                                            console.log('[BOOKING] Creating order...');
                                             const newOrder = await actions.addOrder({
                                                 customerId: customerId,
                                                 customerName: formData.name,
@@ -726,17 +731,19 @@ const BookingPage = () => {
                                                 paymentStatus: formData.paidAmount > 0 ? 'Partial' : 'Pending'
                                             });
 
-
+                                            console.log('[BOOKING] Order created:', newOrder);
                                             // Redirect based on payment method
                                             if (formData.paymentMethod === 'online' || formData.paymentMethod === 'advance') {
                                                 // Go to payment page for online/advance payments
+                                                console.log('[BOOKING] Redirecting to payment page:', `/payment/${newOrder.id}`);
                                                 navigate(`/payment/${newOrder.id}`);
                                             } else {
                                                 // Go to tracking for cash on delivery
+                                                console.log('[BOOKING] Redirecting to tracking page:', `/track/${newOrder.id}`);
                                                 navigate(`/track/${newOrder.id}`);
                                             }
                                         } catch (err) {
-                                            console.error("Booking Failed:", err);
+                                            console.error("[BOOKING] Error:", err);
                                             setError(err.message || "Booking failed. Please try again.");
                                         } finally {
                                             setLoading(false);
