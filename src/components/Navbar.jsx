@@ -87,9 +87,22 @@ const Navbar = () => {
 
                             {user ? (
                                 <div className="flex items-center gap-1 md:gap-2 ml-2 md:ml-4 pl-2 md:pl-4 border-l border-primary-900">
-                                    <Link to="/profile" className="hidden md:inline text-sm font-bold text-primary-400 bg-primary-900/20 px-3 py-1 rounded-full border border-primary-800 hover:bg-primary-900/40 transition-all duration-700 ease-in-out">
-                                        {user.name || user.username}
+                                    {/* User Name - Now visible on mobile too */}
+                                    <Link
+                                        to="/profile"
+                                        className={`text-sm font-bold text-primary-400 bg-primary-900/20 px-2 md:px-3 py-1 rounded-full border border-primary-800 hover:bg-primary-900/40 transition-all duration-700 ease-in-out max-w-[80px] md:max-w-none truncate ${isScrolled ? 'text-xs' : 'text-sm'}`}
+                                        title={user.displayName || user.name || user.email}
+                                    >
+                                        {/* Show first name or first part of email on mobile */}
+                                        <span className="md:hidden">
+                                            {(user.displayName || user.name || user.email?.split('@')[0] || 'User').split(' ')[0]}
+                                        </span>
+                                        {/* Show full name on desktop */}
+                                        <span className="hidden md:inline">
+                                            {user.displayName || user.name || user.email?.split('@')[0] || 'User'}
+                                        </span>
                                     </Link>
+
                                     {user.role === 'admin' && (
                                         <Link to="/admin" className={`rounded-lg bg-primary-600 text-black hover:bg-primary-500 font-medium transition-all duration-700 ease-in-out shadow-[0_0_15px_rgba(212,175,55,0.3)] ${isScrolled ? 'px-2 py-1.5 text-xs' : 'px-3 py-2 text-sm'}`} title="Dashboard">
                                             <span className="hidden md:inline">Dashboard</span>
