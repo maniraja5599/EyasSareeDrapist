@@ -1,13 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Calendar, Search } from 'lucide-react';
 
 const BottomNav = () => {
     const location = useLocation();
+    const [isScrolled, setIsScrolled] = useState(false);
     const isActive = (path) => location.pathname === path;
+    const isHomePage = location.pathname === '/';
+
+    useEffect(() => {
+        const handleScroll = () => {
+            // Show bottom nav after scrolling 100px
+            if (window.scrollY > 100) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        // Only add scroll listener if on home page
+        if (isHomePage) {
+            window.addEventListener('scroll', handleScroll);
+            return () => window.removeEventListener('scroll', handleScroll);
+        } else {
+            // Always show on non-home pages
+            setIsScrolled(true);
+        }
+    }, [isHomePage]);
 
     return (
-        <nav className="fixed bottom-0 left-0 right-0 z-40 bg-black/95 backdrop-blur-lg border-t border-primary-600/50 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] md:hidden">
+        <nav
+            className={`fixed bottom-0 left-0 right-0 z-40 bg-black/95 backdrop-blur-lg border-t border-primary-600/50 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] md:hidden transition-transform duration-500 ease-in-out ${isScrolled ? 'translate-y-0' : 'translate-y-full'
+                }`}
+        >
             <div className="flex justify-around items-center h-16 px-2">
                 {/* Home */}
                 <Link
