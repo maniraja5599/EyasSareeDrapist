@@ -45,20 +45,20 @@ const Navbar = () => {
                             </Link>
 
                             <div className="block text-left">
-                                <Link to="/" onClick={() => window.scrollTo(0, 0)} className={`block font-serif font-black text-primary-400 tracking-wider group-hover:text-primary-300 transition-all duration-700 ease-in-out drop-shadow-[0_0_8px_rgba(212,175,55,0.6)] ${isScrolled ? 'text-2xl md:text-3xl' : 'text-2xl sm:text-3xl md:text-5xl'}`}>
+                                <Link to="/" onClick={() => window.scrollTo(0, 0)} className={`block font-['Brush_Script_MT',cursive] font-bold text-amber-500 tracking-wide group-hover:text-amber-400 transition-all duration-700 ease-in-out drop-shadow-[0_0_8px_rgba(217,119,6,0.6)] ${isScrolled ? 'text-2xl md:text-3xl' : 'text-2xl sm:text-3xl md:text-5xl'}`}>
                                     Eyas Drapist
                                 </Link>
-                                <div className={`flex items-center z-10 relative transition-all duration-300 ${isScrolled ? 'gap-2 mt-0.5' : 'gap-2 mt-1'}`}>
-                                    <a href="tel:+917502551633" title="Click to Call" className={`flex items-center justify-center rounded-lg bg-gradient-to-r from-primary-500 via-primary-400 to-primary-500 hover:from-primary-400 hover:via-primary-300 hover:to-primary-400 transition-all duration-300 group/phone shadow-lg shadow-primary-500/30 hover:shadow-primary-400/40 hover:scale-105 ${isScrolled ? 'px-2 py-1' : 'gap-1 px-2 py-1'}`}>
-                                        <Phone className={`text-black transition-transform group-hover/phone:scale-110 ${isScrolled ? 'w-3 h-3 md:w-3.5 md:h-3.5' : 'w-3 h-3 md:w-4 md:h-4'}`} fill="currentColor" />
-                                        <span className={`font-black tracking-wide text-black uppercase font-serif transition-colors ${isScrolled ? 'text-[8px] md:text-[9px]' : 'text-[9px] md:text-xs'}`}>
+                                <div className={`flex items-center z-10 relative transition-all duration-300 ${isScrolled ? 'gap-1.5 mt-0.5' : 'gap-1.5 mt-1'}`}>
+                                    <a href="tel:+917502551633" title="Click to Call" className={`flex items-center justify-center rounded-lg bg-gradient-to-r from-primary-500 via-primary-400 to-primary-500 hover:from-primary-400 hover:via-primary-300 hover:to-primary-400 transition-all duration-300 group/phone shadow-lg shadow-primary-500/30 hover:shadow-primary-400/40 hover:scale-105 ${isScrolled ? 'px-1.5 py-0.5' : 'gap-0.5 px-1.5 py-0.5'}`}>
+                                        <Phone className={`text-black transition-transform group-hover/phone:scale-110 ${isScrolled ? 'w-2.5 h-2.5 md:w-3 md:h-3' : 'w-2.5 h-2.5 md:w-3 md:h-3'}`} fill="currentColor" />
+                                        <span className={`font-black tracking-wide text-black uppercase font-serif transition-colors ${isScrolled ? 'text-[7px] md:text-[8px]' : 'text-[7px] md:text-[9px]'}`}>
                                             Nivedhidha
                                         </span>
                                     </a>
 
-                                    <a href="https://maps.app.goo.gl/gSMHQpU9iGgsXWBB6" target="_blank" rel="noopener noreferrer" title="Location" className={`flex items-center justify-center rounded-lg bg-gradient-to-r from-primary-500 via-primary-400 to-primary-500 hover:from-primary-400 hover:via-primary-300 hover:to-primary-400 transition-all duration-300 group/map shadow-lg shadow-primary-500/30 hover:shadow-primary-400/40 hover:scale-105 ${isScrolled ? 'px-2 py-1' : 'gap-1 px-2 py-1'}`}>
-                                        <Navigation className={`text-black transition-transform group-hover/map:scale-110 group-hover/map:rotate-12 ${isScrolled ? 'w-3 h-3 md:w-3.5 md:h-3.5' : 'w-3 h-3 md:w-4 md:h-4'}`} fill="currentColor" />
-                                        <span className={`font-black tracking-wide text-black uppercase font-serif transition-colors ${isScrolled ? 'text-[8px] md:text-[9px]' : 'text-[9px] md:text-xs'}`}>
+                                    <a href="https://maps.app.goo.gl/gSMHQpU9iGgsXWBB6" target="_blank" rel="noopener noreferrer" title="Location" className={`flex items-center justify-center rounded-lg bg-gradient-to-r from-primary-500 via-primary-400 to-primary-500 hover:from-primary-400 hover:via-primary-300 hover:to-primary-400 transition-all duration-300 group/map shadow-lg shadow-primary-500/30 hover:shadow-primary-400/40 hover:scale-105 ${isScrolled ? 'px-1.5 py-0.5' : 'gap-0.5 px-1.5 py-0.5'}`}>
+                                        <Navigation className={`text-black transition-transform group-hover/map:scale-110 group-hover/map:rotate-12 ${isScrolled ? 'w-2.5 h-2.5 md:w-3 md:h-3' : 'w-2.5 h-2.5 md:w-3 md:h-3'}`} fill="currentColor" />
+                                        <span className={`font-black tracking-wide text-black uppercase font-serif transition-colors ${isScrolled ? 'text-[7px] md:text-[8px]' : 'text-[7px] md:text-[9px]'}`}>
                                             Namakkal
                                         </span>
                                     </a>
