@@ -21,10 +21,12 @@ const BookingPage = () => {
         service: preselectedService,
         date: '',
         slot: '',
-        name: user?.name || '',
+        name: user?.displayName || user?.name || '',
         mobile: user?.mobile || '',
         email: user?.email || '',
         whatsapp: user?.whatsapp || user?.mobile || '',
+        whatsappSameAsMobile: true, // New checkbox
+        sareeCount: 1, // New field for number of sarees
         pickupRequired: false,
         address: user?.address || '',
         paymentMethod: 'cash', // 'cash', 'online', or 'advance'
@@ -44,9 +46,10 @@ const BookingPage = () => {
         if (user) {
             setFormData(prev => ({
                 ...prev,
-                name: prev.name || user.name || '',
+                name: prev.name || user.displayName || user.name || user.email?.split('@')[0] || '',
+                email: prev.email || user.email || '',
                 mobile: prev.mobile || user.mobile || '',
-                whatsapp: prev.whatsapp || user.whatsapp || user.mobile || '',
+                whatsapp: prev.whatsappSameAsMobile ? (prev.mobile || user.mobile || '') : (prev.whatsapp || user.whatsapp || ''),
                 address: prev.address || user.address || '',
                 measurements: {
                     waist: user.measurements?.waist || prev.measurements.waist || '',
@@ -398,10 +401,104 @@ const BookingPage = () => {
                                     <input
                                         type="tel"
                                         value={formData.mobile}
-                                        onChange={(e) => updateField('mobile', e.target.value)}
+                                        onChange={(e) => {
+                                            updateField('mobile', e.target.value);
+                                            // Auto-sync WhatsApp if checkbox is checked
+                                            if (formData.whatsappSameAsMobile) {
+                                                updateField('whatsapp', e.target.value);
+                                            }
+                                        }}
                                         placeholder="10-digit mobile number"
                                         className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all placeholder:text-gray-700"
                                     />
+                                </div>
+                            </div>
+
+                            {/* WhatsApp Number */}
+                            <div>
+                                <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-2">
+                                    <Phone className="w-3 h-3" />
+                                    WhatsApp Number
+                                </label>
+                                <input
+                                    type="tel"
+                                    value={formData.whatsapp}
+                                    onChange={(e) => {
+                                        updateField('whatsapp', e.target.value);
+                                        updateField('whatsappSameAsMobile', false);
+                                    }}
+                                    disabled={formData.whatsappSameAsMobile}
+                                    placeholder="WhatsApp number"
+                                    className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all placeholder:text-gray-700 disabled:opacity-50"
+                                />
+                                <div className="flex items-center gap-2 mt-2">
+                                    <input
+                                        type="checkbox"
+                                        id="whatsappSame"
+                                        checked={formData.whatsappSameAsMobile}
+                                        onChange={(e) => {
+                                            updateField('whatsappSameAsMobile', e.target.checked);
+                                            if (e.target.checked) {
+                                                updateField('whatsapp', formData.mobile);
+                                            }
+                                        }}
+                                        className="w-4 h-4 accent-primary-500 bg-black border-white/10"
+                                    />
+                                    <label htmlFor="whatsappSame" className="text-xs text-gray-400 cursor-pointer">
+                                        Same as mobile number
+                                    </label>
+                                </div>
+                            </div>
+
+                            {/* Saree Count */}
+                            <div className="grid sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-2">
+                                        <Calendar className="w-3 h-3" />
+                                        Number of Sarees
+                                    </label>
+                                    <div className="flex items-center gap-3">
+                                        <button
+                                            type="button"
+                                            onClick={() => updateField('sareeCount', Math.max(1, formData.sareeCount - 1))}
+                                            className="w-12 h-12 rounded-xl bg-black/40 border border-white/10 text-white font-bold hover:bg-primary-500/20 hover:border-primary-500 transition-all"
+                                        >
+                                            -
+                                        </button>
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            value={formData.sareeCount}
+                                            onChange={(e) => updateField('sareeCount', Math.max(1, parseInt(e.target.value) || 1))}
+                                            className="flex-1 bg-black/40 border border-white/10 rounded-2xl p-5 text-white text-center text-xl font-bold focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => updateField('sareeCount', formData.sareeCount + 1)}
+                                            className="w-12 h-12 rounded-xl bg-black/40 border border-white/10 text-white font-bold hover:bg-primary-500/20 hover:border-primary-500 transition-all"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Total Price */}
+                                <div>
+                                    <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-2">
+                                        Total Amount
+                                    </label>
+                                    <div className="bg-gradient-to-r from-primary-500/20 to-primary-600/20 border-2 border-primary-500/50 rounded-2xl p-5 text-center">
+                                        <p className="text-3xl font-black text-primary-400">
+                                            ₹{(() => {
+                                                const selectedService = services.find(s => s.id === formData.service);
+                                                const basePrice = selectedService?.price || 0;
+                                                return (basePrice * formData.sareeCount).toLocaleString();
+                                            })()}
+                                        </p>
+                                        <p className="text-xs text-gray-400 mt-1">
+                                            {formData.sareeCount} saree{formData.sareeCount > 1 ? 's' : ''}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
 
