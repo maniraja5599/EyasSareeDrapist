@@ -4,6 +4,7 @@ import { CreditCard, Smartphone, ArrowLeft, Loader2, IndianRupee } from 'lucide-
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useDataStore } from '../hooks/useDataStore';
+import { useScrollRestoration } from '../hooks/useScrollRestoration';
 
 const PaymentPage = () => {
     const { bookingId } = useParams();
@@ -12,6 +13,9 @@ const PaymentPage = () => {
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
     const [paymentMethod, setPaymentMethod] = useState('online'); // online, advance, cash
+
+    // Enable scroll position restoration
+    useScrollRestoration();
 
     useEffect(() => {
         const fetchOrder = async () => {

@@ -6,6 +6,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useDataStore } from '../hooks/useDataStore';
 import { useAuth } from '../contexts/AuthContext';
+import { useScrollRestoration } from '../hooks/useScrollRestoration';
 
 const BookingPage = () => {
     const navigate = useNavigate();
@@ -15,6 +16,9 @@ const BookingPage = () => {
     const { user, loginWithGoogle } = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+
+    // Enable scroll position restoration
+    useScrollRestoration();
 
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({

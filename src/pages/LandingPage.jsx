@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Sparkles, Scissors, Clock, Heart, Star, ArrowRight, CheckCircle, Smartphone, Camera, Truck, MapPin, User, Zap, Crown, Phone } from 'lucide-react';
 import { useDataStore } from '../hooks/useDataStore';
+import { useScrollRestoration } from '../hooks/useScrollRestoration';
 
 const LandingPage = () => {
+    // Enable scroll position restoration
+    useScrollRestoration();
     const { webpageSettings } = useDataStore();
 
     const observerRef = React.useRef(null);

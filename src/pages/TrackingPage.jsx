@@ -5,6 +5,7 @@ import { doc, getDoc, collection, query, where, getDocs, orderBy } from 'firebas
 import { db } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
 import { useDataStore } from '../hooks/useDataStore';
+import { useScrollRestoration } from '../hooks/useScrollRestoration';
 
 const TrackingPage = () => {
     const { bookingId: urlBookingId } = useParams();
@@ -16,6 +17,9 @@ const TrackingPage = () => {
     const { shopSettings } = useDataStore();
     const navigate = useNavigate();
     const { user } = useAuth();
+
+    // Enable scroll position restoration
+    useScrollRestoration();
 
     // Auto-fetch if ID is in URL
     React.useEffect(() => {
