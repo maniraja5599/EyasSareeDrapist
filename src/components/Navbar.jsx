@@ -49,16 +49,16 @@ const Navbar = () => {
                                     Eyas Drapist
                                 </Link>
                                 <div className={`flex items-center z-10 relative transition-all duration-300 ${isScrolled ? 'gap-1.5 mt-0.5' : 'gap-1.5 mt-1'}`}>
-                                    <a href="tel:+917502551633" title="Click to Call" className={`flex items-center justify-center rounded-lg border border-white/10 hover:border-amber-500/50 hover:bg-white/5 transition-all duration-300 group/phone ${isScrolled ? 'px-1.5 py-0.5' : 'gap-0.5 px-1.5 py-0.5'}`}>
-                                        <Phone className={`text-gray-400 group-hover/phone:text-amber-500 transition-colors ${isScrolled ? 'w-2.5 h-2.5 md:w-3 md:h-3' : 'w-2.5 h-2.5 md:w-3 md:h-3'}`} fill="currentColor" />
-                                        <span className={`font-bold tracking-wide text-gray-400 group-hover/phone:text-amber-500 uppercase font-serif transition-colors ${isScrolled ? 'text-[7px] md:text-[8px]' : 'text-[7px] md:text-[9px]'}`}>
+                                    <a href="tel:+917502551633" title="Click to Call" className={`flex items-center justify-center rounded-lg border border-white/20 hover:border-amber-500 hover:bg-transparent transition-all duration-300 group/phone ${isScrolled ? 'px-1.5 py-0.5' : 'gap-1 px-2 py-0.5'}`}>
+                                        <Phone className={`text-gray-400 group-hover/phone:text-amber-500 transition-colors ${isScrolled ? 'w-2 h-2 md:w-2.5 md:h-2.5' : 'w-2 h-2 md:w-2.5 md:h-2.5'}`} fill="currentColor" />
+                                        <span className={`font-bold tracking-wide text-gray-300 group-hover/phone:text-amber-500 uppercase font-serif transition-colors ${isScrolled ? 'text-[8px] md:text-[10px]' : 'text-[8px] md:text-[10px]'}`}>
                                             Nivedhidha
                                         </span>
                                     </a>
 
-                                    <a href="https://maps.app.goo.gl/gSMHQpU9iGgsXWBB6" target="_blank" rel="noopener noreferrer" title="Location" className={`flex items-center justify-center rounded-lg border border-white/10 hover:border-amber-500/50 hover:bg-white/5 transition-all duration-300 group/map ${isScrolled ? 'px-1.5 py-0.5' : 'gap-0.5 px-1.5 py-0.5'}`}>
-                                        <Navigation className={`text-gray-400 group-hover/map:text-amber-500 transition-transform group-hover/map:rotate-12 ${isScrolled ? 'w-2.5 h-2.5 md:w-3 md:h-3' : 'w-2.5 h-2.5 md:w-3 md:h-3'}`} fill="currentColor" />
-                                        <span className={`font-bold tracking-wide text-gray-400 group-hover/map:text-amber-500 uppercase font-serif transition-colors ${isScrolled ? 'text-[7px] md:text-[8px]' : 'text-[7px] md:text-[9px]'}`}>
+                                    <a href="https://maps.app.goo.gl/gSMHQpU9iGgsXWBB6" target="_blank" rel="noopener noreferrer" title="Location" className={`flex items-center justify-center rounded-lg border border-white/20 hover:border-amber-500 hover:bg-transparent transition-all duration-300 group/map ${isScrolled ? 'px-1.5 py-0.5' : 'gap-1 px-2 py-0.5'}`}>
+                                        <Navigation className={`text-gray-400 group-hover/map:text-amber-500 transition-transform group-hover/map:rotate-12 ${isScrolled ? 'w-2 h-2 md:w-2.5 md:h-2.5' : 'w-2 h-2 md:w-2.5 md:h-2.5'}`} fill="currentColor" />
+                                        <span className={`font-bold tracking-wide text-gray-300 group-hover/map:text-amber-500 uppercase font-serif transition-colors ${isScrolled ? 'text-[8px] md:text-[10px]' : 'text-[8px] md:text-[10px]'}`}>
                                             Namakkal
                                         </span>
                                     </a>
