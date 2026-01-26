@@ -39,32 +39,28 @@ const Navbar = () => {
                 <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-in-out ${isScrolled ? 'py-1' : ''}`}>
                     <div className={`flex justify-between items-center gap-4 md:gap-8 transition-all duration-700 ease-in-out ${isScrolled ? 'h-16 md:h-20' : 'h-20 md:h-24'}`}>
                         {/* Logo & Branding */}
-                        <div className="flex items-center space-x-2 md:space-x-4 group shrink-0">
-                            <Link to="/" onClick={() => window.scrollTo(0, 0)} className={`block bg-primary-900/20 rounded-2xl border border-primary-500/30 transition-all duration-700 ease-in-out group-hover:scale-105 shadow-[0_0_15px_rgba(212,175,55,0.1)] ${isScrolled ? 'p-1' : 'p-1 md:p-2'}`}>
-                                <img src={`${import.meta.env.BASE_URL}images/logo.png`} alt="Eyas Drapist Logo" className={`object-contain drop-shadow-md brightness-110 transition-all duration-700 ease-in-out ${isScrolled ? 'w-8 h-8 md:w-10 md:h-10' : 'w-10 h-10 md:w-14 md:h-14'}`} />
+                        <div className="flex items-center space-x-3 md:space-x-6 group shrink-0">
+                            <Link to="/" onClick={() => window.scrollTo(0, 0)} className={`block bg-primary-900/20 rounded-2xl border border-primary-500/30 transition-all duration-700 ease-in-out group-hover:scale-105 shadow-[0_0_15px_rgba(212,175,55,0.1)] animate-float ${isScrolled ? 'p-1' : 'p-1 md:p-2'}`}>
+                                <img src={`${import.meta.env.BASE_URL}images/logo.png`} alt="Eyas Drapist Logo" className={`object-contain drop-shadow-md brightness-110 transition-all duration-700 ease-in-out ${isScrolled ? 'w-10 h-10 md:w-12 md:h-12' : 'w-12 h-12 md:w-16 md:h-16'}`} />
                             </Link>
 
                             <div className="block text-left">
-                                <Link to="/" onClick={() => window.scrollTo(0, 0)} className={`block font-serif font-bold text-primary-400 tracking-widest group-hover:text-primary-300 transition-all duration-700 ease-in-out ${isScrolled ? 'text-sm md:text-xl' : 'text-base sm:text-xl md:text-2xl'}`}>
+                                <Link to="/" onClick={() => window.scrollTo(0, 0)} className={`block font-serif font-black text-primary-400 tracking-wider group-hover:text-primary-300 transition-all duration-700 ease-in-out ${isScrolled ? 'text-lg md:text-2xl' : 'text-xl sm:text-2xl md:text-4xl'}`}>
                                     Eyas Drapist
                                 </Link>
-                                <div className={`flex items-center z-10 relative transition-all duration-300 ${isScrolled ? 'gap-2 mt-0' : 'gap-1 mt-1'}`}>
-                                    <a href="tel:+917502551633" title="Click to Call" className={`flex items-center justify-center rounded-md border border-primary-500/20 hover:border-primary-500/60 bg-primary-900/5 hover:bg-primary-900/20 transition-all duration-300 group/phone ${isScrolled ? 'p-1.5' : 'gap-0.5 px-1 py-0'}`}>
-                                        <Phone className={`text-primary-400 transition-transform group-hover/phone:scale-110 ${isScrolled ? 'w-3.5 h-3.5' : 'w-2.5 h-2.5'}`} fill="currentColor" />
-                                        {!isScrolled && (
-                                            <span className="text-[7px] sm:text-[8px] font-bold tracking-wider text-primary-200 group-hover/phone:text-primary-400 uppercase font-serif">
-                                                Nivedhidha
-                                            </span>
-                                        )}
+                                <div className={`flex items-center z-10 relative transition-all duration-300 ${isScrolled ? 'gap-2 mt-0.5' : 'gap-2 mt-1'}`}>
+                                    <a href="tel:+917502551633" title="Click to Call" className={`flex items-center justify-center rounded-lg border border-primary-500/30 hover:border-primary-500/70 bg-primary-900/10 hover:bg-primary-900/30 transition-all duration-300 group/phone shadow-sm hover:shadow-primary-500/20 animate-pulse-glow ${isScrolled ? 'px-2 py-1' : 'gap-1 px-2 py-1'}`}>
+                                        <Phone className={`text-primary-400 transition-transform group-hover/phone:scale-125 group-hover/phone:rotate-12 ${isScrolled ? 'w-3 h-3 md:w-3.5 md:h-3.5' : 'w-3 h-3 md:w-4 md:h-4'}`} fill="currentColor" />
+                                        <span className={`font-bold tracking-wide text-primary-200 group-hover/phone:text-primary-400 uppercase font-serif transition-colors ${isScrolled ? 'text-[8px] md:text-[9px]' : 'text-[9px] md:text-xs'}`}>
+                                            Nivedhidha
+                                        </span>
                                     </a>
 
-                                    <a href="https://maps.app.goo.gl/gSMHQpU9iGgsXWBB6" target="_blank" rel="noopener noreferrer" title="Location" className={`flex items-center justify-center rounded-md border border-primary-500/20 hover:border-primary-500/60 bg-primary-900/5 hover:bg-primary-900/20 transition-all duration-300 group/map ${isScrolled ? 'p-1.5' : 'gap-0.5 px-1 py-0'}`}>
-                                        <MapPin className={`text-primary-400 transition-transform group-hover/map:scale-110 ${isScrolled ? 'w-3.5 h-3.5' : 'w-2.5 h-2.5'}`} fill="currentColor" />
-                                        {!isScrolled && (
-                                            <span className="text-[7px] sm:text-[8px] font-bold tracking-wider text-primary-200 group-hover/map:text-primary-400 uppercase font-serif">
-                                                Namakkal
-                                            </span>
-                                        )}
+                                    <a href="https://maps.app.goo.gl/gSMHQpU9iGgsXWBB6" target="_blank" rel="noopener noreferrer" title="Location" className={`flex items-center justify-center rounded-lg border border-primary-500/30 hover:border-primary-500/70 bg-primary-900/10 hover:bg-primary-900/30 transition-all duration-300 group/map shadow-sm hover:shadow-primary-500/20 animate-pulse-glow ${isScrolled ? 'px-2 py-1' : 'gap-1 px-2 py-1'}`}>
+                                        <MapPin className={`text-primary-400 transition-transform group-hover/map:scale-125 group-hover/map:-translate-y-0.5 ${isScrolled ? 'w-3 h-3 md:w-3.5 md:h-3.5' : 'w-3 h-3 md:w-4 md:h-4'}`} fill="currentColor" />
+                                        <span className={`font-bold tracking-wide text-primary-200 group-hover/map:text-primary-400 uppercase font-serif transition-colors ${isScrolled ? 'text-[8px] md:text-[9px]' : 'text-[9px] md:text-xs'}`}>
+                                            Namakkal
+                                        </span>
                                     </a>
                                 </div>
                             </div>
