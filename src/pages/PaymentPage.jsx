@@ -13,6 +13,7 @@ const PaymentPage = () => {
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
     const [paymentMethod, setPaymentMethod] = useState('online'); // online, advance, cash
+    const [advanceAmount, setAdvanceAmount] = useState(0);
 
     // Enable scroll position restoration
     useScrollRestoration();
@@ -27,6 +28,10 @@ const PaymentPage = () => {
                     const orderData = { id: docSnap.id, ...docSnap.data() };
                     setOrder(orderData);
                     setPaymentMethod(orderData.paymentMethod || 'online');
+                    // Set initial advance amount to 50% if advance payment
+                    if (orderData.paymentMethod === 'advance') {
+                        setAdvanceAmount(orderData.paidAmount || Math.round(orderData.amount * 0.5));
+                    }
                 }
             } catch (error) {
                 console.error("Error fetching order for payment:", error);
@@ -41,6 +46,12 @@ const PaymentPage = () => {
     const handlePaymentMethodChange = async (method) => {
         setPaymentMethod(method);
 
+        // Set default advance amount to 50% when switching to advance
+        if (method === 'advance' && order) {
+            const defaultAdvance = Math.round(order.amount * 0.5);
+            setAdvanceAmount(defaultAdvance);
+        }
+
         // Update booking document
         try {
             const docRef = doc(db, 'bookings', bookingId);
@@ -51,6 +62,23 @@ const PaymentPage = () => {
             setOrder(prev => ({ ...prev, paymentMethod: method }));
         } catch (error) {
             console.error("Error updating payment method:", error);
+        }
+    };
+
+    const handleAdvanceAmountChange = async (amount) => {
+        setAdvanceAmount(amount);
+
+        // Update booking document with new advance amount
+        try {
+            const docRef = doc(db, 'bookings', bookingId);
+            await updateDoc(docRef, {
+                paidAmount: amount,
+                paymentStatus: amount > 0 ? 'Partial' : 'Pending'
+            });
+
+            setOrder(prev => ({ ...prev, paidAmount: amount }));
+        } catch (error) {
+            console.error("Error updating advance amount:", error);
         }
     };
 
@@ -176,6 +204,82 @@ const PaymentPage = () => {
                             >
                                 Confirm Booking
                             </button>
+                        </div>
+                    )}
+
+                    {/* Advance Payment Amount Selector */}
+                    {paymentMethod === 'advance' && (
+                        <div className="mt-4 p-6 bg-primary-900/10 rounded-2xl border-2 border-primary-500/30">
+                            <p className="text-primary-400 font-bold text-sm mb-4 uppercase tracking-wider">Select Advance Amount</p>
+
+                            {/* Percentage Buttons */}
+                            <div className="grid grid-cols-4 gap-2 mb-4">
+                                <button
+                                    onClick={() => handleAdvanceAmountChange(Math.round(order.amount * 0.25))}
+                                    className={`py-3 px-2 rounded-xl font-bold text-sm transition-all ${advanceAmount === Math.round(order.amount * 0.25)
+                                            ? 'bg-primary-600 text-black'
+                                            : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                                        }`}
+                                >
+                                    25%
+                                </button>
+                                <button
+                                    onClick={() => handleAdvanceAmountChange(Math.round(order.amount * 0.5))}
+                                    className={`py-3 px-2 rounded-xl font-bold text-sm transition-all ${advanceAmount === Math.round(order.amount * 0.5)
+                                            ? 'bg-primary-600 text-black'
+                                            : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                                        }`}
+                                >
+                                    50%
+                                </button>
+                                <button
+                                    onClick={() => handleAdvanceAmountChange(Math.round(order.amount * 0.75))}
+                                    className={`py-3 px-2 rounded-xl font-bold text-sm transition-all ${advanceAmount === Math.round(order.amount * 0.75)
+                                            ? 'bg-primary-600 text-black'
+                                            : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                                        }`}
+                                >
+                                    75%
+                                </button>
+                                <button
+                                    onClick={() => handleAdvanceAmountChange(order.amount)}
+                                    className={`py-3 px-2 rounded-xl font-bold text-sm transition-all ${advanceAmount === order.amount
+                                            ? 'bg-primary-600 text-black'
+                                            : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                                        }`}
+                                >
+                                    Full
+                                </button>
+                            </div>
+
+                            {/* Manual Input */}
+                            <div className="mb-4">
+                                <label className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-2 block">Or Enter Custom Amount</label>
+                                <div className="flex items-center gap-2 bg-black/40 border border-white/10 rounded-xl p-4">
+                                    <span className="text-primary-500 font-bold text-lg">₹</span>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max={order.amount}
+                                        value={advanceAmount}
+                                        onChange={(e) => handleAdvanceAmountChange(Math.min(parseInt(e.target.value) || 0, order.amount))}
+                                        className="flex-1 bg-transparent text-white font-bold text-lg focus:outline-none"
+                                        placeholder="Enter amount"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Amount Summary */}
+                            <div className="bg-black/40 rounded-xl p-4 space-y-2">
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-gray-400">Advance Payment:</span>
+                                    <span className="text-primary-400 font-bold">₹{advanceAmount}</span>
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-gray-400">Remaining Balance:</span>
+                                    <span className="text-white font-bold">₹{order.amount - advanceAmount}</span>
+                                </div>
+                            </div>
                         </div>
                     )}
                 </div>
