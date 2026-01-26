@@ -451,7 +451,7 @@ const BookingPage = () => {
                             </div>
 
                             {/* Saree Count */}
-                            <div className="grid sm:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-2">
                                         <Calendar className="w-3 h-3" />
@@ -487,8 +487,8 @@ const BookingPage = () => {
                                     <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-2">
                                         Total Amount
                                     </label>
-                                    <div className="bg-gradient-to-r from-primary-500/20 to-primary-600/20 border-2 border-primary-500/50 rounded-2xl p-5 text-center">
-                                        <p className="text-3xl font-black text-primary-400">
+                                    <div className="bg-gradient-to-r from-primary-500/20 to-primary-600/20 border-2 border-primary-500/50 rounded-2xl p-5 text-center h-[68px] flex flex-col items-center justify-center">
+                                        <p className="text-2xl md:text-3xl font-black text-primary-400">
                                             ₹{(() => {
                                                 const selectedService = services.find(s => s.id === formData.service);
                                                 const basePrice = selectedService?.price || 0;
@@ -503,10 +503,46 @@ const BookingPage = () => {
                             </div>
 
                             <div>
-                                <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-2">
-                                    <MapPin className="w-3 h-3" />
-                                    Address
-                                </label>
+                                <div className="flex items-center justify-between mb-2">
+                                    <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
+                                        <MapPin className="w-3 h-3" />
+                                        Address
+                                    </label>
+                                    <button
+                                        type="button"
+                                        onClick={async () => {
+                                            if ("geolocation" in navigator) {
+                                                try {
+                                                    const position = await new Promise((resolve, reject) => {
+                                                        navigator.geolocation.getCurrentPosition(resolve, reject);
+                                                    });
+
+                                                    const { latitude, longitude } = position.coords;
+
+                                                    // Use reverse geocoding to get address
+                                                    const response = await fetch(
+                                                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+                                                    );
+                                                    const data = await response.json();
+
+                                                    if (data.display_name) {
+                                                        updateField('address', data.display_name);
+                                                    } else {
+                                                        updateField('address', `Location: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}`);
+                                                    }
+                                                } catch (error) {
+                                                    alert("Unable to get your location. Please enter manually.");
+                                                }
+                                            } else {
+                                                alert("Geolocation is not supported by your browser.");
+                                            }
+                                        }}
+                                        className="text-xs text-primary-400 hover:text-primary-300 font-semibold flex items-center gap-1 px-3 py-1.5 bg-primary-500/10 rounded-lg border border-primary-500/30 hover:bg-primary-500/20 transition-all"
+                                    >
+                                        <MapPin className="w-3 h-3" fill="currentColor" />
+                                        Get Location
+                                    </button>
+                                </div>
                                 <textarea
                                     value={formData.address}
                                     onChange={(e) => updateField('address', e.target.value)}
