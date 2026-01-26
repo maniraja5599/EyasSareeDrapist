@@ -176,19 +176,59 @@ const PaymentPage = () => {
                         <p className="text-gray-400 uppercase tracking-widest text-xs font-semibold">Total Amount Due</p>
                     </div>
 
-                    {/* Single UPI Payment Button */}
-                    <div className="mb-8">
+                    {/* Separate Payment Buttons */}
+                    <div className="space-y-4 mb-8">
+                        {/* Google Pay */}
                         <button
                             onClick={handleUPIPayment}
-                            className="w-full p-6 bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all duration-300 flex flex-col items-center justify-center gap-4 group"
+                            className="w-full p-5 bg-white/5 border-2 border-white/10 rounded-2xl hover:border-primary-500/50 hover:bg-white/10 transition-all duration-300 flex items-center justify-between group"
                         >
-                            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <svg className="w-10 h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M3 7h18v2H3V7zm0 4h18v2H3v-2zm0 4h18v2H3v-2z" />
-                                </svg>
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-green-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <span className="text-white font-black text-lg">G</span>
+                                </div>
+                                <div>
+                                    <p className="font-bold text-lg text-white text-left">Google Pay</p>
+                                    <p className="text-xs text-gray-400">Fast & Secure UPI Payment</p>
+                                </div>
                             </div>
-                            <span className="font-black text-xl text-white">Pay via UPI</span>
-                            <span className="text-xs text-white/80">Google Pay • PhonePe • Paytm • Others</span>
+                            <div className="h-2 w-2 rounded-full bg-primary-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </button>
+
+                        {/* PhonePe */}
+                        <button
+                            onClick={handleUPIPayment}
+                            className="w-full p-5 bg-white/5 border-2 border-white/10 rounded-2xl hover:border-primary-500/50 hover:bg-white/10 transition-all duration-300 flex items-center justify-between group"
+                        >
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <span className="text-white font-black text-lg">₹</span>
+                                </div>
+                                <div>
+                                    <p className="font-bold text-lg text-white text-left">PhonePe</p>
+                                    <p className="text-xs text-gray-400">Pay via PhonePe UPI</p>
+                                </div>
+                            </div>
+                            <div className="h-2 w-2 rounded-full bg-primary-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </button>
+
+                        {/* Other UPI Apps */}
+                        <button
+                            onClick={handleUPIPayment}
+                            className="w-full p-5 bg-white/5 border-2 border-white/10 rounded-2xl hover:border-primary-500/50 hover:bg-white/10 transition-all duration-300 flex items-center justify-between group"
+                        >
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M3 7h18v2H3V7zm0 4h18v2H3v-2zm0 4h18v2H3v-2z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p className="font-bold text-lg text-white text-left">Other UPI Apps</p>
+                                    <p className="text-xs text-gray-400">Paytm, BHIM & More</p>
+                                </div>
+                            </div>
+                            <div className="h-2 w-2 rounded-full bg-primary-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </button>
                     </div>
 
