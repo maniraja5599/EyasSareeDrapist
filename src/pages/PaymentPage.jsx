@@ -5,6 +5,7 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useDataStore } from '../hooks/useDataStore';
 import { useScrollRestoration } from '../hooks/useScrollRestoration';
+import { usePersistedState } from '../hooks/usePersistedState';
 
 const PaymentPage = () => {
     const { bookingId } = useParams();
@@ -12,8 +13,16 @@ const PaymentPage = () => {
     const { shopSettings } = useDataStore();
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [paymentMethod, setPaymentMethod] = useState('online'); // online, advance, cash
-    const [advanceAmount, setAdvanceAmount] = useState(0);
+
+    // Use persisted state for payment selections (unique per booking)
+    const [paymentMethod, setPaymentMethod] = usePersistedState(
+        `payment_method_${bookingId}`,
+        'online'
+    );
+    const [advanceAmount, setAdvanceAmount] = usePersistedState(
+        `advance_amount_${bookingId}`,
+        0
+    );
 
     // Enable scroll position restoration
     useScrollRestoration();
@@ -217,8 +226,8 @@ const PaymentPage = () => {
                                 <button
                                     onClick={() => handleAdvanceAmountChange(Math.round(order.amount * 0.25))}
                                     className={`py-3 px-2 rounded-xl font-bold text-sm transition-all ${advanceAmount === Math.round(order.amount * 0.25)
-                                            ? 'bg-primary-600 text-black'
-                                            : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                                        ? 'bg-primary-600 text-black'
+                                        : 'bg-white/5 text-gray-400 hover:bg-white/10'
                                         }`}
                                 >
                                     25%
@@ -226,8 +235,8 @@ const PaymentPage = () => {
                                 <button
                                     onClick={() => handleAdvanceAmountChange(Math.round(order.amount * 0.5))}
                                     className={`py-3 px-2 rounded-xl font-bold text-sm transition-all ${advanceAmount === Math.round(order.amount * 0.5)
-                                            ? 'bg-primary-600 text-black'
-                                            : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                                        ? 'bg-primary-600 text-black'
+                                        : 'bg-white/5 text-gray-400 hover:bg-white/10'
                                         }`}
                                 >
                                     50%
@@ -235,8 +244,8 @@ const PaymentPage = () => {
                                 <button
                                     onClick={() => handleAdvanceAmountChange(Math.round(order.amount * 0.75))}
                                     className={`py-3 px-2 rounded-xl font-bold text-sm transition-all ${advanceAmount === Math.round(order.amount * 0.75)
-                                            ? 'bg-primary-600 text-black'
-                                            : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                                        ? 'bg-primary-600 text-black'
+                                        : 'bg-white/5 text-gray-400 hover:bg-white/10'
                                         }`}
                                 >
                                     75%
@@ -244,8 +253,8 @@ const PaymentPage = () => {
                                 <button
                                     onClick={() => handleAdvanceAmountChange(order.amount)}
                                     className={`py-3 px-2 rounded-xl font-bold text-sm transition-all ${advanceAmount === order.amount
-                                            ? 'bg-primary-600 text-black'
-                                            : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                                        ? 'bg-primary-600 text-black'
+                                        : 'bg-white/5 text-gray-400 hover:bg-white/10'
                                         }`}
                                 >
                                     Full

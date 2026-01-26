@@ -7,6 +7,7 @@ import { db } from '../firebase';
 import { useDataStore } from '../hooks/useDataStore';
 import { useAuth } from '../contexts/AuthContext';
 import { useScrollRestoration } from '../hooks/useScrollRestoration';
+import { usePersistedState } from '../hooks/usePersistedState';
 
 const BookingPage = () => {
     const navigate = useNavigate();
@@ -21,7 +22,9 @@ const BookingPage = () => {
     useScrollRestoration();
 
     const [step, setStep] = useState(1);
-    const [formData, setFormData] = useState({
+
+    // Use persisted state for form data - saves to localStorage
+    const [formData, setFormData] = usePersistedState('booking_form_data', {
         service: preselectedService,
         date: '',
         slot: '',
@@ -29,11 +32,11 @@ const BookingPage = () => {
         mobile: user?.mobile || '',
         email: user?.email || '',
         whatsapp: user?.whatsapp || user?.mobile || '',
-        whatsappSameAsMobile: true, // New checkbox
-        sareeCount: 1, // New field for number of sarees
+        whatsappSameAsMobile: true,
+        sareeCount: 1,
         pickupRequired: false,
         address: user?.address || '',
-        paymentMethod: 'cash', // 'cash', 'online', or 'advance'
+        paymentMethod: 'cash',
         paidAmount: 0,
         measurements: {
             waist: '',

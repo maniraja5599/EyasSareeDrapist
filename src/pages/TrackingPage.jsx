@@ -6,10 +6,17 @@ import { db } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
 import { useDataStore } from '../hooks/useDataStore';
 import { useScrollRestoration } from '../hooks/useScrollRestoration';
+import { usePersistedState } from '../hooks/usePersistedState';
 
 const TrackingPage = () => {
     const { bookingId: urlBookingId } = useParams();
-    const [searchTerm, setSearchTerm] = useState(urlBookingId || '');
+
+    // Use persisted state for search term
+    const [searchTerm, setSearchTerm] = usePersistedState(
+        'tracking_search_term',
+        urlBookingId || ''
+    );
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [booking, setBooking] = useState(null);
