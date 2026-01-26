@@ -1,5 +1,5 @@
 // UPI Payment Link Generation
-export const generateUPILink = (amount, bookingId, upiId = 'yourupi@bank') => {
+export const generateUPILink = (amount, bookingId, upiId = '7502551633@ybl') => {
     const params = new URLSearchParams({
         pa: upiId,
         pn: 'Eyas Drapist',

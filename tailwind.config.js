@@ -49,6 +49,9 @@ export default {
                 sans: ['Inter', 'system-ui', 'sans-serif'],
                 display: ['Outfit', 'sans-serif'],
             },
+            animation: {
+                'spin-slow': 'spin 3s linear infinite',
+            },
         },
     },
     plugins: [],

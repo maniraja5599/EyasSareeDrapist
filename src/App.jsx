@@ -3,6 +3,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import NotificationListener from './components/NotificationListener';
 import './index.css';
+import { useState } from 'react';
 
 // Customer Pages
 import LandingPage from './pages/LandingPage';
@@ -27,112 +28,123 @@ import AdminRecycleBin from './pages/admin/AdminRecycleBin';
 // Components
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
+import LoadingScreen from './components/LoadingScreen';
 
 function App() {
-  return (
-    <AuthProvider>
-      <ToastProvider>
-        <NotificationListener />
-        <Router basename={import.meta.env.BASE_URL}>
-          <div className="min-h-screen bg-gradient-to-b from-cream-50 to-white">
-            <Routes>
-              {/* Customer Routes */}
-              <Route path="/" element={
-                <>
-                  <Navbar />
-                  <LandingPage />
-                </>
-              } />
-              <Route path="/book" element={
-                <>
-                  <Navbar />
-                  <BookingPage />
-                </>
-              } />
-              <Route path="/track" element={
-                <>
-                  <Navbar />
-                  <TrackingPage />
-                </>
-              } />
-              <Route path="/track/:bookingId" element={
-                <>
-                  <Navbar />
-                  <TrackingPage />
-                </>
-              } />
-              <Route path="/pay/:bookingId" element={
-                <>
-                  <Navbar />
-                  <PaymentPage />
-                </>
-              } />
-              <Route path="/login" element={
-                <>
-                  <Navbar />
-                  <ClientLogin />
-                </>
-              } />
-              <Route path="/signup" element={
-                <>
-                  <Navbar />
-                  <ClientSignup />
-                </>
-              } />
-              <Route path="/profile" element={
-                <>
-                  <Navbar />
-                  <ClientProfile />
-                </>
-              } />
+  const [isLoading, setIsLoading] = useState(true);
 
-              {/* Admin Routes */}
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin" element={
-                <ProtectedRoute>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin/reports" element={
-                <ProtectedRoute>
-                  <AdminReports />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin/orders" element={
-                <ProtectedRoute>
-                  <AdminOrders />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin/customers" element={
-                <ProtectedRoute>
-                  <AdminCustomers />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin/partners" element={
-                <ProtectedRoute>
-                  <AdminPartners />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin/payments" element={
-                <ProtectedRoute>
-                  <AdminPayments />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin/settings" element={
-                <ProtectedRoute>
-                  <AdminSettings />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin/recycle-bin" element={
-                <ProtectedRoute>
-                  <AdminRecycleBin />
-                </ProtectedRoute>
-              } />
-            </Routes>
-          </div>
-        </Router>
-      </ToastProvider>
-    </AuthProvider>
+  const handleLoadComplete = () => {
+    setIsLoading(false);
+  };
+
+  return (
+    <>
+      {isLoading && <LoadingScreen onLoadComplete={handleLoadComplete} />}
+
+      <AuthProvider>
+        <ToastProvider>
+          <NotificationListener />
+          <Router basename={import.meta.env.BASE_URL}>
+            <div className="min-h-screen bg-gradient-to-b from-cream-50 to-white">
+              <Routes>
+                {/* Customer Routes */}
+                <Route path="/" element={
+                  <>
+                    <Navbar />
+                    <LandingPage />
+                  </>
+                } />
+                <Route path="/book" element={
+                  <>
+                    <Navbar />
+                    <BookingPage />
+                  </>
+                } />
+                <Route path="/track" element={
+                  <>
+                    <Navbar />
+                    <TrackingPage />
+                  </>
+                } />
+                <Route path="/track/:bookingId" element={
+                  <>
+                    <Navbar />
+                    <TrackingPage />
+                  </>
+                } />
+                <Route path="/pay/:bookingId" element={
+                  <>
+                    <Navbar />
+                    <PaymentPage />
+                  </>
+                } />
+                <Route path="/login" element={
+                  <>
+                    <Navbar />
+                    <ClientLogin />
+                  </>
+                } />
+                <Route path="/signup" element={
+                  <>
+                    <Navbar />
+                    <ClientSignup />
+                  </>
+                } />
+                <Route path="/profile" element={
+                  <>
+                    <Navbar />
+                    <ClientProfile />
+                  </>
+                } />
+
+                {/* Admin Routes */}
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin" element={
+                  <ProtectedRoute>
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/admin/reports" element={
+                  <ProtectedRoute>
+                    <AdminReports />
+                  </ProtectedRoute>
+                } />
+                <Route path="/admin/orders" element={
+                  <ProtectedRoute>
+                    <AdminOrders />
+                  </ProtectedRoute>
+                } />
+                <Route path="/admin/customers" element={
+                  <ProtectedRoute>
+                    <AdminCustomers />
+                  </ProtectedRoute>
+                } />
+                <Route path="/admin/partners" element={
+                  <ProtectedRoute>
+                    <AdminPartners />
+                  </ProtectedRoute>
+                } />
+                <Route path="/admin/payments" element={
+                  <ProtectedRoute>
+                    <AdminPayments />
+                  </ProtectedRoute>
+                } />
+                <Route path="/admin/settings" element={
+                  <ProtectedRoute>
+                    <AdminSettings />
+                  </ProtectedRoute>
+                } />
+                <Route path="/admin/recycle-bin" element={
+                  <ProtectedRoute>
+                    <AdminRecycleBin />
+                  </ProtectedRoute>
+                } />
+              </Routes>
+            </div>
+          </Router>
+        </ToastProvider>
+      </AuthProvider>
+    </>
   );
 }
 

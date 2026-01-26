@@ -89,7 +89,11 @@ export const AuthProvider = ({ children }) => {
         const foundCustomer = customers.find(c => c.mobile === mobile && c.password === password);
 
         if (foundCustomer) {
-            const clientUser = { ...foundCustomer, role: 'client' };
+            const clientUser = {
+                ...foundCustomer,
+                role: 'client',
+                displayName: foundCustomer.name // Add displayName for personalized greeting
+            };
             // We set user state, but this won't be a Firebase User.
             // This might conflict with onAuthStateChanged. 
             // Better to separate "Admin Auth" (Firebase) from "Client Auth" (Local)

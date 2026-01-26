@@ -8,7 +8,9 @@ import {
     onSnapshot,
     query,
     orderBy,
-    setDoc
+    setDoc,
+    where,
+    getDocs
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
@@ -24,7 +26,7 @@ export const useDataStore = () => {
         companyName: 'Eyas Saree Drapist',
         contactMobile: '7502551633',
         whatsapp: '7502551633',
-        upiId: 'eyas@upi',
+        upiId: '7502551633@ybl',
         ...null // defaults
     });
     const [webpageSettings, setWebpageSettings] = useState({
@@ -95,6 +97,16 @@ export const useDataStore = () => {
             measurements: {}
         });
         return { id: docRef.id, ...customerData };
+    };
+
+    const findCustomerByMobile = async (mobile) => {
+        const q = query(collection(db, 'customers'), where('mobile', '==', mobile));
+        const snapshot = await getDocs(q);
+        if (!snapshot.empty) {
+            const doc = snapshot.docs[0];
+            return { id: doc.id, ...doc.data() };
+        }
+        return null;
     };
 
     const updateCustomer = async (id, updates) => {
@@ -238,6 +250,7 @@ export const useDataStore = () => {
         partners,
         actions: {
             addCustomer,
+            findCustomerByMobile,
             updateCustomer,
             deleteCustomer,
             addOrder,

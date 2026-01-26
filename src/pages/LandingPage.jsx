@@ -319,7 +319,7 @@ const LandingPage = () => {
                                 Real Drapes,<br className="sm:hidden" /> Real Elegance
                             </h2>
                         </div>
-                        <a href="https://instagram.com" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-white font-bold border-b border-primary-500 pb-1 hover:text-primary-400 transition-colors text-sm md:text-base whitespace-nowrap mt-2 sm:mt-0">
+                        <a href="https://www.instagram.com/eyas_sareedrapist_namakkal/" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-white font-bold border-b border-primary-500 pb-1 hover:text-primary-400 transition-colors text-sm md:text-base whitespace-nowrap mt-2 sm:mt-0">
                             View Instagram <ArrowRight className="w-4 h-4" />
                         </a>
                     </div>

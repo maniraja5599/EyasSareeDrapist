@@ -16,7 +16,7 @@ export const seedDatabase = async () => {
             companyName: 'Eyas Saree Pre-Pleating & Draping',
             contactNumber: '+91 98765 43210',
             whatsappNumber: '+91 98765 43210',
-            upiId: 'eyas@upi',
+            upiId: '7502551633@ybl',
             address: '123, Fashion Street, Chennai, Tamil Nadu',
             services: [
                 { id: 'prepleat', name: 'Only Pre-Pleating', price: 300, duration: '30-45 mins' },

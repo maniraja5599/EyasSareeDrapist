@@ -6,7 +6,7 @@ import { useDataStore } from '../hooks/useDataStore';
 
 const ClientSignup = () => {
     const navigate = useNavigate();
-    const { setClientUser } = useAuth();
+    const { clientLogin } = useAuth();
     const { actions } = useDataStore();
 
     const [loading, setLoading] = useState(false);
@@ -41,7 +41,7 @@ const ClientSignup = () => {
         setLoading(true);
 
         // Simulate API call
-        setTimeout(() => {
+        setTimeout(async () => {
             try {
                 // Check if mobile already exists (basic check)
                 const saved = localStorage.getItem('eyas_customers');
@@ -50,18 +50,25 @@ const ClientSignup = () => {
                     throw new Error('Mobile number already registered. Please login.');
                 }
 
-                // Create customer in DataStore
-                const newCustomer = actions.addCustomer({
+                // Create customer object
+                const newCustomer = {
                     name: formData.name,
                     mobile: formData.mobile,
                     email: formData.email,
                     address: formData.address,
-                    password: formData.password, // Storing password locally for MVP
+                    password: formData.password,
                     referral: 'Website Signup'
-                });
+                };
 
-                // Auto Login
-                setClientUser(newCustomer);
+                // Save to localStorage for client login
+                customers.push(newCustomer);
+                localStorage.setItem('eyas_customers', JSON.stringify(customers));
+
+                // Also save to Firestore via DataStore
+                actions.addCustomer(newCustomer);
+
+                // Auto Login using clientLogin
+                await clientLogin(formData.mobile, formData.password);
 
                 navigate('/');
             } catch (err) {
