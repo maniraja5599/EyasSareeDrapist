@@ -215,14 +215,14 @@ const BookingPage = () => {
 
                                 {/* Calendar Picker - Desktop Friendly */}
                                 <div className="mt-4">
-                                    <div className="flex items-center gap-2 px-4 py-3 bg-primary-500/10 border border-primary-500/30 rounded-xl hover:bg-primary-500/20 transition-all">
+                                    <div className="flex items-center gap-2 px-4 py-3 bg-primary-500/10 border border-primary-500/30 rounded-xl hover:bg-primary-500/20 transition-all animate-pulse hover:animate-none cursor-pointer">
                                         <Calendar className="w-4 h-4 text-primary-500 flex-shrink-0" />
-                                        <span className="text-sm font-bold text-primary-500 mr-2">Pick from Calendar:</span>
+                                        <span className="text-xs sm:text-sm font-bold text-primary-500 mr-2">Pick from Calendar:</span>
                                         <input
                                             type="date"
                                             value={formData.date}
                                             onChange={(e) => updateField('date', e.target.value)}
-                                            className="flex-1 bg-transparent text-white font-semibold focus:outline-none cursor-pointer"
+                                            className="flex-1 bg-transparent text-white text-sm font-semibold focus:outline-none cursor-pointer"
                                             min={new Date().toISOString().split('T')[0]}
                                         />
                                     </div>
@@ -233,14 +233,14 @@ const BookingPage = () => {
 
                                 {/* Visual Clock Time Picker - No Typing Required */}
                                 <div className="mt-6 p-6 bg-black/40 border border-white/5 rounded-2xl">
-                                    <label className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-primary-500/80 mb-4">
-                                        <Clock className="w-5 h-5" />
+                                    <label className="flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-widest text-primary-500/80 mb-4">
+                                        <Clock className="w-4 h-4" />
                                         Select Custom Time
                                     </label>
 
                                     {/* Hour Selection */}
                                     <div className="mb-4">
-                                        <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-2">Hour</p>
+                                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-2">Hour</p>
                                         <div className="grid grid-cols-6 gap-2">
                                             {[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((hour) => (
                                                 <button
@@ -461,7 +461,7 @@ const BookingPage = () => {
                                         <button
                                             type="button"
                                             onClick={() => updateField('sareeCount', Math.max(1, formData.sareeCount - 1))}
-                                            className="w-12 h-12 rounded-xl bg-black/40 border border-white/10 text-white font-bold hover:bg-primary-500/20 hover:border-primary-500 transition-all"
+                                            className="w-10 h-10 rounded-xl bg-black/40 border border-white/10 text-white font-bold hover:bg-primary-500/20 hover:border-primary-500 transition-all text-lg"
                                         >
                                             -
                                         </button>
@@ -470,12 +470,12 @@ const BookingPage = () => {
                                             min="1"
                                             value={formData.sareeCount}
                                             onChange={(e) => updateField('sareeCount', Math.max(1, parseInt(e.target.value) || 1))}
-                                            className="flex-1 bg-black/40 border border-white/10 rounded-2xl p-5 text-white text-center text-xl font-bold focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all"
+                                            className="w-16 bg-black/40 border border-white/10 rounded-xl p-3 text-white text-center text-lg font-bold focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all"
                                         />
                                         <button
                                             type="button"
                                             onClick={() => updateField('sareeCount', formData.sareeCount + 1)}
-                                            className="w-12 h-12 rounded-xl bg-black/40 border border-white/10 text-white font-bold hover:bg-primary-500/20 hover:border-primary-500 transition-all"
+                                            className="w-10 h-10 rounded-xl bg-black/40 border border-white/10 text-white font-bold hover:bg-primary-500/20 hover:border-primary-500 transition-all text-lg"
                                         >
                                             +
                                         </button>
@@ -743,16 +743,16 @@ const BookingPage = () => {
                                         }
                                     }}
                                     disabled={!formData.name || !formData.mobile || loading}
-                                    className="btn-primary flex-[1.5] text-black font-black py-5 rounded-2xl shadow-[0_0_30px_rgba(212,175,55,0.3)] disabled:opacity-50 relative overflow-hidden"
+                                    className="btn-primary flex-[1.5] text-black font-bold py-4 text-sm sm:text-base rounded-2xl shadow-[0_0_30px_rgba(212,175,55,0.3)] disabled:opacity-50 relative overflow-hidden"
                                 >
                                     {loading ? (
                                         <div className="flex items-center justify-center">
-                                            <div className="w-6 h-6 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
+                                            <div className="w-5 h-5 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
                                         </div>
                                     ) : (
-                                        <div className="flex items-center justify-center gap-3">
-                                            <span>Secure My Booking Now</span>
-                                            <CheckCircle className="w-5 h-5" />
+                                        <div className="flex items-center justify-center gap-2">
+                                            <span>Confirm Booking</span>
+                                            <CheckCircle className="w-4 h-4" />
                                         </div>
                                     )}
                                 </button>
