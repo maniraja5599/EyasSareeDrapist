@@ -79,7 +79,7 @@ const LandingPage = () => {
             {/* --- HERO SECTION --- */}
             <header className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center px-4 sm:px-8 overflow-hidden pt-20 sm:pt-24 pb-12 sm:pb-16 bg-black">
                 {/* Background Glows */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-primary-600/20 rounded-full blur-[120px] pointer-events-none" />
+
 
                 <div className="max-w-7xl mx-auto relative z-10 w-full">
                     {/* Text Content */}
@@ -90,7 +90,7 @@ const LandingPage = () => {
                         </div>
 
                         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-white leading-[1.1] tracking-tight">
-                            Unique Style. <br />
+                            <span className="text-double-line" data-text="Unique Style.">Unique Style.</span> <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-300 via-yellow-400 to-primary-600 drop-shadow-lg filter">
                                 Pure Confidence.
                             </span>
@@ -112,7 +112,7 @@ const LandingPage = () => {
                             <Link to="/book" className="group relative px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-500 text-black rounded-full font-bold text-sm sm:text-base hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] transition-all duration-300 hover:scale-105">
                                 <span className="relative z-10 flex items-center justify-center gap-2">
                                     <Crown className="w-5 h-5 text-black fill-black/20 animate-pulse" />
-                                    Wear Your Confidence <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                    Book Your Confidence <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                 </span>
                             </Link>
                             <Link to="/track" className="px-6 py-3 bg-transparent text-white border border-primary-800 rounded-full font-bold text-sm sm:text-base hover:bg-white/5 hover:border-primary-400 transition-all flex items-center justify-center gap-2">

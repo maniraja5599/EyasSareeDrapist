@@ -605,3 +605,31 @@ html {
     transform: translateY(100%);
   }
 }
+
+@layer utilities {
+
+  /* Glass Effect Text */
+  .text-double-line {
+    position: relative;
+    /* Semi-transparent white fill for frosty glass look */
+    color: rgba(255, 255, 255, 0.2);
+    /* Gradient to simulate light reflection on glass surface */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.1) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    /* Thin, sharp white stroke for the glass edge */
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.6);
+
+    /* Soft glow to enhance the ethereal glass feel - NO heavy black outlines */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+
+    z-index: 10;
+  }
+
+  /* Remove previous heavy double outlines */
+  .text-double-line::before,
+  .text-double-line::after {
+    content: none;
+  }
+}
