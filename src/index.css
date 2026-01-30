@@ -632,4 +632,35 @@ html {
   .text-double-line::after {
     content: none;
   }
+
+  /* Gradient X Animation for Text */
+  .animate-gradient-x {
+    background-size: 200% auto;
+    animation: gradient-x 3s ease infinite;
+  }
+
+  /* Shine/Sweep Animation */
+  .animate-shine {
+    animation: shine 3s ease-in-out infinite;
+  }
+}
+
+/* Gradient X Keyframes */
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+}
+
+/* Shine Keyframes */
+@keyframes shine {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
 }

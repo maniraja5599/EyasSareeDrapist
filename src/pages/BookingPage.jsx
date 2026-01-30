@@ -103,77 +103,77 @@ const BookingPage = () => {
     const prevStep = () => setStep(step - 1);
 
     return (
-        <div className="min-h-screen bg-black text-white py-12 px-4 relative overflow-hidden">
+        <div className="min-h-screen bg-black text-white py-6 sm:py-10 px-4 relative overflow-hidden">
             {/* Background Glows */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-primary-600/10 rounded-full blur-[120px] pointer-events-none" />
 
             <div className="max-w-4xl mx-auto relative z-10">
                 {/* Header */}
-                <div className="text-center mb-12 animate-fade-in">
-                    <h1 className="text-4xl sm:text-6xl font-serif font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary-200 to-primary-600">
+                <div className="text-center mb-6 sm:mb-10 animate-fade-in">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-2 sm:mb-3 text-transparent bg-clip-text bg-gradient-to-r from-primary-200 to-primary-600">
                         {webpageSettings?.bookingTitle || 'Book Your Appointment'}
                     </h1>
-                    <p className="text-lg sm:text-xl text-gray-400 font-light">
+                    <p className="text-sm sm:text-base md:text-lg text-gray-400 font-light">
                         {webpageSettings?.bookingSubtitle || 'Choose your service and preferred time slot'}
                     </p>
                 </div>
 
                 {/* Progress Steps */}
-                <div className="mb-12">
-                    <div className="flex items-center justify-center gap-4">
+                <div className="mb-6 sm:mb-10">
+                    <div className="flex items-center justify-center gap-2 sm:gap-4">
                         {[1, 2, 3].map((s) => (
                             <React.Fragment key={s}>
-                                <div className={`flex items-center gap-3 ${step >= s ? 'opacity-100' : 'opacity-40'}`}>
-                                    <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold transition-all duration-300 ${step >= s
+                                <div className={`flex items-center gap-2 sm:gap-3 ${step >= s ? 'opacity-100' : 'opacity-40'}`}>
+                                    <div className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center font-bold text-sm sm:text-base transition-all duration-300 ${step >= s
                                         ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg'
                                         : 'bg-zinc-800 text-gray-500 border border-white/5'
                                         }`}>
                                         {s}
                                     </div>
-                                    <span className={`hidden sm:inline font-semibold ${step >= s ? 'text-white' : 'text-gray-500'}`}>
+                                    <span className={`hidden sm:inline font-semibold text-xs sm:text-sm md:text-base ${step >= s ? 'text-white' : 'text-gray-500'}`}>
                                         {s === 1 ? 'Service' : s === 2 ? 'Schedule' : 'Details'}
                                     </span>
                                 </div>
-                                {s < 3 && <div className={`w-12 h-1 rounded ${step > s ? 'bg-primary-500' : 'bg-zinc-800'}`}></div>}
+                                {s < 3 && <div className={`w-8 sm:w-12 h-1 rounded ${step > s ? 'bg-primary-500' : 'bg-zinc-800'}`}></div>}
                             </React.Fragment>
                         ))}
                     </div>
                 </div>
 
                 {/* Form Card */}
-                <div className="gradient-card border-white/5 bg-zinc-900/50 backdrop-blur-xl animate-slide-up p-6 sm:p-10 rounded-[2.5rem]">
+                <div className="gradient-card border-white/5 bg-zinc-900/50 backdrop-blur-xl animate-slide-up p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl">
                     {/* Step 1: Service Selection */}
                     {step === 1 && (
-                        <div className="space-y-6">
-                            <h2 className="text-2xl font-serif font-bold text-white mb-6">Select Service</h2>
-                            <div className="grid md:grid-cols-3 gap-4">
+                        <div className="space-y-4 sm:space-y-6">
+                            <h2 className="text-xl sm:text-2xl font-serif font-bold text-white mb-4 sm:mb-6">Select Service</h2>
+                            <div className="grid md:grid-cols-3 gap-3 sm:gap-4">
                                 {services.map((service) => (
                                     <button
                                         key={service.id}
                                         onClick={() => updateField('service', service.id)}
-                                        className={`p-6 rounded-2xl border-2 transition-all duration-300 text-left relative overflow-hidden group ${formData.service === service.id
+                                        className={`p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl border-2 transition-all duration-300 text-left relative overflow-hidden group ${formData.service === service.id
                                             ? 'border-primary-500 bg-primary-500/10 shadow-lg shadow-primary-500/20'
                                             : 'border-white/5 bg-black/40 hover:border-primary-500/30'
                                             }`}
                                     >
-                                        <div className="flex items-center justify-between mb-2">
-                                            <h3 className="font-bold text-lg text-white">{service.name}</h3>
+                                        <div className="flex items-center justify-between mb-1 sm:mb-2">
+                                            <h3 className="font-bold text-base sm:text-lg text-white">{service.name}</h3>
                                             {formData.service === service.id && (
-                                                <CheckCircle className="w-6 h-6 text-primary-500" />
+                                                <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary-500" />
                                             )}
                                         </div>
-                                        <p className="text-3xl font-bold text-primary-400 mb-2">₹{service.price}</p>
-                                        <p className="text-sm text-gray-400 font-light">{service.duration}</p>
+                                        <p className="text-2xl sm:text-3xl font-bold text-primary-400 mb-1 sm:mb-2">₹{service.price}</p>
+                                        <p className="text-xs sm:text-sm text-gray-400 font-light">{service.duration}</p>
                                     </button>
                                 ))}
                             </div>
                             <button
                                 onClick={nextStep}
                                 disabled={!formData.service}
-                                className="btn-primary w-full mt-6 disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-5 rounded-2xl"
+                                className="btn-primary w-full mt-4 sm:mt-6 disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-3 sm:py-4 md:py-5 rounded-xl sm:rounded-2xl text-sm sm:text-base"
                             >
                                 Continue to Schedule
-                                <ArrowRight className="w-5 h-5 inline ml-2" />
+                                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 inline ml-2" />
                             </button>
                         </div>
                     )}

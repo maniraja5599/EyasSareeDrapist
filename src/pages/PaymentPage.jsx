@@ -133,35 +133,35 @@ const PaymentPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-black text-white py-12 px-4">
+        <div className="min-h-screen bg-black text-white py-6 sm:py-10 px-4">
             <div className="max-w-2xl mx-auto">
                 {/* Header */}
-                <div className="mb-12 animate-fade-in">
+                <div className="mb-6 sm:mb-10 animate-fade-in">
                     <button
                         onClick={() => navigate(-1)}
-                        className="flex items-center gap-2 text-primary-400 hover:text-primary-300 transition-colors mb-8 group"
+                        className="flex items-center gap-2 text-primary-400 hover:text-primary-300 transition-colors mb-4 sm:mb-6 group"
                     >
-                        <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                        <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 group-hover:-translate-x-1 transition-transform" />
                         Back
                     </button>
-                    <h1 className="text-4xl sm:text-5xl font-serif font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary-200 to-primary-500">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-3 sm:mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary-200 to-primary-500">
                         Complete Payment
                     </h1>
-                    <div className="flex items-center gap-3 text-gray-400">
-                        <span className="bg-white/5 px-3 py-1 rounded-full border border-white/10 text-xs font-mono uppercase tracking-wider">
+                    <div className="flex items-center gap-2 sm:gap-3 text-gray-400 flex-wrap">
+                        <span className="bg-white/5 px-2 sm:px-3 py-1 rounded-full border border-white/10 text-xs font-mono uppercase tracking-wider">
                             ID: {bookingId}
                         </span>
                         <span className="w-1 h-1 rounded-full bg-gray-600"></span>
-                        <p className="text-sm">{order.service}</p>
+                        <p className="text-xs sm:text-sm">{order.service}</p>
                     </div>
                 </div>
 
                 {/* Payment Method Switcher */}
-                <div className="mb-8 bg-zinc-900/50 backdrop-blur-xl rounded-3xl border border-white/5 p-2">
-                    <div className="grid grid-cols-3 gap-2">
+                <div className="mb-6 sm:mb-8 bg-zinc-900/50 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-white/5 p-1.5 sm:p-2">
+                    <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                         <button
                             onClick={() => handlePaymentMethodChange('online')}
-                            className={`py-3 px-4 rounded-2xl font-bold text-sm transition-all ${paymentMethod === 'online'
+                            className={`py-2 sm:py-3 px-2 sm:px-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm transition-all ${paymentMethod === 'online'
                                 ? 'bg-primary-600 text-black shadow-lg'
                                 : 'bg-transparent text-gray-400 hover:bg-white/5'
                                 }`}
@@ -170,7 +170,7 @@ const PaymentPage = () => {
                         </button>
                         <button
                             onClick={() => handlePaymentMethodChange('advance')}
-                            className={`py-3 px-4 rounded-2xl font-bold text-sm transition-all ${paymentMethod === 'advance'
+                            className={`py-2 sm:py-3 px-2 sm:px-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm transition-all ${paymentMethod === 'advance'
                                 ? 'bg-primary-600 text-black shadow-lg'
                                 : 'bg-transparent text-gray-400 hover:bg-white/5'
                                 }`}
@@ -179,7 +179,7 @@ const PaymentPage = () => {
                         </button>
                         <button
                             onClick={() => handlePaymentMethodChange('cash')}
-                            className={`py-3 px-4 rounded-2xl font-bold text-sm transition-all ${paymentMethod === 'cash'
+                            className={`py-2 sm:py-3 px-2 sm:px-4 rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm transition-all ${paymentMethod === 'cash'
                                 ? 'bg-primary-600 text-black shadow-lg'
                                 : 'bg-transparent text-gray-400 hover:bg-white/5'
                                 }`}
@@ -190,17 +190,17 @@ const PaymentPage = () => {
 
                     {/* Cash on Delivery Message */}
                     {paymentMethod === 'cash' && (
-                        <div className="mt-4 p-6 bg-green-900/20 rounded-2xl border-2 border-green-500/30 text-center">
-                            <div className="mb-4">
-                                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500/20 mb-3">
-                                    <svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="mt-3 sm:mt-4 p-4 sm:p-6 bg-green-900/20 rounded-xl sm:rounded-2xl border-2 border-green-500/30 text-center">
+                            <div className="mb-3 sm:mb-4">
+                                <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-green-500/20 mb-2 sm:mb-3">
+                                    <svg className="w-6 h-6 sm:w-8 sm:h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
                                 </div>
-                                <p className="text-green-400 font-bold text-lg mb-2">
+                                <p className="text-green-400 font-bold text-base sm:text-lg mb-1 sm:mb-2">
                                     Cash on Delivery Selected
                                 </p>
-                                <p className="text-sm text-gray-400 mb-4">
+                                <p className="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4">
                                     You will pay ₹{order.amount} when your order is ready for delivery
                                 </p>
                             </div>
@@ -209,7 +209,7 @@ const PaymentPage = () => {
                                     console.log('[PAYMENT] Confirming COD booking');
                                     navigate(`/track/${bookingId}`);
                                 }}
-                                className="w-full py-4 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-green-500/20"
+                                className="w-full py-3 sm:py-4 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg sm:rounded-xl transition-all shadow-lg hover:shadow-green-500/20 text-sm sm:text-base"
                             >
                                 Confirm Booking
                             </button>
@@ -218,14 +218,14 @@ const PaymentPage = () => {
 
                     {/* Advance Payment Amount Selector */}
                     {paymentMethod === 'advance' && (
-                        <div className="mt-4 p-6 bg-primary-900/10 rounded-2xl border-2 border-primary-500/30">
-                            <p className="text-primary-400 font-bold text-sm mb-4 uppercase tracking-wider">Select Advance Amount</p>
+                        <div className="mt-3 sm:mt-4 p-4 sm:p-6 bg-primary-900/10 rounded-xl sm:rounded-2xl border-2 border-primary-500/30">
+                            <p className="text-primary-400 font-bold text-xs sm:text-sm mb-3 sm:mb-4 uppercase tracking-wider">Select Advance Amount</p>
 
                             {/* Percentage Buttons */}
-                            <div className="grid grid-cols-4 gap-2 mb-4">
+                            <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mb-3 sm:mb-4">
                                 <button
                                     onClick={() => handleAdvanceAmountChange(Math.round(order.amount * 0.25))}
-                                    className={`py-3 px-2 rounded-xl font-bold text-sm transition-all ${advanceAmount === Math.round(order.amount * 0.25)
+                                    className={`py-2 sm:py-3 px-1 sm:px-2 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all ${advanceAmount === Math.round(order.amount * 0.25)
                                         ? 'bg-primary-600 text-black'
                                         : 'bg-white/5 text-gray-400 hover:bg-white/10'
                                         }`}
@@ -234,7 +234,7 @@ const PaymentPage = () => {
                                 </button>
                                 <button
                                     onClick={() => handleAdvanceAmountChange(Math.round(order.amount * 0.5))}
-                                    className={`py-3 px-2 rounded-xl font-bold text-sm transition-all ${advanceAmount === Math.round(order.amount * 0.5)
+                                    className={`py-2 sm:py-3 px-1 sm:px-2 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all ${advanceAmount === Math.round(order.amount * 0.5)
                                         ? 'bg-primary-600 text-black'
                                         : 'bg-white/5 text-gray-400 hover:bg-white/10'
                                         }`}
@@ -243,7 +243,7 @@ const PaymentPage = () => {
                                 </button>
                                 <button
                                     onClick={() => handleAdvanceAmountChange(Math.round(order.amount * 0.75))}
-                                    className={`py-3 px-2 rounded-xl font-bold text-sm transition-all ${advanceAmount === Math.round(order.amount * 0.75)
+                                    className={`py-2 sm:py-3 px-1 sm:px-2 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all ${advanceAmount === Math.round(order.amount * 0.75)
                                         ? 'bg-primary-600 text-black'
                                         : 'bg-white/5 text-gray-400 hover:bg-white/10'
                                         }`}
@@ -252,7 +252,7 @@ const PaymentPage = () => {
                                 </button>
                                 <button
                                     onClick={() => handleAdvanceAmountChange(order.amount)}
-                                    className={`py-3 px-2 rounded-xl font-bold text-sm transition-all ${advanceAmount === order.amount
+                                    className={`py-2 sm:py-3 px-1 sm:px-2 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all ${advanceAmount === order.amount
                                         ? 'bg-primary-600 text-black'
                                         : 'bg-white/5 text-gray-400 hover:bg-white/10'
                                         }`}
@@ -262,29 +262,29 @@ const PaymentPage = () => {
                             </div>
 
                             {/* Manual Input */}
-                            <div className="mb-4">
+                            <div className="mb-3 sm:mb-4">
                                 <label className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-2 block">Or Enter Custom Amount</label>
-                                <div className="flex items-center gap-2 bg-black/40 border border-white/10 rounded-xl p-4">
-                                    <span className="text-primary-500 font-bold text-lg">₹</span>
+                                <div className="flex items-center gap-2 bg-black/40 border border-white/10 rounded-lg sm:rounded-xl p-3 sm:p-4">
+                                    <span className="text-primary-500 font-bold text-base sm:text-lg">₹</span>
                                     <input
                                         type="number"
                                         min="0"
                                         max={order.amount}
                                         value={advanceAmount}
                                         onChange={(e) => handleAdvanceAmountChange(Math.min(parseInt(e.target.value) || 0, order.amount))}
-                                        className="flex-1 bg-transparent text-white font-bold text-lg focus:outline-none"
+                                        className="flex-1 bg-transparent text-white font-bold text-base sm:text-lg focus:outline-none"
                                         placeholder="Enter amount"
                                     />
                                 </div>
                             </div>
 
                             {/* Amount Summary */}
-                            <div className="bg-black/40 rounded-xl p-4 space-y-2">
-                                <div className="flex justify-between text-sm">
+                            <div className="bg-black/40 rounded-lg sm:rounded-xl p-3 sm:p-4 space-y-1.5 sm:space-y-2">
+                                <div className="flex justify-between text-xs sm:text-sm">
                                     <span className="text-gray-400">Advance Payment:</span>
                                     <span className="text-primary-400 font-bold">₹{advanceAmount}</span>
                                 </div>
-                                <div className="flex justify-between text-sm">
+                                <div className="flex justify-between text-xs sm:text-sm">
                                     <span className="text-gray-400">Remaining Balance:</span>
                                     <span className="text-white font-bold">₹{order.amount - advanceAmount}</span>
                                 </div>

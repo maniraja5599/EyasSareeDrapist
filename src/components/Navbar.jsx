@@ -45,7 +45,7 @@ const Navbar = () => {
                             </Link>
 
                             <div className="block text-left">
-                                <Link to="/" onClick={() => window.scrollTo(0, 0)} className={`block font-['Brush_Script_MT',cursive] font-bold text-[#FFFF00] tracking-wide group-hover:text-[#FFFF33] transition-all duration-700 ease-in-out drop-shadow-[0_0_2px_rgba(255,255,0,0.5)] ${isScrolled ? 'text-2xl md:text-3xl' : 'text-2xl sm:text-3xl md:text-5xl'}`}>
+                                <Link to="/" onClick={() => window.scrollTo(0, 0)} className={`block font-['Brush_Script_MT',cursive] font-normal text-[#FFFF00] tracking-wide group-hover:text-[#FFFF33] transition-all duration-700 ease-in-out drop-shadow-[0_0_2px_rgba(255,255,0,0.5)] ${isScrolled ? 'text-2xl md:text-3xl' : 'text-2xl sm:text-3xl md:text-5xl'}`}>
                                     Eyas Drapist
                                 </Link>
                                 <div className={`flex items-center z-10 relative transition-all duration-300 ${isScrolled ? 'gap-1.5 mt-0.5' : 'gap-1.5 mt-1'}`}>
