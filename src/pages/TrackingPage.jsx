@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { CheckCircle, Package, Clock, Loader2, Search, ArrowRight } from 'lucide-react';
+import { CheckCircle, Package, Clock, Loader2, Search, ArrowRight, MapPin } from 'lucide-react';
 import { doc, getDoc, collection, query, where, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
@@ -261,6 +261,20 @@ const TrackingPage = () => {
                                     <div className="space-y-1">
                                         <p className="text-xs text-gray-500 uppercase tracking-widest font-bold">Service Selected</p>
                                         <p className="text-lg font-bold text-white truncate">{booking.service}</p>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <p className="text-xs text-gray-500 uppercase tracking-widest font-bold">Location</p>
+                                        <a
+                                            href={booking.location?.lat && booking.location?.lng
+                                                ? `https://www.google.com/maps/search/?api=1&query=${booking.location.lat},${booking.location.lng}`
+                                                : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(booking.address)}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-sm font-bold text-primary-400 hover:text-primary-300 flex items-center gap-1"
+                                        >
+                                            <MapPin className="w-4 h-4" />
+                                            View on Map
+                                        </a>
                                     </div>
                                 </div>
                             </div>

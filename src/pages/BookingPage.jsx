@@ -36,6 +36,8 @@ const BookingPage = () => {
         sareeCount: 1,
         pickupRequired: false,
         address: user?.address || '',
+        latitude: user?.latitude || null,
+        longitude: user?.longitude || null,
         paymentMethod: 'cash',
         paidAmount: 0,
         measurements: {
@@ -58,6 +60,8 @@ const BookingPage = () => {
                 mobile: prev.mobile || user.mobile || '',
                 whatsapp: prev.whatsappSameAsMobile ? (prev.mobile || user.mobile || '') : (prev.whatsapp || user.whatsapp || ''),
                 address: prev.address || user.address || '',
+                latitude: prev.latitude || user.latitude || null,
+                longitude: prev.longitude || user.longitude || null,
                 measurements: {
                     waist: user.measurements?.waist || prev.measurements.waist || '',
                     hip: user.measurements?.hip || prev.measurements.hip || '',
@@ -571,6 +575,8 @@ const BookingPage = () => {
                                                     });
 
                                                     const { latitude, longitude } = position.coords;
+                                                    updateField('latitude', latitude);
+                                                    updateField('longitude', longitude);
 
                                                     // Use reverse geocoding to get address
                                                     const response = await fetch(
@@ -713,7 +719,12 @@ const BookingPage = () => {
                                                 sareeCount: formData.sareeCount,
                                                 date: formData.date,
                                                 slotTime: formData.slot,
+                                                slotTime: formData.slot,
                                                 address: formData.address,
+                                                location: {
+                                                    lat: formData.latitude,
+                                                    lng: formData.longitude
+                                                },
                                                 measurements: formData.measurements,
                                                 notes: `Pick/Drop: ${formData.pickupRequired ? 'Yes' : 'No'} | WA: ${formData.whatsapp}`,
                                                 notes: `Pick/Drop: ${formData.pickupRequired ? 'Yes' : 'No'} | WA: ${formData.whatsapp}`,
