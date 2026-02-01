@@ -32,81 +32,60 @@ export const useDataStore = () => {
     const [webpageSettings, setWebpageSettings] = useState({
         bookingTitle: 'Book Your Appointment',
         services: [
-            { id: 'prepleat', name: 'Pre-Pleating', price: 250, duration: '30-45 mins' },
-            { id: 'draping', name: 'Draping', price: 300, duration: '15-20 mins' },
-            { id: 'both', name: 'Complete Package', price: 500, duration: 'Best Value' }
-        ]
+            { id: 'prepleat', name: 'Pre-Pleating Only', price: 600, duration: '30-45 mins', discount: 50 },
+            { id: 'draping', name: 'Draping Only', price: 1600, duration: '15-20 mins', discount: 50 },
+            { id: 'both', name: 'Pre-Pleat + Draping', price: 3000, duration: 'Best Value', discount: 50 },
+        ],
+        googleSheetUrl: 'https://script.google.com/macros/s/AKfycbxh4ryqyOin4v2O_-_yf9zz911nq0-_OSNsTArZAY_ALDsr9e8fth0Gsog2C4sX04-D/exec' // URL for Google Sheet Web App
     });
 
     // --- Real-time Listeners ---
 
     useEffect(() => {
-        const unsubs = [];
+        const unsubCustomers = onSnapshot(collection(db, 'customers'), (snapshot) => {
+            setCustomers(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        });
 
-        // 1. Settings (Public Read)
-        const qSettings = collection(db, 'settings');
-        unsubs.push(onSnapshot(qSettings, (snapshot) => {
-            snapshot.docs.forEach(doc => {
-                if (doc.id === 'shop') setShopSettings(prev => ({ ...prev, ...doc.data() }));
-                if (doc.id === 'webpage') setWebpageSettings(prev => ({ ...prev, ...doc.data() }));
-            });
-        }));
+        const unsubOrders = onSnapshot(query(collection(db, 'bookings'), orderBy('createdAt', 'desc')), (snapshot) => {
+            setOrders(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        });
 
-        // 2. Admin Collections (Protected)
-        // Only subscribe if we have a user (assuming admin for now)
-        if (user) {
-            // Bookings
-            const qOrders = query(collection(db, 'bookings'), orderBy('createdAt', 'desc'));
-            unsubs.push(onSnapshot(qOrders, (snapshot) => {
-                const loadedOrders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                setOrders(loadedOrders);
-            }, (error) => console.log("Auth required for orders:", error.code)));
+        const unsubRecycle = onSnapshot(query(collection(db, 'recycle_bin'), orderBy('deletedAt', 'desc')), (snapshot) => {
+            setRecycleBin(snapshot.docs.map(doc => ({ binId: doc.id, ...doc.data() })));
+        });
 
-            // Customers
-            unsubs.push(onSnapshot(collection(db, 'customers'), (snapshot) => {
-                const loadedCustomers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                setCustomers(loadedCustomers);
-            }));
+        const unsubPartners = onSnapshot(collection(db, 'partners'), (snapshot) => {
+            setPartners(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        });
 
-            // Partners
-            unsubs.push(onSnapshot(collection(db, 'partners'), (snapshot) => {
-                const loadedPartners = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                setPartners(loadedPartners);
-            }));
+        const unsubShop = onSnapshot(doc(db, 'settings', 'shop'), (doc) => {
+            if (doc.exists()) setShopSettings(prev => ({ ...prev, ...doc.data() }));
+        });
 
-            // Recycle Bin
-            unsubs.push(onSnapshot(collection(db, 'recycle_bin'), (snapshot) => {
-                const binItems = snapshot.docs.map(doc => ({ ...doc.data(), binId: doc.id }));
-                setRecycleBin(binItems);
-            }));
-        }
+        const unsubWeb = onSnapshot(doc(db, 'settings', 'webpage'), (doc) => {
+            if (doc.exists()) setWebpageSettings(prev => ({ ...prev, ...doc.data() }));
+        });
 
         return () => {
-            unsubs.forEach(u => u());
+            unsubCustomers();
+            unsubOrders();
+            unsubRecycle();
+            unsubPartners();
+            unsubShop();
+            unsubWeb();
         };
-    }, [user]); // Re-run when user logs in/out
+    }, []);
 
-
-    // --- Actions (Async Wrappers) ---
+    // --- Actions ---
 
     // Customers
     const addCustomer = async (customerData) => {
-        const docRef = await addDoc(collection(db, 'customers'), {
+        const id = customerData.mobile; // Use mobile as ID
+        await setDoc(doc(db, 'customers', id), {
             ...customerData,
-            totalOrders: 0,
-            measurements: {}
+            createdAt: new Date().toISOString(),
+            totalOrders: 0
         });
-        return { id: docRef.id, ...customerData };
-    };
-
-    const findCustomerByMobile = async (mobile) => {
-        const q = query(collection(db, 'customers'), where('mobile', '==', mobile));
-        const snapshot = await getDocs(q);
-        if (!snapshot.empty) {
-            const doc = snapshot.docs[0];
-            return { id: doc.id, ...doc.data() };
-        }
-        return null;
     };
 
     const updateCustomer = async (id, updates) => {
@@ -121,18 +100,45 @@ export const useDataStore = () => {
         }
     };
 
+    const findCustomerByMobile = (mobile) => {
+        return customers.find(c => c.mobile === mobile);
+    };
+
     // Orders
+
+    const syncToGoogleSheet = async (orderData) => {
+        if (!webpageSettings.googleSheetUrl) return;
+
+        try {
+            // Use no-cors mode to avoid CORS errors with Google Apps Script
+            // Note: In no-cors mode, we can't read the response, but the request still sends.
+            await fetch(webpageSettings.googleSheetUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData)
+            });
+            console.log("Synced to Google Sheet");
+        } catch (error) {
+            console.error("Google Sheet Sync Error:", error);
+        }
+    };
+
     const addOrder = async (orderData) => {
         const timestamp = new Date().toISOString();
         const friendlyId = await generateBookingId(); // Generate EYS-1001
 
-        // Use setDoc to define our own ID instead of auto-id
-        await setDoc(doc(db, 'bookings', friendlyId), {
+        const fullOrderData = {
             ...orderData,
             status: 'booked',
             paymentStatus: 'pending',
             createdAt: timestamp
-        });
+        };
+
+        // Use setDoc to define our own ID instead of auto-id
+        await setDoc(doc(db, 'bookings', friendlyId), fullOrderData);
 
         // Link Customer
         if (orderData.customerId) {
@@ -143,6 +149,10 @@ export const useDataStore = () => {
                 });
             }
         }
+
+        // Sync to Google Sheet (Fire and forget)
+        syncToGoogleSheet({ id: friendlyId, ...fullOrderData });
+
         return { id: friendlyId, ...orderData };
     };
 

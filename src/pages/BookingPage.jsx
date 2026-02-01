@@ -71,9 +71,9 @@ const BookingPage = () => {
 
     // Use dynamic services from store, fallback to default if empty (rare)
     const services = webpageSettings?.services || [
-        { id: 'prepleat', name: 'Only Pre-Pleating', price: 300, duration: '30-45 mins' },
-        { id: 'draping', name: 'Only Draping', price: 600, duration: '15-20 mins' },
-        { id: 'both', name: 'Complete Package', price: 800, duration: 'Best Value' }
+        { id: 'prepleat', name: 'Pre-Pleating Only', price: 600, duration: '30-45 mins', discount: 50 },
+        { id: 'draping', name: 'Draping Only', price: 1600, duration: '15-20 mins', discount: 50 },
+        { id: 'both', name: 'Pre-Pleat + Draping', price: 3000, duration: 'Best Value', discount: 50 }
     ];
 
     const slots = ['10:00 AM', '11:00 AM', '2:00 PM', '4:00 PM', '6:00 PM'];
@@ -92,7 +92,12 @@ const BookingPage = () => {
     // Scroll to top when page loads
     React.useEffect(() => {
         window.scrollTo(0, 0);
-    }, []);
+        // Explicitly clear service selection if not provided in URL
+        // This prevents persisted state from pre-selecting a service when not intended
+        if (!preselectedService) {
+            setFormData(prev => ({ ...prev, service: '' }));
+        }
+    }, [preselectedService]);
 
     // Scroll to top when step changes
     React.useEffect(() => {
@@ -110,10 +115,10 @@ const BookingPage = () => {
             <div className="max-w-4xl mx-auto relative z-10">
                 {/* Header */}
                 <div className="text-center mb-6 sm:mb-10 animate-fade-in">
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-2 sm:mb-3 text-transparent bg-clip-text bg-gradient-to-r from-primary-200 to-primary-600">
+                    <h1 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold mb-2 sm:mb-3 text-transparent bg-clip-text bg-gradient-to-r from-primary-200 to-primary-600">
                         {webpageSettings?.bookingTitle || 'Book Your Appointment'}
                     </h1>
-                    <p className="text-sm sm:text-base md:text-lg text-gray-400 font-light">
+                    <p className="text-xs sm:text-sm md:text-base text-gray-400 font-light">
                         {webpageSettings?.bookingSubtitle || 'Choose your service and preferred time slot'}
                     </p>
                 </div>
@@ -124,13 +129,13 @@ const BookingPage = () => {
                         {[1, 2, 3].map((s) => (
                             <React.Fragment key={s}>
                                 <div className={`flex items-center gap-2 sm:gap-3 ${step >= s ? 'opacity-100' : 'opacity-40'}`}>
-                                    <div className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center font-bold text-sm sm:text-base transition-all duration-300 ${step >= s
+                                    <div className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm transition-all duration-300 ${step >= s
                                         ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg'
                                         : 'bg-zinc-800 text-gray-500 border border-white/5'
                                         }`}>
                                         {s}
                                     </div>
-                                    <span className={`hidden sm:inline font-semibold text-xs sm:text-sm md:text-base ${step >= s ? 'text-white' : 'text-gray-500'}`}>
+                                    <span className={`hidden sm:inline font-semibold text-[10px] sm:text-xs md:text-sm ${step >= s ? 'text-white' : 'text-gray-500'}`}>
                                         {s === 1 ? 'Service' : s === 2 ? 'Schedule' : 'Details'}
                                     </span>
                                 </div>
@@ -145,7 +150,7 @@ const BookingPage = () => {
                     {/* Step 1: Service Selection */}
                     {step === 1 && (
                         <div className="space-y-4 sm:space-y-6">
-                            <h2 className="text-xl sm:text-2xl font-serif font-bold text-white mb-4 sm:mb-6">Select Service</h2>
+                            <h2 className="text-lg sm:text-xl font-serif font-bold text-white mb-4 sm:mb-6">Select Service</h2>
                             <div className="grid md:grid-cols-3 gap-3 sm:gap-4">
                                 {services.map((service) => (
                                     <button
@@ -153,16 +158,16 @@ const BookingPage = () => {
                                         onClick={() => updateField('service', service.id)}
                                         className={`p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl border-2 transition-all duration-300 text-left relative overflow-hidden group ${formData.service === service.id
                                             ? 'border-primary-500 bg-primary-500/10 shadow-lg shadow-primary-500/20'
-                                            : 'border-white/5 bg-black/40 hover:border-primary-500/30'
+                                            : 'border-white/20 bg-zinc-800/50 hover:border-primary-500/50 hover:bg-zinc-800'
                                             }`}
                                     >
                                         <div className="flex items-center justify-between mb-1 sm:mb-2">
-                                            <h3 className="font-bold text-base sm:text-lg text-white">{service.name}</h3>
+                                            <h3 className="font-bold text-sm sm:text-base text-white">{service.name}</h3>
                                             {formData.service === service.id && (
                                                 <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary-500" />
                                             )}
                                         </div>
-                                        <p className="text-2xl sm:text-3xl font-bold text-primary-400 mb-1 sm:mb-2">₹{service.price}</p>
+
                                         <p className="text-xs sm:text-sm text-gray-400 font-light">{service.duration}</p>
                                     </button>
                                 ))}
@@ -170,7 +175,7 @@ const BookingPage = () => {
                             <button
                                 onClick={nextStep}
                                 disabled={!formData.service}
-                                className="btn-primary w-full mt-4 sm:mt-6 disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-3 sm:py-4 md:py-5 rounded-xl sm:rounded-2xl text-sm sm:text-base"
+                                className="btn-primary w-full mt-4 sm:mt-6 disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-3 sm:py-4 md:py-5 rounded-xl sm:rounded-2xl text-xs sm:text-sm"
                             >
                                 Continue to Schedule
                                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 inline ml-2" />
@@ -181,16 +186,44 @@ const BookingPage = () => {
                     {/* Step 2: Date & Time */}
                     {step === 2 && (
                         <div className="space-y-6">
-                            <h2 className="text-2xl font-serif font-bold text-white mb-6">Choose Date & Time</h2>
+                            <h2 className="text-lg sm:text-xl font-serif font-bold text-white mb-6">Choose Date & Time</h2>
+
+                            {/* Sticky Selection Summary - Compact */}
+                            <div className="sticky top-0 z-20 bg-zinc-900/95 backdrop-blur-md border border-primary-500/20 rounded-xl p-3 mb-4 shadow-lg transform transition-all duration-300">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-full bg-primary-500/10 flex items-center justify-center border border-primary-500/20">
+                                            <Calendar className="w-4 h-4 text-primary-400" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[9px] uppercase tracking-widest text-gray-500 font-bold mb-0.5">Selected Slot</p>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-xs font-bold text-white">
+                                                    {formData.date ? new Date(formData.date).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' }) : 'Select Date'}
+                                                </span>
+                                                {formData.slot && (
+                                                    <>
+                                                        <span className="w-1 h-1 rounded-full bg-gray-600"></span>
+                                                        <span className="text-xs font-bold text-primary-400">{formData.slot}</span>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {formData.date && formData.slot && (
+                                        <CheckCircle className="w-5 h-5 text-green-500 animate-pulse" />
+                                    )}
+                                </div>
+                            </div>
 
                             <div>
-                                <label className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-primary-500/80 mb-4">
-                                    <Calendar className="w-4 h-4" />
+                                <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-primary-500/80 mb-2">
+                                    <Calendar className="w-3 h-3" />
                                     Select Date
                                 </label>
 
-                                {/* Date Scroller */}
-                                <div className="flex gap-3 overflow-x-auto pb-4 -mx-2 px-2 snap-x scrollbar-hide">
+                                {/* Date Scroller - Compact */}
+                                <div className="flex gap-2 overflow-x-auto pb-2 -mx-2 px-2 snap-x scrollbar-hide">
                                     {Array.from({ length: 14 }).map((_, i) => {
                                         const date = new Date();
                                         date.setDate(date.getDate() + i);
@@ -201,18 +234,18 @@ const BookingPage = () => {
                                             <button
                                                 key={i}
                                                 onClick={() => updateField('date', dateStr)}
-                                                className={`flex-shrink-0 w-24 p-4 rounded-2xl border-2 transition-all duration-300 flex flex-col items-center justify-center gap-1 snap-start ${isSelected
+                                                className={`flex-shrink-0 w-12 sm:w-14 p-1.5 rounded-lg border transition-all duration-300 flex flex-col items-center justify-center gap-0.5 snap-start ${isSelected
                                                     ? 'bg-primary-500 border-primary-500 text-black shadow-lg scale-105'
                                                     : 'bg-black/40 border-white/5 text-gray-400 hover:border-primary-500/30'
                                                     }`}
                                             >
-                                                <span className={`text-[10px] font-bold uppercase tracking-widest ${isSelected ? 'text-black/60' : 'text-gray-500'}`}>
+                                                <span className={`text-[8px] font-bold uppercase tracking-widest ${isSelected ? 'text-black/60' : 'text-gray-500'}`}>
                                                     {date.toLocaleDateString('en-US', { month: 'short' })}
                                                 </span>
-                                                <span className={`text-2xl font-black ${isSelected ? 'text-black' : 'text-white'}`}>
+                                                <span className={`text-base font-black ${isSelected ? 'text-black' : 'text-white'}`}>
                                                     {date.getDate()}
                                                 </span>
-                                                <span className={`text-[10px] font-bold uppercase tracking-widest ${isSelected ? 'text-black/60' : 'text-gray-500'}`}>
+                                                <span className={`text-[8px] font-bold uppercase tracking-widest ${isSelected ? 'text-black/60' : 'text-gray-500'}`}>
                                                     {date.toLocaleDateString('en-US', { weekday: 'short' })}
                                                 </span>
                                             </button>
@@ -220,35 +253,34 @@ const BookingPage = () => {
                                     })}
                                 </div>
 
-                                {/* Calendar Picker - Desktop Friendly */}
-                                <div className="mt-4">
-                                    <div className="flex items-center gap-2 px-4 py-3 bg-primary-500/10 border border-primary-500/30 rounded-xl hover:bg-primary-500/20 transition-all animate-pulse hover:animate-none cursor-pointer">
-                                        <Calendar className="w-4 h-4 text-primary-500 flex-shrink-0" />
-                                        <span className="text-xs sm:text-sm font-bold text-primary-500 mr-2">Pick from Calendar:</span>
+                                {/* Calendar Picker - Compact */}
+                                <div className="mt-2 text-right">
+                                    <label className="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-800/50 border border-white/5 rounded-lg cursor-pointer hover:bg-zinc-800 transition-colors">
+                                        <Calendar className="w-3 h-3 text-primary-500" />
+                                        <span className="text-[10px] font-bold text-gray-400">Pick Date:</span>
                                         <input
                                             type="date"
                                             value={formData.date}
                                             onChange={(e) => updateField('date', e.target.value)}
-                                            className="flex-1 bg-transparent text-white text-sm font-semibold focus:outline-none cursor-pointer"
+                                            className="bg-transparent text-white text-xs font-semibold focus:outline-none cursor-pointer w-[90px]"
                                             min={new Date().toISOString().split('T')[0]}
                                         />
-                                    </div>
+                                    </label>
                                 </div>
                             </div>
 
                             <div>
-
-                                {/* Visual Clock Time Picker - No Typing Required */}
-                                <div className="mt-6 p-6 bg-black/40 border border-white/5 rounded-2xl">
-                                    <label className="flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-widest text-primary-500/80 mb-4">
-                                        <Clock className="w-4 h-4" />
-                                        Select Custom Time
+                                {/* Visual Clock Time Picker - Compact */}
+                                <div className="mt-2 p-3 sm:p-4 bg-black/40 border border-white/5 rounded-2xl">
+                                    <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-primary-500/80 mb-3">
+                                        <Clock className="w-3 h-3" />
+                                        Select Time
                                     </label>
 
                                     {/* Hour Selection */}
-                                    <div className="mb-4">
-                                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-2">Hour</p>
-                                        <div className="grid grid-cols-6 gap-2">
+                                    <div className="mb-3">
+                                        <p className="text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1.5">Hour</p>
+                                        <div className="grid grid-cols-6 gap-1.5">
                                             {[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((hour) => (
                                                 <button
                                                     key={hour}
@@ -260,7 +292,7 @@ const BookingPage = () => {
                                                         const minute = hasAMPM ? currentSlot.split(':')[1]?.split(' ')[0] || '00' : '00';
                                                         updateField('slot', `${hour}:${minute} ${ampm}`);
                                                     }}
-                                                    className={`p-3 rounded-lg border-2 font-bold transition-all ${formData.slot?.startsWith(`${hour}:`)
+                                                    className={`py-1.5 rounded-md border text-xs font-bold transition-all ${formData.slot?.startsWith(`${hour}:`)
                                                         ? 'border-primary-500 bg-primary-500/20 text-primary-400'
                                                         : 'border-white/10 bg-zinc-900 text-gray-400 hover:border-primary-500/30'
                                                         }`}
@@ -271,63 +303,63 @@ const BookingPage = () => {
                                         </div>
                                     </div>
 
-                                    {/* Minute Selection */}
-                                    <div className="mb-4">
-                                        <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-2">Minute</p>
-                                        <div className="grid grid-cols-4 gap-2">
-                                            {['00', '15', '30', '45'].map((minute) => (
-                                                <button
-                                                    key={minute}
-                                                    type="button"
-                                                    onClick={() => {
-                                                        const currentSlot = formData.slot || '';
-                                                        const hasAMPM = currentSlot.includes('AM') || currentSlot.includes('PM');
-                                                        const ampm = hasAMPM ? (currentSlot.includes('PM') ? 'PM' : 'AM') : 'AM';
-                                                        const hour = hasAMPM ? currentSlot.split(':')[0] : '12';
-                                                        updateField('slot', `${hour}:${minute} ${ampm}`);
-                                                    }}
-                                                    className={`p-3 rounded-lg border-2 font-bold transition-all ${formData.slot?.includes(`:${minute} `)
-                                                        ? 'border-primary-500 bg-primary-500/20 text-primary-400'
-                                                        : 'border-white/10 bg-zinc-900 text-gray-400 hover:border-primary-500/30'
-                                                        }`}
-                                                >
-                                                    :{minute}
-                                                </button>
-                                            ))}
+                                    <div className="grid grid-cols-2 gap-4">
+                                        {/* Minute Selection */}
+                                        <div>
+                                            <p className="text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1.5">Minute</p>
+                                            <div className="grid grid-cols-4 gap-1.5">
+                                                {['00', '15', '30', '45'].map((minute) => (
+                                                    <button
+                                                        key={minute}
+                                                        type="button"
+                                                        onClick={() => {
+                                                            const currentSlot = formData.slot || '';
+                                                            const hasAMPM = currentSlot.includes('AM') || currentSlot.includes('PM');
+                                                            const ampm = hasAMPM ? (currentSlot.includes('PM') ? 'PM' : 'AM') : 'AM';
+                                                            const hour = hasAMPM ? currentSlot.split(':')[0] : '12';
+                                                            updateField('slot', `${hour}:${minute} ${ampm}`);
+                                                        }}
+                                                        className={`py-1.5 rounded-md border text-xs font-bold transition-all ${formData.slot?.includes(`:${minute} `)
+                                                            ? 'border-primary-500 bg-primary-500/20 text-primary-400'
+                                                            : 'border-white/10 bg-zinc-900 text-gray-400 hover:border-primary-500/30'
+                                                            }`}
+                                                    >
+                                                        :{minute}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* AM/PM Selection */}
+                                        <div>
+                                            <p className="text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1.5">Period</p>
+                                            <div className="grid grid-cols-2 gap-1.5">
+                                                {['AM', 'PM'].map((period) => (
+                                                    <button
+                                                        key={period}
+                                                        type="button"
+                                                        onClick={() => {
+                                                            const currentSlot = formData.slot || '12:00 AM';
+                                                            const timePart = currentSlot.split(' ')[0] || '12:00';
+                                                            updateField('slot', `${timePart} ${period}`);
+                                                        }}
+                                                        className={`py-1.5 rounded-md border text-xs font-black transition-all ${formData.slot?.includes(period)
+                                                            ? 'border-primary-500 bg-primary-500/20 text-primary-400 shadow-lg'
+                                                            : 'border-white/10 bg-zinc-900 text-gray-400 hover:border-primary-500/30'
+                                                            }`}
+                                                    >
+                                                        {period}
+                                                    </button>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
 
-                                    {/* AM/PM Selection */}
-                                    <div className="mb-4">
-                                        <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-2">Period</p>
-                                        <div className="grid grid-cols-2 gap-3">
-                                            {['AM', 'PM'].map((period) => (
-                                                <button
-                                                    key={period}
-                                                    type="button"
-                                                    onClick={() => {
-                                                        const currentSlot = formData.slot || '12:00 AM';
-                                                        const timePart = currentSlot.split(' ')[0] || '12:00';
-                                                        updateField('slot', `${timePart} ${period}`);
-                                                    }}
-                                                    className={`p-4 rounded-xl border-2 font-black text-lg transition-all ${formData.slot?.includes(period)
-                                                        ? 'border-primary-500 bg-primary-500/20 text-primary-400 shadow-lg'
-                                                        : 'border-white/10 bg-zinc-900 text-gray-400 hover:border-primary-500/30'
-                                                        }`}
-                                                >
-                                                    {period}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Selected Time Display */}
+                                    {/* Selected Time Display - Very Compact */}
                                     {formData.slot && !slots.includes(formData.slot) && (
-                                        <div className="mt-4 p-4 bg-primary-500/10 border-2 border-primary-500/50 rounded-xl">
-                                            <p className="text-center text-2xl font-black text-primary-400">
-                                                <Clock className="w-5 h-5 inline mr-2" />
-                                                {formData.slot}
-                                            </p>
+                                        <div className="mt-3 py-2 px-3 bg-primary-500/10 border border-primary-500/30 rounded-lg flex items-center justify-center gap-2">
+                                            <Clock className="w-3.5 h-3.5 text-primary-400" />
+                                            <span className="text-sm font-black text-primary-400">{formData.slot}</span>
                                         </div>
                                     )}
                                 </div>
@@ -356,6 +388,37 @@ const BookingPage = () => {
                     {step === 3 && (
                         <div className="space-y-8">
                             <h2 className="text-2xl font-serif font-bold text-white mb-6">Final Details</h2>
+
+                            {/* Sticky Selection Summary - Compact */}
+                            <div className="sticky top-0 z-20 bg-zinc-900/95 backdrop-blur-md border border-primary-500/20 rounded-xl p-3 mb-6 shadow-lg transform transition-all duration-300">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-full bg-primary-500/10 flex items-center justify-center border border-primary-500/20">
+                                            <Calendar className="w-4 h-4 text-primary-400" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[9px] uppercase tracking-widest text-gray-500 font-bold mb-0.5">Booking Slot</p>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-xs font-bold text-white">
+                                                    {formData.date ? new Date(formData.date).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' }) : 'Select Date'}
+                                                </span>
+                                                {formData.slot && (
+                                                    <>
+                                                        <span className="w-1 h-1 rounded-full bg-gray-600"></span>
+                                                        <span className="text-xs font-bold text-primary-400">{formData.slot}</span>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={() => setStep(2)}
+                                        className="px-3 py-1.5 rounded-lg bg-zinc-800 text-[10px] font-bold text-gray-300 hover:bg-zinc-700 hover:text-white transition-all border border-white/5"
+                                    >
+                                        Change
+                                    </button>
+                                </div>
+                            </div>
 
                             {!user && (
                                 <div className="mb-8">
@@ -458,7 +521,7 @@ const BookingPage = () => {
                             </div>
 
                             {/* Saree Count */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 gap-6">
                                 <div>
                                     <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-2">
                                         <Calendar className="w-3 h-3" />
@@ -489,24 +552,7 @@ const BookingPage = () => {
                                     </div>
                                 </div>
 
-                                {/* Total Price */}
-                                <div>
-                                    <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-2">
-                                        Total Amount
-                                    </label>
-                                    <div className="bg-gradient-to-r from-primary-500/20 to-primary-600/20 border-2 border-primary-500/50 rounded-2xl p-5 text-center h-[68px] flex flex-col items-center justify-center">
-                                        <p className="text-2xl md:text-3xl font-black text-primary-400">
-                                            ₹{(() => {
-                                                const selectedService = services.find(s => s.id === formData.service);
-                                                const basePrice = selectedService?.price || 0;
-                                                return (basePrice * formData.sareeCount).toLocaleString();
-                                            })()}
-                                        </p>
-                                        <p className="text-xs text-gray-400 mt-1">
-                                            {formData.sareeCount} saree{formData.sareeCount > 1 ? 's' : ''}
-                                        </p>
-                                    </div>
-                                </div>
+
                             </div>
 
                             <div>
@@ -591,77 +637,7 @@ const BookingPage = () => {
                                 </div>
                             </div>
 
-                            {/* Payment Method Selection */}
-                            <div className="p-6 bg-gradient-to-br from-primary-500/10 via-black/40 to-black/40 border border-primary-500/30 rounded-3xl space-y-4">
-                                <h3 className="text-sm font-bold uppercase tracking-widest text-primary-500 flex items-center gap-2">
-                                    <Clock className="w-4 h-4" />
-                                    Payment Method
-                                </h3>
 
-                                <div className="grid md:grid-cols-3 gap-3">
-                                    <button
-                                        type="button"
-                                        onClick={() => { updateField('paymentMethod', 'online'); updateField('paidAmount', 0); }}
-                                        className={`p-4 rounded-xl border-2 font-bold transition-all ${formData.paymentMethod === 'online'
-                                            ? 'border-primary-500 bg-primary-500/20 text-primary-400 shadow-lg'
-                                            : 'border-white/10 bg-black/40 text-gray-400 hover:border-primary-500/30'
-                                            }`}
-                                    >
-                                        💳 Pay Now
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        onClick={() => { updateField('paymentMethod', 'cash'); updateField('paidAmount', 0); }}
-                                        className={`p-4 rounded-xl border-2 font-bold transition-all ${formData.paymentMethod === 'cash'
-                                            ? 'border-primary-500 bg-primary-500/20 text-primary-400 shadow-lg'
-                                            : 'border-white/10 bg-black/40 text-gray-400 hover:border-primary-500/30'
-                                            }`}
-                                    >
-                                        💵 Cash on Delivery
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        onClick={() => updateField('paymentMethod', 'advance')}
-                                        className={`p-4 rounded-xl border-2 font-bold transition-all ${formData.paymentMethod === 'advance'
-                                            ? 'border-primary-500 bg-primary-500/20 text-primary-400 shadow-lg'
-                                            : 'border-white/10 bg-black/40 text-gray-400 hover:border-primary-500/30'
-                                            }`}
-                                    >
-                                        📊 Advance Payment
-                                    </button>
-                                </div>
-
-                                {/* Advance Payment Amount Input */}
-                                {formData.paymentMethod === 'advance' && (
-                                    <div className="mt-4 p-4 bg-black/60 border border-primary-500/20 rounded-xl">
-                                        <label className="block text-xs text-gray-400 font-bold mb-2 uppercase tracking-wider">
-                                            Enter Advance Amount (Optional)
-                                        </label>
-                                        <div className="relative">
-                                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary-500 font-bold">₹</span>
-                                            <input
-                                                type="number"
-                                                value={formData.paidAmount || ''}
-                                                onChange={(e) => updateField('paidAmount', parseInt(e.target.value) || 0)}
-                                                placeholder="0"
-                                                min="0"
-                                                className="w-full pl-8 pr-4 py-3 bg-zinc-900 border border-white/10 rounded-xl text-white font-bold text-lg focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all"
-                                            />
-                                        </div>
-                                        <p className="mt-2 text-xs text-gray-500">
-                                            Leave blank to pay advance later. You can pay partial amount now.
-                                        </p>
-                                    </div>
-                                )}
-
-                                {formData.paymentMethod === 'cash' && (
-                                    <p className="text-sm text-gray-400 bg-black/40 p-3 rounded-lg border border-white/5">
-                                        💡 You will pay when your order is ready for delivery
-                                    </p>
-                                )}
-                            </div>
 
                             {error && (
                                 <div className="p-5 bg-red-900/20 border border-red-500/30 text-red-500 text-sm font-bold rounded-2xl">
@@ -715,8 +691,13 @@ const BookingPage = () => {
                                             }
 
                                             const selectedServiceObj = services.find(s => s.id === formData.service);
-                                            const basePrice = selectedServiceObj ? selectedServiceObj.price : 0;
-                                            const totalAmount = basePrice * formData.sareeCount;
+                                            const basePrice = selectedServiceObj ? Number(selectedServiceObj.price) : 0;
+                                            const discount = selectedServiceObj && selectedServiceObj.discount ? Number(selectedServiceObj.discount) : 0;
+
+                                            // Apply discount if any
+                                            const discountedPrice = discount > 0 ? basePrice * (1 - discount / 100) : basePrice;
+                                            const finalPricePerSaree = Math.round(discountedPrice);
+                                            const totalAmount = finalPricePerSaree * formData.sareeCount;
 
                                             console.log('[BOOKING] Creating order...');
                                             const newOrder = await actions.addOrder({
@@ -727,28 +708,24 @@ const BookingPage = () => {
                                                 customerWhatsapp: formData.whatsapp,
                                                 service: selectedServiceObj ? selectedServiceObj.name : formData.service,
                                                 amount: totalAmount,
+                                                originalAmount: basePrice * formData.sareeCount, // Track original price before discount
+                                                discountApplied: discount, // Track discount %
                                                 sareeCount: formData.sareeCount,
                                                 date: formData.date,
                                                 slotTime: formData.slot,
                                                 address: formData.address,
                                                 measurements: formData.measurements,
                                                 notes: `Pick/Drop: ${formData.pickupRequired ? 'Yes' : 'No'} | WA: ${formData.whatsapp}`,
-                                                paymentMethod: formData.paymentMethod,
-                                                paidAmount: formData.paidAmount || 0,
-                                                paymentStatus: formData.paidAmount > 0 ? 'Partial' : 'Pending'
+                                                notes: `Pick/Drop: ${formData.pickupRequired ? 'Yes' : 'No'} | WA: ${formData.whatsapp}`,
+                                                paymentMethod: 'pay_at_venue',
+                                                paidAmount: 0,
+                                                paymentStatus: 'Pending'
                                             });
 
                                             console.log('[BOOKING] Order created:', newOrder);
-                                            // Redirect based on payment method
-                                            if (formData.paymentMethod === 'online' || formData.paymentMethod === 'advance') {
-                                                // Go to payment page for online/advance payments
-                                                console.log('[BOOKING] Redirecting to payment page:', `/payment/${newOrder.id}`);
-                                                navigate(`/payment/${newOrder.id}`);
-                                            } else {
-                                                // Go to tracking for cash on delivery
-                                                console.log('[BOOKING] Redirecting to tracking page:', `/track/${newOrder.id}`);
-                                                navigate(`/track/${newOrder.id}`);
-                                            }
+                                            // Always redirect to tracking page since payment is removed
+                                            console.log('[BOOKING] Redirecting to tracking page:', `/track/${newOrder.id}`);
+                                            navigate(`/track/${newOrder.id}`);
                                         } catch (err) {
                                             console.error("[BOOKING] Error:", err);
                                             setError(err.message || "Booking failed. Please try again.");

@@ -11,6 +11,7 @@ const ClientProfile = () => {
 
     const [formData, setFormData] = useState({
         name: '',
+        mobile: '',
         waist: '',
         hip: '',
         length: '',
@@ -22,6 +23,7 @@ const ClientProfile = () => {
         if (user) {
             setFormData({
                 name: user.name || user.displayName || '',
+                mobile: user.mobile || user.phoneNumber || '',
                 waist: user.measurements?.waist || '',
                 hip: user.measurements?.hip || '',
                 length: user.measurements?.length || '',
@@ -45,6 +47,7 @@ const ClientProfile = () => {
             const userRef = doc(db, 'customers', user.uid);
             await setDoc(userRef, {
                 name: formData.name,
+                mobile: formData.mobile,
                 measurements: {
                     waist: formData.waist,
                     hip: formData.hip,
@@ -101,6 +104,17 @@ const ClientProfile = () => {
                                     value={formData.name}
                                     onChange={handleChange}
                                     placeholder="Your Full Name"
+                                    className="input-field"
+                                />
+                            </div>
+                            <div className="mt-4">
+                                <label className="label">Mobile Number</label>
+                                <input
+                                    type="tel"
+                                    name="mobile"
+                                    value={formData.mobile}
+                                    onChange={handleChange}
+                                    placeholder="Your Mobile Number"
                                     className="input-field"
                                 />
                             </div>

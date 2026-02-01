@@ -23,7 +23,9 @@ const AdminOrders = () => {
         amount: 300,
         date: new Date().toISOString().split('T')[0],
         slotTime: '10:00 AM',
-        status: 'booked'
+        status: 'booked',
+        sareeCount: 1,
+        address: ''
     });
     const [customerSearch, setCustomerSearch] = useState('');
     const [showCustomerSuggestions, setShowCustomerSuggestions] = useState(false);
@@ -215,6 +217,7 @@ const AdminOrders = () => {
                                 <th className="text-left py-4 px-4 font-semibold text-gray-700">Order ID</th>
                                 <th className="text-left py-4 px-4 font-semibold text-gray-700">Customer</th>
                                 <th className="text-left py-4 px-4 font-semibold text-gray-700">Service</th>
+                                <th className="text-left py-4 px-4 font-semibold text-gray-700">Qty</th>
                                 <th className="text-left py-4 px-4 font-semibold text-gray-700">Status</th>
                                 <th className="text-left py-4 px-4 font-semibold text-gray-700">Payment</th>
                                 <th className="text-right py-4 px-4 font-semibold text-gray-700">Actions</th>
@@ -241,6 +244,9 @@ const AdminOrders = () => {
                                         <div className="text-xs text-gray-500 flex items-center gap-1">
                                             <Calendar className="w-3 h-3" /> {formatDate(order.date)}
                                         </div>
+                                    </td>
+                                    <td className="py-4 px-4 text-center font-bold text-gray-700">
+                                        {order.sareeCount || 1}
                                     </td>
                                     <td className="py-4 px-4">
                                         <select
@@ -310,6 +316,16 @@ const AdminOrders = () => {
                                         onChange={e => setEditingOrder({ ...editingOrder, service: e.target.value })}
                                     />
                                 </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Saree Count</label>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        className="input-field"
+                                        value={editingOrder.sareeCount || 1}
+                                        onChange={e => setEditingOrder({ ...editingOrder, sareeCount: parseInt(e.target.value) || 1 })}
+                                    />
+                                </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Price (₹)</label>
@@ -329,6 +345,16 @@ const AdminOrders = () => {
                                             onChange={e => setEditingOrder({ ...editingOrder, date: e.target.value })}
                                         />
                                     </div>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                                    <textarea
+                                        className="input-field"
+                                        rows="2"
+                                        value={editingOrder.address || ''}
+                                        onChange={e => setEditingOrder({ ...editingOrder, address: e.target.value })}
+                                        placeholder="Delivery address..."
+                                    />
                                 </div>
                                 <div className="flex justify-end gap-3 mt-6">
                                     <button
@@ -398,7 +424,8 @@ const AdminOrders = () => {
                                     amount: 300,
                                     date: new Date().toISOString().split('T')[0],
                                     slotTime: '10:00 AM',
-                                    status: 'booked'
+                                    status: 'booked',
+                                    sareeCount: 1
                                 });
                                 setCustomerSearch('');
                             }} className="space-y-6">
@@ -495,6 +522,17 @@ const AdminOrders = () => {
                                         </select>
                                     </div>
                                     <div>
+                                        <label className="label">Saree Count</label>
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            required
+                                            className="input-field"
+                                            value={newOrderData.sareeCount}
+                                            onChange={e => setNewOrderData({ ...newOrderData, sareeCount: parseInt(e.target.value) || 1 })}
+                                        />
+                                    </div>
+                                    <div>
                                         <label className="label">Price (₹)</label>
                                         <input
                                             type="number"
@@ -521,6 +559,16 @@ const AdminOrders = () => {
                                             className="input-field"
                                             value={newOrderData.slotTime}
                                             onChange={e => setNewOrderData({ ...newOrderData, slotTime: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="md:col-span-2">
+                                        <label className="label">Address</label>
+                                        <textarea
+                                            className="input-field"
+                                            rows="2"
+                                            value={newOrderData.address}
+                                            onChange={e => setNewOrderData({ ...newOrderData, address: e.target.value })}
+                                            placeholder="Enter delivery address..."
                                         />
                                     </div>
                                 </div>

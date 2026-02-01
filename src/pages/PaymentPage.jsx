@@ -144,7 +144,7 @@ const PaymentPage = () => {
                         <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 group-hover:-translate-x-1 transition-transform" />
                         Back
                     </button>
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-3 sm:mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary-200 to-primary-500">
+                    <h1 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold mb-3 sm:mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary-200 to-primary-500">
                         Complete Payment
                     </h1>
                     <div className="flex items-center gap-2 sm:gap-3 text-gray-400 flex-wrap">
@@ -298,7 +298,7 @@ const PaymentPage = () => {
                         <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-primary-900/20 border border-primary-500/30 mb-4">
                             <IndianRupee className="w-8 h-8 sm:w-10 sm:h-10 text-primary-400" />
                         </div>
-                        <p className="text-3xl sm:text-5xl font-bold text-white mb-2 tracking-tight">₹{order.amount}</p>
+                        <p className="text-2xl sm:text-4xl font-bold text-white mb-2 tracking-tight">₹{order.amount}</p>
                         <p className="text-gray-400 uppercase tracking-widest text-xs font-semibold">Total Amount Due</p>
                     </div>
 

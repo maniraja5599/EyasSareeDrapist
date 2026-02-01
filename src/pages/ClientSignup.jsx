@@ -83,7 +83,7 @@ const ClientSignup = () => {
         <div className="min-h-screen py-12 px-4 flex items-center justify-center">
             <div className="max-w-md w-full">
                 <div className="text-center mb-8 animate-fade-in">
-                    <h1 className="text-4xl font-serif font-bold mb-2 text-gradient-primary">
+                    <h1 className="text-2xl md:text-3xl font-serif font-bold mb-2 text-gradient-primary">
                         Join Eyas Drapist
                     </h1>
                     <p className="text-gray-600">Create an account to book your saree draping instantly</p>

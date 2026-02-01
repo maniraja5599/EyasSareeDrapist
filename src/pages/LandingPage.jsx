@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Sparkles, Scissors, Clock, Heart, Star, ArrowRight, CheckCircle, Smartphone, Camera, Truck, MapPin, User, Zap, Crown, Phone } from 'lucide-react';
+import { Calendar, Sparkles, Scissors, Clock, Heart, Star, ArrowRight, CheckCircle, Smartphone, Camera, Truck, MapPin, User, Zap, Crown, Phone, Instagram } from 'lucide-react';
 import { useDataStore } from '../hooks/useDataStore';
 import { useScrollRestoration } from '../hooks/useScrollRestoration';
+
 
 const LandingPage = () => {
     // Enable scroll position restoration
@@ -90,13 +91,10 @@ const LandingPage = () => {
                         </div>
 
                         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-white leading-[1.1] tracking-tight">
-                            <span className="relative inline-block">
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-primary-200 to-white animate-gradient-x" style={{ animationDuration: '3s' }}>
+                            <span className="relative inline-block align-bottom">
+                                <span className="text-typewriter font-serif">
                                     Unique Style.
                                 </span>
-                                {/* Shine overlay effect */}
-                                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shine pointer-events-none"
-                                    style={{ backgroundSize: '200% 100%' }} />
                             </span> <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-300 via-yellow-400 to-primary-600 drop-shadow-lg filter">
                                 Pure Confidence.
@@ -146,29 +144,29 @@ const LandingPage = () => {
                         </div>
 
                         {/* Floating Badge - Cycling Name/CTA */}
-                        <a href="tel:+917502551633" className="absolute top-6 right-6 z-30 bg-black/60 backdrop-blur-md px-4 py-3 rounded-2xl border border-primary-500/40 shadow-lg animate-nivedhidha-badge cursor-pointer hover:bg-primary-900/40 transition-colors group">
+                        <a href="tel:+917502551633" className="absolute top-6 right-6 z-30 bg-black/60 backdrop-blur-md px-3 py-2 rounded-2xl border border-primary-500/40 shadow-lg animate-nivedhidha-badge cursor-pointer hover:bg-primary-900/40 transition-colors group">
                             <div className="relative h-5 overflow-hidden">
                                 {/* Name - visible initially, then hides */}
-                                <div className="flex items-center gap-2 text-primary-400 animate-cycle-name-phone">
-                                    <User className="w-4 h-4" />
-                                    <span className="text-xs font-bold uppercase tracking-wider">NIVEDHIDHA</span>
+                                <div className="flex items-center justify-center gap-2 text-primary-400 animate-cycle-name-phone">
+                                    <User className="w-3 h-3" />
+                                    <span className="text-[10px] font-bold uppercase tracking-wider">NIVEDHIDHA</span>
                                 </div>
                                 {/* CTA - hidden initially, then appears */}
-                                <div className="absolute inset-0 flex items-center gap-2 text-primary-400 animate-cycle-phone-name">
-                                    <Phone className="w-4 h-4" />
-                                    <span className="text-xs font-bold uppercase tracking-wider">CLICK TO CALL</span>
+                                <div className="absolute inset-0 flex items-center justify-center gap-2 text-primary-400 animate-cycle-phone-name">
+                                    <Phone className="w-3 h-3" />
+                                    <span className="text-[10px] font-bold uppercase tracking-wider">CLICK TO CALL</span>
                                 </div>
                             </div>
-                            <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-0.5 group-hover:text-primary-300 transition-colors">Your Personal Stylist</p>
+                            <p className="text-[9px] text-gray-400 uppercase tracking-widest mt-0.5 group-hover:text-primary-300 transition-colors text-center">Your Personal Stylist</p>
                         </a>
 
                         {/* Rating Badge */}
-                        <div className="absolute bottom-6 left-6 z-30 bg-black/60 backdrop-blur-md px-4 py-3 rounded-2xl border border-primary-500/40 shadow-lg animate-fade-in-up">
+                        <div className="absolute bottom-6 left-6 z-30 bg-black/60 backdrop-blur-md px-3 py-2 rounded-2xl border border-primary-500/40 shadow-lg animate-fade-in-up">
                             <div className="flex items-center gap-2">
-                                <Star className="w-5 h-5 text-primary-500 fill-primary-500" />
-                                <span className="text-white font-bold text-base">5-Star Rated</span>
+                                <Star className="w-4 h-4 text-primary-500 fill-primary-500" />
+                                <span className="text-white font-bold text-sm">5-Star Rated</span>
                             </div>
-                            <p className="text-xs text-primary-400 uppercase tracking-wider mt-0.5">Premium Service</p>
+                            <p className="text-[10px] text-primary-400 uppercase tracking-wider mt-0.5">Premium Service</p>
                         </div>
                     </div>
 
@@ -244,7 +242,7 @@ const LandingPage = () => {
                 <div className="max-w-7xl mx-auto relative z-10">
                     {/* Hero-style section header */}
                     <div className="text-center mb-16 space-y-4 animate-fade-in-up">
-                        <div className="inline-flex items-center gap-2 text-primary-400 mb-2">
+                        <div className="inline-flex items-center gap-2 text-primary-400 mb-6">
                             <div className="h-px w-8 bg-gradient-to-r from-transparent to-primary-500"></div>
                             <span className="text-xs uppercase tracking-widest font-semibold">Our Expertise</span>
                             <div className="h-px w-8 bg-gradient-to-l from-transparent to-primary-500"></div>
@@ -262,7 +260,7 @@ const LandingPage = () => {
                         {services.map((service, index) => (
                             <div
                                 key={service.id}
-                                className="group cursor-pointer bg-zinc-900/50 backdrop-blur-xl p-6 rounded-[2.5rem] border border-white/5 hover:border-primary-500/30 shadow-2xl shadow-black/40 transition-all duration-500 animate-fade-in-up"
+                                className="group cursor-pointer bg-gradient-to-b from-zinc-900 via-zinc-900/80 to-black backdrop-blur-xl p-6 rounded-[2rem] border border-white/10 hover:border-primary-500/50 shadow-lg hover:shadow-primary-900/20 transition-all duration-500 hover:-translate-y-2"
                                 style={{ animationDelay: `${index * 0.1}s` }}
                             >
                                 {/* Image with golden frame */}
@@ -287,9 +285,7 @@ const LandingPage = () => {
                                     <h3 className="text-2xl font-serif font-bold text-white group-hover:text-primary-400 transition-colors">
                                         {service.title}
                                     </h3>
-                                    <p className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary-300 to-primary-600">
-                                        {service.price}
-                                    </p>
+
                                     <p className="text-gray-400 leading-relaxed">{service.description}</p>
                                     <Link
                                         to={`/book?service=${service.id}`}
@@ -304,58 +300,7 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* --- PROCESS TIMELINE SECTION --- */}
-            <section className="py-24 bg-gradient-to-br from-zinc-950 via-black to-zinc-950 relative border-t border-white/5">
-                {/* Background pattern */}
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-5"></div>
 
-                <div className="max-w-7xl mx-auto px-4 relative z-10">
-                    {/* Hero-style header */}
-                    <div className="text-center mb-20 animate-fade-in-up">
-                        <div className="inline-flex items-center gap-2 text-primary-400 mb-4">
-                            <div className="h-px w-8 bg-gradient-to-r from-transparent to-primary-500"></div>
-                            <span className="text-xs uppercase tracking-[0.2em] font-bold">The Experience</span>
-                            <div className="h-px w-8 bg-gradient-to-l from-transparent to-primary-500"></div>
-                        </div>
-                        <h2 className="text-5xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary-300 via-yellow-400 to-primary-600">
-                            How It Works
-                        </h2>
-                    </div>
-
-                    {/* Process steps with glassmorphism */}
-                    <div className="grid lg:grid-cols-4 gap-8">
-                        {[
-                            { step: '01', title: 'Book Online', desc: 'Choose your preferred slot in seconds.', icon: <Calendar className="w-8 h-8 animate-icon-pulse" /> },
-                            { step: '02', title: 'We Arrive', desc: 'Our stylist comes to your location.', icon: <MapPin className="w-8 h-8 animate-icon-bounce" /> },
-                            { step: '03', title: 'The Draping', desc: 'Expert pleating with safety pins.', icon: <Sparkles className="w-8 h-8 animate-icon-spin" /> },
-                            { step: '04', title: 'Shine', desc: 'Step out looking like royalty.', icon: <Star className="w-8 h-8 animate-icon-pulse" /> },
-                        ].map((item, index) => (
-                            <div
-                                key={index}
-                                className="bg-zinc-900/50 backdrop-blur-xl p-8 rounded-[2rem] border border-white/10 hover:border-primary-500/40 shadow-2xl shadow-black/40 group transition-all duration-500 animate-fade-in-up relative"
-                                style={{ animationDelay: `${index * 0.15}s` }}
-                            >
-                                {/* Icon with gradient background */}
-                                <div className="w-16 h-16 bg-gradient-to-br from-primary-600/30 to-primary-900/20 rounded-2xl flex items-center justify-center mb-6 border border-primary-500/40 group-hover:scale-110 transition-transform shadow-lg shadow-primary-900/20">
-                                    {React.cloneElement(item.icon, { className: "w-8 h-8 text-primary-400" })}
-                                </div>
-
-                                {/* Step number */}
-                                <span className="absolute top-6 right-6 text-6xl font-serif text-primary-500/10 font-bold select-none group-hover:text-primary-500/20 transition-colors">
-                                    {item.step}
-                                </span>
-
-                                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary-400 transition-colors">
-                                    {item.title}
-                                </h3>
-                                <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
-                                    {item.desc}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
             {/* --- GALLERY (Masonry Lookbook) --- */}
             <section className="py-16 px-4 bg-black relative overflow-hidden">
@@ -378,31 +323,59 @@ const LandingPage = () => {
                         </a>
                     </div>
 
-                    {/* Gallery Grid with golden frames */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                        {[
-                            { src: `${import.meta.env.BASE_URL}images/hero_bg_v2.png`, alt: 'Elegant Saree Draping Style 1' },
-                            { src: `${import.meta.env.BASE_URL}images/hero_bg_v3.png`, alt: 'Beautiful Saree Draping Style 2' },
-                            { src: `${import.meta.env.BASE_URL}images/new_hero_bg.png`, alt: 'Premium Saree Styling 3' },
-                            { src: `${import.meta.env.BASE_URL}images/hero_main_v3.png`, alt: 'Professional Saree Draping 4' },
-                        ].map((item, i) => (
-                            <div
-                                key={i}
-                                className="relative group rounded-[2rem] overflow-hidden cursor-pointer transition-all duration-700 animate-fade-in-up"
-                                style={{ animationDelay: `${i * 0.1}s` }}
-                            >
-                                {/* Golden frame */}
-                                <div className="absolute inset-4 border border-primary-500/30 rounded-[2rem] z-20 pointer-events-none" />
-                                <img
-                                    src={item.src}
-                                    alt={item.alt}
-                                    loading="lazy"
-                                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100 aspect-[4/3]"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity" />
+                    {/* Connect on Instagram Card */}
+                    <div className="flex justify-center animate-fade-in-up relative">
+                        {/* Decorative floating elements */}
+                        <div className="absolute -top-10 -left-10 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+                        <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-yellow-500/20 rounded-full blur-3xl animate-pulse delay-700"></div>
+
+                        <div className="w-full max-w-3xl relative group">
+                            {/* Gradient Border Glow */}
+                            <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 via-purple-600 to-yellow-500 rounded-[2.5rem] opacity-75 blur-sm group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+
+                            <div className="relative bg-black rounded-[2.5rem] p-8 sm:p-16 overflow-hidden">
+                                {/* Background Mesh */}
+                                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
+                                <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-gradient-to-bl from-purple-900/40 to-transparent rounded-full blur-[80px] pointer-events-none"></div>
+
+                                <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
+                                    {/* Icon Section */}
+                                    <div className="relative shrink-0">
+                                        <div className="w-28 h-28 bg-gradient-to-tr from-yellow-400 via-pink-600 to-purple-700 rounded-3xl flex items-center justify-center shadow-[0_0_40px_rgba(236,72,153,0.3)]">
+                                            <Instagram className="w-20 h-20 text-white drop-shadow-md" />
+                                        </div>
+                                    </div>
+
+                                    {/* Text Content */}
+                                    <div className="text-center md:text-left space-y-6 flex-1">
+                                        <div>
+                                            <h3 className="text-3xl sm:text-4xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-pink-100 to-purple-200 mb-2">
+                                                Follow Our Journey
+                                            </h3>
+                                            <p className="text-gray-400 text-lg leading-relaxed">
+                                                Join our community for daily styling tips, behind-the-scenes, and bridal inspiration.
+                                            </p>
+                                        </div>
+
+                                        <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                                            <a
+                                                href="https://www.instagram.com/eyas_sareedrapist_namakkal/"
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="inline-flex items-center justify-center gap-3 bg-white text-black px-8 py-3.5 rounded-full font-bold hover:bg-gray-100 transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] group/btn"
+                                            >
+                                                <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent group-hover/btn:text-pink-600 transition-colors">
+                                                    @eyas_sareedrapist_namakkal
+                                                </span>
+                                                <ArrowRight className="w-4 h-4 text-pink-600 group-hover/btn:translate-x-1 transition-transform" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        ))}
+                        </div>
                     </div>
+
                 </div>
             </section>
 
@@ -490,12 +463,12 @@ const LandingPage = () => {
 
             {/* --- FINAL CTA --- */}
             <section className="py-24 text-center px-4 bg-gradient-to-br from-zinc-950 via-black to-zinc-950 relative overflow-hidden">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary-600/10 rounded-full blur-[150px] pointer-events-none" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary-600/10 rounded-full blur-[150px] pointer-events-none animate-pulse" />
 
-                <div className="max-w-3xl mx-auto bg-zinc-900/50 backdrop-blur-xl rounded-[3rem] p-12 sm:p-16 md:p-20 text-white relative overflow-hidden shadow-2xl border border-primary-500/30 animate-scale-in">
+                <div className="max-w-3xl mx-auto bg-zinc-900/50 backdrop-blur-xl rounded-[3rem] p-12 sm:p-16 md:p-20 text-white relative overflow-hidden shadow-2xl border border-primary-500/30 animate-scale-in hover:border-primary-500/50 transition-colors duration-500">
                     <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
-                    <div className="relative z-10 space-y-6">
-                        <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary-300 via-yellow-400 to-primary-600">
+                    <div className="relative z-10 space-y-8">
+                        <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary-300 via-yellow-400 to-primary-600 animate-text-shimmer bg-[length:200%_auto]">
                             Ready to Dazzle?
                         </h2>
                         <p className="text-gray-300 text-lg leading-relaxed max-w-xl mx-auto">
@@ -503,11 +476,11 @@ const LandingPage = () => {
                         </p>
                         <Link
                             to="/book"
-                            className="inline-flex items-center gap-3 bg-gradient-to-r from-primary-600 to-primary-500 text-black px-10 py-4 rounded-full font-bold hover:shadow-[0_0_40px_rgba(212,175,55,0.6)] transition-all hover:scale-105 group"
+                            className="inline-flex items-center gap-3 bg-gradient-to-r from-primary-600 to-primary-500 text-black px-8 py-3 rounded-full font-bold text-sm sm:text-base hover:shadow-[0_0_40px_rgba(212,175,55,0.6)] transition-all hover:scale-105 group"
                         >
-                            <Crown className="w-5 h-5 text-black fill-black/20 animate-pulse" />
+                            <Crown className="w-4 h-4 text-black fill-black/20 animate-pulse" />
                             Book Appointment Now
-                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </div>
                 </div>

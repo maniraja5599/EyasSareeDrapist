@@ -647,9 +647,12 @@ html {
 
 /* Gradient X Keyframes */
 @keyframes gradient-x {
-  0%, 100% {
+
+  0%,
+  100% {
     background-position: 0% center;
   }
+
   50% {
     background-position: 100% center;
   }
@@ -660,7 +663,101 @@ html {
   0% {
     background-position: -200% center;
   }
+
   100% {
     background-position: 200% center;
+  }
+}
+
+@layer utilities {
+  .text-liquid-gold {
+    color: rgba(255, 255, 255, 0.05);
+    background: linear-gradient(to top, #FFD700 50%, transparent 50%);
+    background-size: 100% 200%;
+    background-position: 0% 0%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 1px #FFD700;
+  }
+
+  .animate-liquid-fill {
+    animation: liquidFill 5s ease-in-out infinite;
+  }
+}
+
+@keyframes liquidFill {
+  0% {
+    background-position: 0% 0%;
+    color: rgba(255, 255, 255, 0);
+  }
+
+  40% {
+    background-position: 0% 100%;
+    color: #FFD700;
+  }
+
+  80% {
+    background-position: 0% 100%;
+    color: #FFD700;
+    opacity: 1;
+  }
+
+  95% {
+    opacity: 0;
+  }
+
+  100% {
+    background-position: 0% 0%;
+    color: rgba(255, 255, 255, 0);
+    opacity: 0;
+  }
+}
+
+@layer utilities {
+  .text-typewriter {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 4px solid white;
+    color: white;
+    box-sizing: border-box;
+    animation: typing 5s steps(14, end) infinite, blink 0.75s step-end infinite;
+    max-width: 0;
+  }
+}
+
+@keyframes typing {
+  0% {
+    max-width: 0;
+  }
+
+  30% {
+    max-width: 100%;
+  }
+
+  80% {
+    max-width: 100%;
+  }
+
+  /* Stay typed out */
+  90% {
+    max-width: 0;
+  }
+
+  /* Delete quickly */
+  100% {
+    max-width: 0;
+  }
+}
+
+@keyframes blink {
+
+  from,
+  to {
+    border-color: transparent
+  }
+
+  50% {
+    border-color: white;
   }
 }

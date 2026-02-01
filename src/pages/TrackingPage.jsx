@@ -23,7 +23,7 @@ const TrackingPage = () => {
     const [history, setHistory] = useState([]);
     const { shopSettings } = useDataStore();
     const navigate = useNavigate();
-    const { user } = useAuth();
+    const { user, loginWithGoogle } = useAuth();
 
     // Enable scroll position restoration
     useScrollRestoration();
@@ -154,16 +154,46 @@ const TrackingPage = () => {
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary-600/5 rounded-full blur-[120px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
 
             <div className="max-w-4xl mx-auto relative z-10">
-                <div className="text-center mb-12 animate-fade-in">
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary-200 via-primary-400 to-primary-600">
+                <div className="text-center mb-8 animate-fade-in">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-primary-200 via-primary-400 to-primary-600">
                         {user ? `Hello ${user.displayName?.split(' ')[0] || 'Dear'}!` : 'Track Your Style'}
                     </h1>
-                    <p className="text-lg sm:text-xl text-gray-400 font-light tracking-wide">
+                    <p className="text-base sm:text-lg text-gray-400 font-light tracking-wide">
                         {user
                             ? 'Your journey of elegance is tracked below'
                             : 'Experience professional care with every pleat'}
                     </p>
                 </div>
+
+                {/* Login Prompt for Unauthenticated Users */}
+                {!user && (
+                    <div className="max-w-md mx-auto mb-8 animate-fade-in">
+                        <button
+                            onClick={async () => {
+                                try {
+                                    setLoading(true);
+                                    setError('');
+                                    await loginWithGoogle();
+                                    // Navigation happens automatically via AuthContext or useEffect
+                                } catch (error) {
+                                    console.error("Google Login Error:", error);
+                                    setError("Sign-in failed. Please try again or use manual tracking.");
+                                    setLoading(false);
+                                }
+                            }}
+                            className="w-full bg-white text-gray-900 border border-gray-300 font-bold py-4 px-6 rounded-2xl transition-all duration-300 hover:bg-gray-50 hover:shadow-lg hover:scale-[1.02] flex items-center justify-center gap-3 group mb-6"
+                        >
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-6 h-6" />
+                            <span className="text-lg">Sign in to View My Orders</span>
+                        </button>
+
+                        <div className="relative flex py-2 items-center">
+                            <div className="flex-grow border-t border-gray-700"></div>
+                            <span className="flex-shrink-0 mx-4 text-gray-500 text-sm">Or Track Manually</span>
+                            <div className="flex-grow border-t border-gray-700"></div>
+                        </div>
+                    </div>
+                )}
 
                 {/* Search Form */}
                 <div className="glass-card mb-8 animate-slide-up bg-zinc-900/50 border-white/5 backdrop-blur-xl rounded-3xl p-1 bg-gradient-to-r from-primary-500/10 to-transparent">
@@ -349,54 +379,87 @@ const TrackingPage = () => {
 
                     {/* History List */}
                     {history.length > 0 && (
-                        <div className="animate-slide-up">
-                            <h3 className="text-2xl font-bold mb-6 text-gray-800">Your Booking History</h3>
+                        <div className="animate-slide-up pt-8 border-t border-white/10">
+                            <h3 className="text-2xl font-serif font-bold mb-8 text-white flex items-center gap-3">
+                                <Clock className="w-6 h-6 text-primary-500" />
+                                Your Orders
+                            </h3>
                             <div className="space-y-4">
-                                {history.map((item) => (
-                                    <div
-                                        key={item.id}
-                                        className={`p-4 sm:p-6 rounded-2xl transition-all cursor-pointer ${booking?.id === item.id
-                                            ? 'bg-gradient-to-r from-primary-500/20 to-primary-600/10 border-2 border-primary-500'
-                                            : 'bg-black/40 border border-white/5 hover:border-primary-500/30'
-                                            }`}
-                                        onClick={() => setBooking(item)}
-                                    >
-                                        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-                                            {/* Order ID */}
-                                            <h3 className="text-lg sm:text-xl font-black text-primary-500 font-mono">
-                                                #{item.id}
-                                            </h3>
+                                {history.map((item) => {
+                                    const isReady = item.status === 'ready';
+                                    const isCompleted = item.status === 'completed';
+                                    const isSelected = booking?.id === item.id;
 
-                                            {/* Status Badge */}
-                                            <span className={`inline-flex px-3 py-1 rounded-full text-xs font-bold w-fit ${item.status === 'ready'
-                                                ? 'bg-primary-500/20 text-primary-400 border border-primary-500/30'
-                                                : 'bg-white/10 text-gray-400 border border-white/5'
-                                                }`}>
-                                                {item.status?.charAt(0).toUpperCase() + item.status?.slice(1) || 'Booked'}
-                                            </span>
-                                        </div>
-
-                                        {/* Service and Date/Time */}
-                                        <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 text-sm">
-                                            <p className="text-gray-300 break-words">{item.service || 'Service'}</p>
-                                            <span className="hidden sm:inline text-gray-600">•</span>
-                                            <p className="text-gray-400 break-words">
-                                                {item.date || 'Date not set'} {item.slotTime || ''}
-                                            </p>
-                                        </div>
-
-                                        {/* View Button */}
-                                        <button
-                                            className="mt-4 w-full sm:w-auto px-6 py-2 bg-primary-600 text-black font-bold rounded-xl hover:bg-primary-500 transition-all text-sm"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
+                                    return (
+                                        <div
+                                            key={item.id}
+                                            onClick={() => {
                                                 setBooking(item);
+                                                window.scrollTo({ top: 0, behavior: 'smooth' });
                                             }}
+                                            className={`group p-4 md:p-5 rounded-2xl border transition-all duration-300 cursor-pointer relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-8 ${isSelected
+                                                ? 'bg-primary-900/20 border-primary-500/50 shadow-xl shadow-primary-900/10'
+                                                : 'bg-zinc-900/40 border-white/5 hover:border-primary-500/30 hover:bg-zinc-900/60'
+                                                }`}
                                         >
-                                            {booking?.id === item.id ? 'Viewing' : 'View Details'}
-                                        </button>
-                                    </div>
-                                ))}
+                                            {/* Selection Indicator */}
+                                            {isSelected && (
+                                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary-500"></div>
+                                            )}
+
+                                            {/* Left Section: ID & Service */}
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-3 mb-1">
+                                                    <h4 className="text-lg font-mono font-bold text-white group-hover:text-primary-400 transition-colors">
+                                                        #{item.id}
+                                                    </h4>
+                                                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${isReady
+                                                        ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                                                        : isCompleted
+                                                            ? 'bg-gray-700/50 text-gray-400 border-gray-600/30'
+                                                            : 'bg-primary-500/10 text-primary-400 border-primary-500/20'
+                                                        }`}>
+                                                        {item.status || 'Booked'}
+                                                    </span>
+                                                </div>
+                                                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-400">
+                                                    <span className="truncate max-w-[200px]" title={item.service}>{item.service || 'Saree Draping'}</span>
+                                                    <span className="text-gray-700">•</span>
+                                                    <span className="text-gray-300">{item.date || 'Date Pending'}</span>
+                                                    <span className="text-gray-700">•</span>
+                                                    <span>{item.slotTime || item.slot || '--:--'}</span>
+                                                </div>
+                                            </div>
+
+                                            {/* Action Button */}
+                                            <div className="flex items-center gap-4 shrink-0">
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setBooking(item);
+                                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                                    }}
+                                                    className={`w-full md:w-auto px-6 py-2 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${isSelected
+                                                        ? 'bg-primary-500 text-black shadow-lg shadow-primary-500/20'
+                                                        : 'bg-white/5 text-white hover:bg-white hover:text-black'
+                                                        }`}
+                                                >
+                                                    {isSelected ? (
+                                                        <>
+                                                            <Search className="w-4 h-4" />
+                                                            Tracking
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            View Details
+                                                            <ArrowRight className="w-4 h-4" />
+                                                        </>
+                                                    )}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
                     )}

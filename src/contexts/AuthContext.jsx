@@ -57,7 +57,40 @@ export const AuthProvider = ({ children }) => {
         return await signInWithPopup(auth, provider);
     };
 
-    // Admin Login using Firebase (Email/Password)
+    // Admin Login using Custom Credentials
+    const adminLogin = async (identifier, password) => {
+        // Hardcoded allowed admins
+        const allowedMobiles = ['7502551633', '9159036301'];
+        const allowedEmails = ['manirajankg@gmail.com', 'niveece26@gmail.com'];
+
+        // precise password check
+        if (password !== 'eyas') {
+            throw new Error("Invalid credentials");
+        }
+
+        // Check identifier
+        const isAllowed = allowedMobiles.includes(identifier) || allowedEmails.includes(identifier);
+
+        if (isAllowed) {
+            // Success: Create session
+            const adminUser = {
+                uid: 'admin-' + identifier,
+                email: identifier.includes('@') ? identifier : null,
+                phoneNumber: !identifier.includes('@') ? identifier : null,
+                displayName: 'Admin User',
+                role: 'admin',
+                isAdmin: true // Helper flag
+            };
+            setUser(adminUser);
+            // Optionally set to localStorage if persistence is needed across refreshes without firebase
+            // But simple state is fine for single-page app usage for now, or use persisted hooks if available.
+            return adminUser;
+        } else {
+            throw new Error("Access Denied: User not authorized.");
+        }
+    };
+
+    // Legacy standard login (kept for reference or other uses, but effectively unused for Admin now)
     const login = async (email, password) => {
         // Map legacy 'eyas' username to email for backward compatibility if needed,
         // asking user to use email is better.
@@ -113,6 +146,7 @@ export const AuthProvider = ({ children }) => {
         user,
         loading,
         login,
+        adminLogin, // Custom Admin Login
         loginWithGoogle,
         clientLogin,
         logout,

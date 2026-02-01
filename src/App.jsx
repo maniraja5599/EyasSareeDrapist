@@ -11,7 +11,6 @@ import BookingPage from './pages/BookingPage';
 import TrackingPage from './pages/TrackingPage';
 import PaymentPage from './pages/PaymentPage';
 import ClientLogin from './pages/ClientLogin';
-import ClientSignup from './pages/ClientSignup';
 import ClientProfile from './pages/ClientProfile';
 
 // Admin Pages
@@ -28,6 +27,7 @@ import AdminRecycleBin from './pages/admin/AdminRecycleBin';
 // Components
 import Navbar from './components/Navbar';
 import BottomNav from './components/BottomNav';
+import FloatingSocials from './components/FloatingSocials';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoadingScreen from './components/LoadingScreen';
 
@@ -91,12 +91,7 @@ function App() {
                     <ClientLogin />
                   </>
                 } />
-                <Route path="/signup" element={
-                  <>
-                    <Navbar />
-                    <ClientSignup />
-                  </>
-                } />
+
                 <Route path="/profile" element={
                   <>
                     <Navbar />
@@ -148,6 +143,7 @@ function App() {
                 } />
               </Routes>
               <BottomNav />
+              <FloatingSocials />
             </div>
           </Router>
         </ToastProvider>
