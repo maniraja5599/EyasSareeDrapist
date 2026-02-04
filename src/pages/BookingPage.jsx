@@ -528,6 +528,26 @@ const BookingPage = () => {
                                     rows="3"
                                     className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all placeholder:text-gray-700"
                                 />
+
+                                {/* Map Preview */}
+                                {formData.latitude && formData.longitude && (
+                                    <div className="mt-4 rounded-xl overflow-hidden border border-white/10 h-40 w-full relative bg-zinc-900 animate-fade-in">
+                                        <iframe
+                                            title="Location Preview"
+                                            width="100%"
+                                            height="100%"
+                                            frameBorder="0"
+                                            scrolling="no"
+                                            marginHeight="0"
+                                            marginWidth="0"
+                                            src={`https://maps.google.com/maps?q=${formData.latitude},${formData.longitude}&z=15&output=embed`}
+                                            className="opacity-80 hover:opacity-100 transition-opacity"
+                                        ></iframe>
+                                        <div className="absolute bottom-2 right-2 bg-black/80 px-2 py-1 rounded text-[10px] text-white/50 backdrop-blur-sm pointer-events-none">
+                                            Preview
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="flex gap-4 pt-4">
