@@ -8,6 +8,5 @@ export default defineConfig({
   base: '/EyasSareeDrapist/',
   server: {
     host: true,
-    allowedHosts: ['6d0841b06e374a1d-61-2-75-161.serveousercontent.com'],
   },
 })

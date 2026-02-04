@@ -6,7 +6,7 @@ import { useDataStore } from '../../hooks/useDataStore';
 import { openWhatsApp, generateReadyMessage } from '../../utils/whatsapp';
 import { formatDate } from '../../utils/helpers';
 import InvoiceTemplate from '../../components/InvoiceTemplate';
-import { Search, Filter, Eye, MessageCircle, Edit, Trash2, CheckSquare, Square, X, Calendar, Printer } from 'lucide-react';
+import { Search, Filter, Eye, MessageCircle, Edit, Trash2, CheckSquare, Square, X, Calendar, Printer, MapPin } from 'lucide-react';
 
 const AdminOrders = () => {
     const navigate = useNavigate();
@@ -281,6 +281,17 @@ const AdminOrders = () => {
                                             <button onClick={() => handleWhatsApp(order)} className="p-2 hover:bg-green-100 text-green-600 rounded-lg">
                                                 <MessageCircle className="w-4 h-4" />
                                             </button>
+                                            <a
+                                                href={order.location?.lat && order.location?.lng
+                                                    ? `https://www.google.com/maps/dir/?api=1&destination=${order.location.lat},${order.location.lng}`
+                                                    : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(order.address || '')}`}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="p-2 hover:bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center"
+                                                title="Get Directions"
+                                            >
+                                                <MapPin className="w-4 h-4" />
+                                            </a>
                                             <button
                                                 onClick={() => { setEditingOrder(order); setIsEditModalOpen(true); }}
                                                 className="p-2 hover:bg-blue-100 text-blue-600 rounded-lg"

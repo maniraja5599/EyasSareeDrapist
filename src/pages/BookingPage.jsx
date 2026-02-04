@@ -13,7 +13,7 @@ const BookingPage = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const preselectedService = searchParams.get('service') || '';
-    const { webpageSettings, actions } = useDataStore();
+    const { webpageSettings, shopSettings, actions } = useDataStore();
     const { user, loginWithGoogle } = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -424,147 +424,44 @@ const BookingPage = () => {
                                 </div>
                             </div>
 
-                            {!user && (
-                                <div className="mb-8">
-                                    <button
-                                        onClick={async () => {
-                                            try {
-                                                await loginWithGoogle();
-                                            } catch (error) {
-                                                console.error("Google Login Error:", error);
-                                                alert("Login failed. Please try again.");
-                                            }
-                                        }}
-                                        className="w-full bg-white text-black font-black py-5 px-6 rounded-2xl transition-all duration-300 hover:bg-gray-100 hover:scale-[1.02] flex items-center justify-center gap-4 shadow-xl"
-                                    >
-                                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-6 h-6" />
-                                        Express Secure Booking with Google
-                                    </button>
-
-                                    <div className="relative my-8">
-                                        <div className="absolute inset-0 flex items-center">
-                                            <div className="w-full border-t border-white/5"></div>
-                                        </div>
-                                        <div className="relative flex justify-center text-sm">
-                                            <span className="px-4 bg-zinc-900 text-gray-500 font-bold uppercase tracking-widest text-[10px]">Or Continue Manually</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            <div className="grid sm:grid-cols-2 gap-6">
-                                <div>
-                                    <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-2">
-                                        <User className="w-3 h-3" />
-                                        Full Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={formData.name}
-                                        onChange={(e) => updateField('name', e.target.value)}
-                                        placeholder="Enter your name"
-                                        className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all placeholder:text-gray-700"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-2">
-                                        <Phone className="w-3 h-3" />
-                                        Mobile Number
-                                    </label>
-                                    <input
-                                        type="tel"
-                                        value={formData.mobile}
-                                        onChange={(e) => {
-                                            updateField('mobile', e.target.value);
-                                            // Auto-sync WhatsApp if checkbox is checked
-                                            if (formData.whatsappSameAsMobile) {
-                                                updateField('whatsapp', e.target.value);
-                                            }
-                                        }}
-                                        placeholder="10-digit mobile number"
-                                        className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all placeholder:text-gray-700"
-                                    />
-                                </div>
+                            {/* Name Field - Primary */}
+                            <div>
+                                <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-2">
+                                    <User className="w-3 h-3" />
+                                    Your Name
+                                </label>
+                                <input
+                                    type="text"
+                                    value={formData.name}
+                                    onChange={(e) => updateField('name', e.target.value)}
+                                    placeholder="Enter your name"
+                                    className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all placeholder:text-gray-700"
+                                />
                             </div>
 
-                            {/* WhatsApp Number */}
+                            {/* Mobile Number - Optional */}
                             <div>
                                 <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-2">
                                     <Phone className="w-3 h-3" />
-                                    WhatsApp Number
+                                    Mobile Number (Optional)
                                 </label>
                                 <input
                                     type="tel"
-                                    value={formData.whatsapp}
-                                    onChange={(e) => {
-                                        updateField('whatsapp', e.target.value);
-                                        updateField('whatsappSameAsMobile', false);
-                                    }}
-                                    disabled={formData.whatsappSameAsMobile}
-                                    placeholder="WhatsApp number"
-                                    className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all placeholder:text-gray-700 disabled:opacity-50"
+                                    value={formData.mobile}
+                                    onChange={(e) => updateField('mobile', e.target.value)}
+                                    placeholder="10-digit mobile number"
+                                    className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all placeholder:text-gray-700"
                                 />
-                                <div className="flex items-center gap-2 mt-2">
-                                    <input
-                                        type="checkbox"
-                                        id="whatsappSame"
-                                        checked={formData.whatsappSameAsMobile}
-                                        onChange={(e) => {
-                                            updateField('whatsappSameAsMobile', e.target.checked);
-                                            if (e.target.checked) {
-                                                updateField('whatsapp', formData.mobile);
-                                            }
-                                        }}
-                                        className="w-4 h-4 accent-primary-500 bg-black border-white/10"
-                                    />
-                                    <label htmlFor="whatsappSame" className="text-xs text-gray-400 cursor-pointer">
-                                        Same as mobile number
-                                    </label>
-                                </div>
                             </div>
 
-                            {/* Saree Count */}
-                            <div className="grid grid-cols-1 gap-6">
-                                <div>
-                                    <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-2">
-                                        <Calendar className="w-3 h-3" />
-                                        Number of Sarees
-                                    </label>
-                                    <div className="flex items-center gap-3">
-                                        <button
-                                            type="button"
-                                            onClick={() => updateField('sareeCount', Math.max(1, formData.sareeCount - 1))}
-                                            className="w-10 h-10 rounded-xl bg-black/40 border border-white/10 text-white font-bold hover:bg-primary-500/20 hover:border-primary-500 transition-all text-lg"
-                                        >
-                                            -
-                                        </button>
-                                        <input
-                                            type="number"
-                                            min="1"
-                                            value={formData.sareeCount}
-                                            onChange={(e) => updateField('sareeCount', Math.max(1, parseInt(e.target.value) || 1))}
-                                            className="w-16 bg-black/40 border border-white/10 rounded-xl p-3 text-white text-center text-lg font-bold focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => updateField('sareeCount', formData.sareeCount + 1)}
-                                            className="w-10 h-10 rounded-xl bg-black/40 border border-white/10 text-white font-bold hover:bg-primary-500/20 hover:border-primary-500 transition-all text-lg"
-                                        >
-                                            +
-                                        </button>
-                                    </div>
-                                </div>
+                            {/* Draping Location - Live vs Manual */}
+                            <div className="p-1">
+                                <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-3">
+                                    <MapPin className="w-3 h-3" />
+                                    Draping Location
+                                </label>
 
-
-                            </div>
-
-                            <div>
-                                <div className="flex items-center justify-between mb-2">
-                                    <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
-                                        <MapPin className="w-3 h-3" />
-                                        Address
-                                    </label>
+                                <div className="grid grid-cols-2 gap-3 mb-4">
                                     <button
                                         type="button"
                                         onClick={async () => {
@@ -578,17 +475,22 @@ const BookingPage = () => {
                                                     updateField('latitude', latitude);
                                                     updateField('longitude', longitude);
 
-                                                    // Use reverse geocoding to get address
-                                                    const response = await fetch(
-                                                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-                                                    );
-                                                    const data = await response.json();
+                                                    // Basic formatting if reverse geocoding fails or isn't used
+                                                    updateField('address', `Live Location: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}`);
 
-                                                    if (data.display_name) {
-                                                        updateField('address', data.display_name);
-                                                    } else {
-                                                        updateField('address', `Location: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}`);
+                                                    // Use reverse geocoding to get address (Optional enhancement)
+                                                    try {
+                                                        const response = await fetch(
+                                                            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+                                                        );
+                                                        const data = await response.json();
+                                                        if (data.display_name) {
+                                                            updateField('address', data.display_name);
+                                                        }
+                                                    } catch (e) {
+                                                        console.log("Reverse geocoding failed, using coords");
                                                     }
+
                                                 } catch (error) {
                                                     alert("Unable to get your location. Please enter manually.");
                                                 }
@@ -596,167 +498,92 @@ const BookingPage = () => {
                                                 alert("Geolocation is not supported by your browser.");
                                             }
                                         }}
-                                        className="text-xs text-primary-400 hover:text-primary-300 font-semibold flex items-center gap-1 px-3 py-1.5 bg-primary-500/10 rounded-lg border border-primary-500/30 hover:bg-primary-500/20 transition-all"
+                                        className={`p-4 rounded-xl border flex flex-col items-center gap-2 transition-all ${formData.latitude
+                                            ? 'bg-primary-500/20 border-primary-500 text-primary-400'
+                                            : 'bg-zinc-900 border-white/10 text-gray-400 hover:bg-zinc-800'}`}
                                     >
-                                        <MapPin className="w-3 h-3" fill="currentColor" />
-                                        Get Location
+                                        <MapPin className="w-5 h-5" />
+                                        <span className="text-xs font-bold">Pick Live Location</span>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            // Clear coords if switching to manual intention usually implies typing
+                                            // But we keep them for now, just focus the text area
+                                            document.getElementById('manual-address-input')?.focus();
+                                        }}
+                                        className="p-4 rounded-xl bg-zinc-900 border border-white/10 text-gray-400 hover:bg-zinc-800 flex flex-col items-center gap-2 transition-all"
+                                    >
+                                        <div className="w-5 h-5 flex items-center justify-center border border-current rounded">T</div>
+                                        <span className="text-xs font-bold">Type Manually</span>
                                     </button>
                                 </div>
+
                                 <textarea
+                                    id="manual-address-input"
                                     value={formData.address}
                                     onChange={(e) => updateField('address', e.target.value)}
-                                    placeholder="Enter your address for pickup/delivery"
+                                    placeholder="Full address (Flat No, Street, Landmark...)"
                                     rows="3"
                                     className="w-full bg-black/40 border border-white/10 rounded-2xl p-5 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all placeholder:text-gray-700"
                                 />
                             </div>
-
-                            <div className="p-6 bg-black/40 rounded-3xl border border-white/5 space-y-6">
-                                <h3 className="text-sm font-bold uppercase tracking-widest text-primary-500/80 flex items-center gap-2">
-                                    <Ruler className="w-4 h-4" />
-                                    Measurements & Notes (Optional)
-                                </h3>
-                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                    {['waist', 'hip', 'length', 'blouseSize'].map((key) => (
-                                        <div key={key}>
-                                            <input
-                                                type="text"
-                                                placeholder={key.toUpperCase()}
-                                                value={formData.measurements[key]}
-                                                onChange={(e) => updateMeasurement(key, e.target.value)}
-                                                className="w-full bg-zinc-900 border border-white/5 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-primary-500/50 transition-all placeholder:text-gray-700"
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="flex items-center gap-3 bg-zinc-900/50 p-4 rounded-2xl border border-white/5">
-                                    <input
-                                        type="checkbox"
-                                        id="pickup"
-                                        checked={formData.pickupRequired}
-                                        onChange={(e) => updateField('pickupRequired', e.target.checked)}
-                                        className="w-5 h-5 accent-primary-500 bg-black border-white/10"
-                                    />
-                                    <label htmlFor="pickup" className="text-sm text-gray-300 font-medium cursor-pointer">
-                                        I need pickup/delivery service <span className="text-primary-500 font-bold ml-1">(Travel separate)</span>
-                                    </label>
-                                </div>
-                            </div>
-
-
-
-                            {error && (
-                                <div className="p-5 bg-red-900/20 border border-red-500/30 text-red-500 text-sm font-bold rounded-2xl">
-                                    {error}
-                                </div>
-                            )}
 
                             <div className="flex gap-4 pt-4">
                                 <button onClick={prevStep} className="px-8 py-5 rounded-2xl border-2 border-white/10 text-white font-bold hover:bg-white/5 flex-1 transition-all" disabled={loading}>
                                     Back
                                 </button>
                                 <button
-                                    onClick={async () => {
-                                        console.log('[BOOKING] Button clicked');
-                                        console.log('[BOOKING] Form data:', formData);
-                                        console.log('[BOOKING] User:', user);
-
+                                    onClick={() => {
                                         setLoading(true);
-                                        setError('');
-                                        try {
-                                            let customerId;
-                                            let customerEmail = '';
-                                            if (user && user.uid) {
-                                                customerId = user.uid;
-                                                customerEmail = user.email;
-                                                await setDoc(doc(db, 'customers', user.uid), {
-                                                    name: formData.name || user.displayName,
-                                                    email: user.email,
-                                                    mobile: formData.mobile,
-                                                    whatsapp: formData.whatsapp,
-                                                    address: formData.address,
-                                                    lastBookingAt: new Date().toISOString()
-                                                }, { merge: true });
-                                            } else {
-                                                const existingCustomer = await actions.findCustomerByMobile(formData.mobile);
-                                                if (existingCustomer) {
-                                                    customerId = existingCustomer.id;
-                                                    customerEmail = existingCustomer.email || '';
-                                                } else {
-                                                    const newCustomer = await actions.addCustomer({
-                                                        name: formData.name,
-                                                        mobile: formData.mobile,
-                                                        email: '',
-                                                        address: formData.address,
-                                                        whatsapp: formData.whatsapp,
-                                                        referral: 'Website Booking',
-                                                        isGuest: true
-                                                    });
-                                                    customerId = newCustomer.id;
-                                                }
-                                            }
 
-                                            const selectedServiceObj = services.find(s => s.id === formData.service);
-                                            const basePrice = selectedServiceObj ? Number(selectedServiceObj.price) : 0;
-                                            const discount = selectedServiceObj && selectedServiceObj.discount ? Number(selectedServiceObj.discount) : 0;
+                                        const selectedServiceObj = services.find(s => s.id === formData.service);
+                                        const serviceName = selectedServiceObj ? selectedServiceObj.name : formData.service;
 
-                                            // Apply discount if any
-                                            const discountedPrice = discount > 0 ? basePrice * (1 - discount / 100) : basePrice;
-                                            const finalPricePerSaree = Math.round(discountedPrice);
-                                            const totalAmount = finalPricePerSaree * formData.sareeCount;
+                                        // Construct WhatsApp Message
+                                        let message = `*New Booking Request* 📅\n\n`;
+                                        message += `*Service:* ${serviceName}\n`;
+                                        message += `*Date:* ${formData.date}\n`;
+                                        message += `*Time:* ${formData.slot}\n`;
+                                        message += `*Sarees:* ${formData.sareeCount}\n\n`;
 
-                                            console.log('[BOOKING] Creating order...');
-                                            const newOrder = await actions.addOrder({
-                                                customerId: customerId,
-                                                customerName: formData.name,
-                                                customerMobile: formData.mobile,
-                                                customerEmail: customerEmail,
-                                                customerWhatsapp: formData.whatsapp,
-                                                service: selectedServiceObj ? selectedServiceObj.name : formData.service,
-                                                amount: totalAmount,
-                                                originalAmount: basePrice * formData.sareeCount, // Track original price before discount
-                                                discountApplied: discount, // Track discount %
-                                                sareeCount: formData.sareeCount,
-                                                date: formData.date,
-                                                slotTime: formData.slot,
-                                                slotTime: formData.slot,
-                                                address: formData.address,
-                                                location: {
-                                                    lat: formData.latitude,
-                                                    lng: formData.longitude
-                                                },
-                                                measurements: formData.measurements,
-                                                notes: `Pick/Drop: ${formData.pickupRequired ? 'Yes' : 'No'} | WA: ${formData.whatsapp}`,
-                                                notes: `Pick/Drop: ${formData.pickupRequired ? 'Yes' : 'No'} | WA: ${formData.whatsapp}`,
-                                                paymentMethod: 'pay_at_venue',
-                                                paidAmount: 0,
-                                                paymentStatus: 'Pending'
-                                            });
-
-                                            console.log('[BOOKING] Order created:', newOrder);
-                                            // Always redirect to tracking page since payment is removed
-                                            console.log('[BOOKING] Redirecting to tracking page:', `/track/${newOrder.id}`);
-                                            navigate(`/track/${newOrder.id}`);
-                                        } catch (err) {
-                                            console.error("[BOOKING] Error:", err);
-                                            setError(err.message || "Booking failed. Please try again.");
-                                        } finally {
-                                            setLoading(false);
+                                        if (formData.name) message += `*Name:* ${formData.name}\n`;
+                                        if (formData.mobile) message += `*Mobile:* ${formData.mobile}\n`;
+                                        if (formData.address) message += `*Address:* ${formData.address}\n`;
+                                        if (formData.latitude && formData.longitude) {
+                                            message += `*Location Map:* https://www.google.com/maps?q=${formData.latitude},${formData.longitude}\n`;
                                         }
+
+                                        if (formData.measurements.waist || formData.measurements.hip || formData.measurements.length) {
+                                            message += `\n*Measurements:* `;
+                                            if (formData.measurements.waist) message += `W:${formData.measurements.waist} `;
+                                            if (formData.measurements.hip) message += `H:${formData.measurements.hip} `;
+                                            if (formData.measurements.length) message += `L:${formData.measurements.length} `;
+                                            message += `\n`;
+                                        }
+
+                                        if (formData.pickupRequired) message += `\n*Pickup Required:* Yes\n`;
+
+
+                                        // Use admin setting or fallback
+                                        // Ensure standard format (remove +, spaces)
+                                        let targetNumber = shopSettings?.whatsapp || shopSettings?.contactMobile || '917502551633';
+                                        targetNumber = targetNumber.replace(/\D/g, ''); // Remove non-digits
+                                        if (targetNumber.length === 10) targetNumber = '91' + targetNumber; // Add India code if missing
+
+                                        const whatsappUrl = `https://wa.me/${targetNumber}?text=${encodeURIComponent(message)}`;
+
+                                        // Redirect to WhatsApp
+                                        window.location.href = whatsappUrl;
+                                        setLoading(false);
                                     }}
-                                    disabled={!formData.name || !formData.mobile || loading}
-                                    className="btn-primary flex-[1.5] text-black font-bold py-4 text-sm sm:text-base rounded-2xl shadow-[0_0_30px_rgba(212,175,55,0.3)] disabled:opacity-50 relative overflow-hidden"
+                                    className="btn-primary flex-[1.5] text-black font-bold py-4 text-sm sm:text-base rounded-2xl shadow-[0_0_30px_rgba(212,175,55,0.3)] relative overflow-hidden"
                                 >
-                                    {loading ? (
-                                        <div className="flex items-center justify-center">
-                                            <div className="w-5 h-5 border-4 border-black border-t-transparent rounded-full animate-spin"></div>
-                                        </div>
-                                    ) : (
-                                        <div className="flex items-center justify-center gap-2">
-                                            <span>Confirm Booking</span>
-                                            <CheckCircle className="w-4 h-4" />
-                                        </div>
-                                    )}
+                                    <div className="flex items-center justify-center gap-2">
+                                        <span>Confirm via WhatsApp</span>
+                                        <CheckCircle className="w-4 h-4" />
+                                    </div>
                                 </button>
                             </div>
                         </div>
