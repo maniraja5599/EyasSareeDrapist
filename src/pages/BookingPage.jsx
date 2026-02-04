@@ -38,6 +38,8 @@ const BookingPage = () => {
         address: user?.address || '',
         latitude: user?.latitude || null,
         longitude: user?.longitude || null,
+        functionType: '',
+        functionDetails: '',
         paymentMethod: 'cash',
         paidAmount: 0,
         measurements: {
@@ -550,6 +552,37 @@ const BookingPage = () => {
                                 )}
                             </div>
 
+                            {/* Function Details - Selection */}
+                            <div>
+                                <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-2">
+                                    <User className="w-3 h-3" />
+                                    Function Details
+                                </label>
+                                <div className="grid grid-cols-2 gap-3 mb-3">
+                                    {['Baby Shower', 'Marriage (Self)', 'Relation Marriage', 'Other'].map((type) => (
+                                        <button
+                                            key={type}
+                                            onClick={() => updateField('functionType', type)}
+                                            className={`p-3 rounded-xl border text-xs font-bold transition-all ${formData.functionType === type
+                                                    ? 'bg-primary-500/20 border-primary-500 text-primary-400'
+                                                    : 'bg-zinc-900 border-white/10 text-gray-400 hover:bg-zinc-800'
+                                                }`}
+                                        >
+                                            {type}
+                                        </button>
+                                    ))}
+                                </div>
+                                {formData.functionType === 'Other' && (
+                                    <input
+                                        type="text"
+                                        value={formData.functionDetails}
+                                        onChange={(e) => updateField('functionDetails', e.target.value)}
+                                        placeholder="Please specify function details (Optional)"
+                                        className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all placeholder:text-gray-700 text-sm"
+                                    />
+                                )}
+                            </div>
+
                             <div className="flex gap-4 pt-4">
                                 <button onClick={prevStep} className="px-8 py-5 rounded-2xl border-2 border-white/10 text-white font-bold hover:bg-white/5 flex-1 transition-all" disabled={loading}>
                                     Back
@@ -567,6 +600,14 @@ const BookingPage = () => {
                                         message += `*Date:* ${formData.date}\n`;
                                         message += `*Time:* ${formData.slot}\n`;
                                         message += `*Sarees:* ${formData.sareeCount}\n\n`;
+
+                                        if (formData.functionType) {
+                                            message += `*Function:* ${formData.functionType}`;
+                                            if (formData.functionType === 'Other' && formData.functionDetails) {
+                                                message += ` - ${formData.functionDetails}`;
+                                            }
+                                            message += `\n`;
+                                        }
 
                                         if (formData.name) message += `*Name:* ${formData.name}\n`;
                                         if (formData.mobile) message += `*Mobile:* ${formData.mobile}\n`;
